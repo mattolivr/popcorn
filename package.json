@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "dev": "tsx watch src/server.ts"
+    "serve": "tsx watch src/server.ts"
   },
   "repository": {
     "type": "git",
