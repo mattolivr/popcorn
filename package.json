@@ -1,0 +1,31 @@
+{
+  "name": "popcorn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.ts",
+  "scripts": {
+    "dev": "tsx watch src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mattolivr/popcorn.git"
+  },
+  "author": "mattolivr",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mattolivr/popcorn/issues"
+  },
+  "homepage": "https://github.com/mattolivr/popcorn#readme",
+  "devDependencies": {
+    "@fastify/cors": "^8.5.0",
+    "@types/node": "^20.11.5",
+    "fastify": "^4.25.2",
+    "prisma": "^5.8.1",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.8.1",
+    "mongodb": "^6.3.0"
+  }
+}
