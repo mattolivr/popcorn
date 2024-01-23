@@ -2,6 +2,8 @@ import { useEffect, useState, useRef, FormEvent } from "react"
 import { api } from "./services/api"
 import { User } from "../../src/core/entities/user.entity"
 import { FaTrash } from "react-icons/fa6"
+import Card from "./components/Card"
+import Input, { InputType } from "./components/Input"
 
 export default function App() {
   const [users, setUsers] = useState<User[]>([])
@@ -46,15 +48,14 @@ export default function App() {
       <main className="w-full justify-center py-8 px-4 md:max-w-2xl md:px-0">
         <h1 className="font-bold text-3xl text-center">Cadastro de Usuários</h1>
 
-        <form className="flex flex-col my-5" onSubmit={handleSubmit}>
-          <label htmlFor="username">Nome</label>
-          <input type="text" id="username" ref={nameRef} className="w-full h-8 p-2 rounded bg-slate-200"/>
+        <Card title="Dados Gerais">
+          <form className="flex flex-col my-5 gap-2" onSubmit={handleSubmit}>
+            <Input type={InputType.TEXT} label="Nome" action={{ name: "Teste", function: () => {} }} ref={nameRef}/>
+            <Input type={InputType.EMAIL} label="Email" hint="Necessário bla" ref={emailRef}/>
 
-          <label htmlFor="useremail">Email</label>
-          <input type="text" id="useremail" ref={emailRef} className="w-full h-8 p-2 rounded bg-slate-200"/>
-
-          <input type="submit" value="Cadastrar" className="cursor-pointer w-full p-2 bg-green-400 rounded mt-3"/>
-        </form>
+            <input type="submit" value="Cadastrar" className="cursor-pointer w-full p-2 bg-green-400 rounded mt-3"/>
+          </form>
+        </Card>
 
         <section>
           {users.map((user) => (
