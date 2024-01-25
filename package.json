@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.ts",
   "scripts": {
-    "serve": "tsx watch src/server.ts"
+    "serve": "tsx watch src/server.ts",
+    "dev": "concurrently --names SERVER,CLIENT --prefix-colors blue,magenta --kill-others \"npm run serve\" \"cd client && npm run dev\""
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "@fastify/cors": "^8.5.0",
     "@types/node": "^20.11.5",
+    "concurrently": "^8.2.2",
     "fastify": "^4.25.2",
     "prisma": "^5.8.1",
     "tsx": "^4.7.0",
