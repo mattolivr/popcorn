@@ -1,26 +1,27 @@
-import { Button } from "@material-tailwind/react";
 import Card from "../components/Card";
 import BaseInput, { InputType } from "../components/Input";
+import Divider from "../components/Divider";
+import WelcomeLayout from "./layouts/WelcomeLayout";
+import { Link } from "react-router-dom";
+import Button from "../components/Button";
 
 
 export default function LoginView() {
     return (
-        <div className="flex">
-            <div id="highlights" className="w-4/5 bg-light-blue-600 min-h-screen" />
-            <main className="w-2/5 bg-blue-gray-50 min-h-screen flex justify-center items-center px-8">
-                <Card title="Faça o Login" className="w-full gap-2">
-                    <BaseInput type={InputType.TEXT} label="Nome de usuário" />
-                    <BaseInput type={InputType.PASSWORD} label="Senha" />
-                    <a href="" className="text-end font-semibold text-blue-600">Esqueceu a senha?</a>
-                    <div className="w-full relative inline-flex items-center justify-center">
-                        <hr className="w-full h-0.5 my-2 bg-gray-200 dark:bg-gray-700" />
-                        <span className="absolute px-3 font-medium text-gray-600 -translate-x-1/2 bg-white left-1/2
-                            dark:text-white dark:bg-gray-900">ou</span>
-                    </div>
-                    <Button placeholder={"teste"} color="white" className="shadow-none">Entre usando sua conta Google</Button>
-                    <Button placeholder={"teste"} color="white" className="shadow-none">Entre usando sua conta Letterboxd</Button>
-                </Card>
-            </main>
-        </div>
+        <WelcomeLayout>
+            <Card title="Faça o Login" className="w-full gap-2">
+                <BaseInput type={InputType.TEXT} label="Nome de usuário" />
+                <BaseInput type={InputType.PASSWORD} label="Senha" />
+                {/* TODO: Criar componente de link */}
+                <a href="" className="text-end font-semibold text-blue-600">Esqueceu a senha?</a>
+                <Divider text="ou"/>
+                <Link to="/sign-in" className="text-center font-semibold bg-light-blue-600 text-white rounded-2xl px-1 py-2">
+                    Crie uma nova conta
+                </Link>
+                {/* TODO: Criar componente próprio de botão */}
+                <Button color="white">Entre usando sua conta Google</Button>
+                <Button color="white">Entre usando sua conta Letterboxd</Button>
+            </Card>
+        </WelcomeLayout>
     )
 }
