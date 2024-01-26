@@ -1,4 +1,5 @@
 import { Button, Input, Typography } from "@material-tailwind/react"
+import { IconType } from "react-icons"
 import { FaAt, FaCircleInfo } from "react-icons/fa6"
 
 type Props = {
@@ -6,10 +7,11 @@ type Props = {
     type: InputType,
     ref?: React.MutableRefObject<HTMLInputElement | null>
     hint?: string,
-    action?: Action
+    action?: Action,
+    icon?: IconType
 }
 
-type Action = { name: string, function: () => any }
+type Action = { name: string, function: () => void }
 
 export enum InputType {
     TEXT, INTEGER, NUMBER, PASSWORD, EMAIL
@@ -51,7 +53,7 @@ function Hint({ text }: { text?: string }) {
             <Typography
                 variant="small"
                 placeholder={null}
-                className="mt-1 flex items-center gap-1 font-normal"
+                className="mt-1 flex items-center gap-1 font-medium text-blue-gray-600"
             >
                 <FaCircleInfo />
                 {text}
