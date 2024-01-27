@@ -1,30 +1,52 @@
-import { FastifyRequest, FastifyReply } from "fastify"
-import { UserService } from "../services/user.service"
-import { User } from "../core/entities/user.entity"
+import { type FastifyRequest, type FastifyReply } from "fastify";
+import { UserService } from "../services/user.service";
+import { type User } from "../core/entities/user.entity";
+import type Controller from "./controller";
 
-class UserController {
-    static async create(request: FastifyRequest, reply: FastifyReply) {
-        reply.send(await new UserService().create(request.body as User))
-    }
+export const UserController: Controller = {
+  get,
+  list,
+  create,
+  update,
+  remove,
+};
 
-    static async update(request: FastifyRequest, reply: FastifyReply) {
-        reply.send(await new UserService().update(request.body as User))
-    }
-
-    static async delete(request: FastifyRequest, reply: FastifyReply) {
-        const { id } = request.query as User
-        reply.send(await new UserService().delete(id))
-    }
-
-    static async get(request: FastifyRequest, reply: FastifyReply) {
-        const { id, name } = request.query as User
-        const service = new UserService()
-        reply.send(name ? await service.getByName(name) : await service.get(id))
-    }
-
-    static async list(request: FastifyRequest, reply: FastifyReply) {
-        reply.send(await new UserService().list())
-    }
+async function create(
+  request: FastifyRequest,
+  reply: FastifyReply
+): Promise<void> {
+  await reply.send(await new UserService().create(request.body as User));
 }
 
-export { UserController }
+async function update(
+  request: FastifyRequest,
+  reply: FastifyReply
+): Promise<void> {
+  await reply.send(await new UserService().update(request.body as User));
+}
+
+async function remove(
+  request: FastifyRequest,
+  reply: FastifyReply
+): Promise<void> {
+  const { id } = request.query as User;
+  await reply.send(await new UserService().delete(id));
+}
+
+async function get(
+  request: FastifyRequest,
+  reply: FastifyReply
+): Promise<void> {
+  const { id, name } = request.query as User;
+  const service = new UserService();
+  await reply.send(
+    name != null ? await service.getByName(name) : await service.get(id)
+  );
+}
+
+async function list(
+  request: FastifyRequest,
+  reply: FastifyReply
+): Promise<void> {
+  await reply.send(await new UserService().list());
+}

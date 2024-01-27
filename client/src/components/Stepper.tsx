@@ -1,7 +1,3 @@
 export default function Stepper() {
-    return (
-        <>
-
-        </>
-    )
+  return <></>;
 }

@@ -5,7 +5,8 @@
   "main": "server.ts",
   "scripts": {
     "serve": "tsx watch src/server.ts",
-    "dev": "concurrently --names SERVER,CLIENT --prefix-colors blue,magenta --kill-others \"npm run serve\" \"cd client && npm run dev\""
+    "dev": "concurrently --names SERVER,CLIENT --prefix-colors blue,magenta --kill-others \"npm run serve\" \"cd client && npm run dev\"",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
@@ -20,8 +21,20 @@
   "devDependencies": {
     "@fastify/cors": "^8.5.0",
     "@types/node": "^20.11.7",
+    "@typescript-eslint/eslint-plugin": "^6.19.1",
     "concurrently": "^8.2.2",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-config-standard-with-typescript": "^43.0.1",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^16.6.2",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.5",
     "fastify": "^4.25.2",
+    "husky": "^9.0.6",
+    "prettier": "^3.2.4",
     "prisma": "^5.8.1",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3"
