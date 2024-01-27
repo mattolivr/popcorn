@@ -19,7 +19,7 @@
   "homepage": "https://github.com/mattolivr/popcorn#readme",
   "devDependencies": {
     "@fastify/cors": "^8.5.0",
-    "@types/node": "^20.11.5",
+    "@types/node": "^20.11.7",
     "concurrently": "^8.2.2",
     "fastify": "^4.25.2",
     "prisma": "^5.8.1",
@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "@prisma/client": "^5.8.1",
-    "mongodb": "^6.3.0",
-    "react-router-dom": "^6.21.3"
+    "mongodb": "^6.3.0"
   }
 }

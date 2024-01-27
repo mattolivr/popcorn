@@ -6,7 +6,7 @@ import WelcomeLayout from "./layouts/WelcomeLayout";
 export default function SignInView() {
     return (
         <WelcomeLayout>
-            <Card title="Criar nova conta" className="w-full gap-2">
+            <Card title="Criar nova conta" className="w-full max-w-lg gap-2">
                 <Fields/>
                 <Button>Próxima etapa</Button>
                 <Divider text="ou"></Divider>

@@ -23,17 +23,5 @@ function getClassName(props: Props): string {
 }
 
 function getColor(props: Props): string {
-    const createColor = (color: string): string => {
-        let c = props.secundary ? "border-" : "bg-"
-        c += color
-        c += props.secundary ? " text-gray-800 border-2" : (color.includes("white") ? " text-gray-800" : " text-white")
-        return c
-    }
-
-    switch (props.color) {
-        case "white": return createColor("white")
-        case "transparente": return "text-gray-800"
-        case "blue":
-        default: return createColor("light-blue-600")
-    }
+    return ""
 }
