@@ -1,8 +1,8 @@
 import {
   type FastifyInstance,
   type FastifyPluginOptions,
-  type FastifyRequest,
   type FastifyReply,
+  type FastifyRequest,
 } from "fastify";
 import { UserController } from "./controllers/user.controller";
 
@@ -13,6 +13,7 @@ export async function routes(
   fastify.post(
     "/user",
     async (request: FastifyRequest, reply: FastifyReply) => {
+      console.log("requisição recebida", "/user", request);
       await UserController.create(request, reply);
     }
   );

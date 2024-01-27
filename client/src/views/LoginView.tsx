@@ -1,4 +1,5 @@
 import { FaKey, FaUser } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Card from "../components/Card";
@@ -13,18 +14,17 @@ export default function LoginView() {
         {/* TODO: Criar componente de link */}
         <Input type="text" label="Nome de usuário ou Email" icon={FaUser} />
         <Input type="password" label="Senha" icon={FaKey} />
-        <a href="" className="text-end font-semibold text-blue-600">
+        <a href="" className="text-end font-semibold text-sky-700">
           Esqueceu a senha?
         </a>
-        <Divider text="ou" />
-        <Link
-          to="/sign-in"
-          className="rounded-2xl bg-sky-500 px-1 py-2 text-center font-semibold text-white"
-        >
-          Crie uma nova conta
+        <Button>Fazer login</Button>
+        <Link to="/sign-in" className="text-center font-semibold text-sky-700">
+          Não possui conta? Cadastre-se
         </Link>
-        <Button color="white">Entre usando sua conta Google</Button>
-        <Button color="white">Entre usando sua conta Letterboxd</Button>
+        <Divider text="ou" />
+        <Button variant="blank" icon={FcGoogle} disabled>
+          Entre usando sua conta Google
+        </Button>
       </Card>
     </WelcomeLayout>
   );

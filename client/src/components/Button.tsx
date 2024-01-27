@@ -1,36 +1,76 @@
+import { type IconBaseProps, type IconType } from "react-icons";
 import { Link } from "react-router-dom";
-import colors from "../assets/color";
 
-type Props = {
+interface Props {
   children: React.ReactNode;
   className?: string;
-  secundary?: boolean;
+  variant?: "primary" | "secundary" | "blank";
+  visible?: boolean;
+  disabled?: boolean;
+  icon?: IconType;
+  type?: "submit" | "reset" | "button";
+
   link?: string;
-  color?: string;
-  outline?: boolean;
-};
+
+  onClick?: React.MouseEventHandler;
+}
 
 export default function Button(props: Props) {
-  console.log(getColor(props));
-  if (props.link) {
+  if (props.visible === false) {
+    return <></>;
+  }
+
+  if (props.link != null) {
     return (
       <Link to={props.link} className={getClassName(props)}>
         {props.children}
       </Link>
     );
   }
-  return <button className={getClassName(props)}>{props.children}</button>;
+  return (
+    <button
+      className={getClassName(props)}
+      onClick={props.onClick}
+      disabled={props.disabled}
+      type={props.type ?? "button"}
+    >
+      <Icon icon={props.icon} />
+      {props.children}
+    </button>
+  );
+}
+
+function Icon({ icon }: { icon?: IconType }): JSX.Element {
+  if (icon != null) {
+    const props: IconBaseProps = {
+      color: "#1c1917",
+      className: "inline mr-2",
+    };
+
+    return icon(props);
+  }
+  return <></>;
 }
 
 function getClassName(props: Props): string {
-  return `text-center font-semibold rounded-2xl px-1 py-2 w-full ${getColor(props)} ${props.className}`;
+  return `flex justify-center items-center font-semibold rounded-2xl px-1 py-2 
+  w-full ${getColor(props)} ${props.className ?? ""} 
+  ${props.disabled === true ? "cursor-not-allowed" : ""}`;
 }
 
 function getColor(props: Props): string {
-  // TODO: Adicionar suporte a dark-mode
-  const base = props.outline ? "border-" : "bg-";
-  const color = colors.get(props.color ?? "primary") ?? colors.get("primary");
-  const text = props.outline ? color?.darkText : color?.text;
-
-  return `${base}${color?.color} text-${text} ${props.outline ? "border-2" : ""}`;
+  /**
+   * TODO: Melhorar esquema de cores para suportar:
+   * - Modo dark
+   * - Botões desabilitados
+   */
+  switch (props.variant) {
+    case "blank":
+      return "bg-white border border-gray-200 shadow-sm text-stone-900 outline-gray-400";
+    case "secundary":
+      return "border-2 border-sky-500 text-stone-900";
+    case "primary":
+    default:
+      return "bg-sky-500 text-white outline-sky-800";
+  }
 }

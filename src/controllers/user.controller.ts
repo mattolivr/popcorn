@@ -1,6 +1,6 @@
-import { type FastifyRequest, type FastifyReply } from "fastify";
-import { UserService } from "../services/user.service";
+import { type FastifyReply, type FastifyRequest } from "fastify";
 import { type User } from "../core/entities/user.entity";
+import { UserService } from "../services/user.service";
 import type Controller from "./controller";
 
 export const UserController: Controller = {
