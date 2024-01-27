@@ -17,7 +17,6 @@ export default function LoginView() {
                 <Link to="/sign-in" className="text-center font-semibold bg-sky-500 text-white rounded-2xl px-1 py-2">
                     Crie uma nova conta
                 </Link>
-                {/* TODO: Criar componente próprio de botão */}
                 <Button color="white">Entre usando sua conta Google</Button>
                 <Button color="white">Entre usando sua conta Letterboxd</Button>
             </Card>
