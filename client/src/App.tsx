@@ -2,6 +2,14 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import LoginView from "./views/LoginView";
 import SignInView from "./views/SignInView";
 
+import "preline/preline";
+import { IStaticMethods } from "preline/preline";
+declare global {
+  interface Window {
+    HSStaticMethods: IStaticMethods;
+  }
+}
+
 export default function App() {
   return (
     <Router>
