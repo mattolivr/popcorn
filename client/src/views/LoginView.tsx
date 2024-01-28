@@ -1,3 +1,4 @@
+import { useForm } from "react-hook-form";
 import { FaKey, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Link } from "react-router-dom";
@@ -8,12 +9,26 @@ import Input from "../components/Input";
 import WelcomeLayout from "./layouts/WelcomeLayout";
 
 export default function LoginView() {
+  const { register, handleSubmit } = useForm();
+
   return (
     <WelcomeLayout>
       <Card title="Faça o Login" className="w-full max-w-lg gap-2">
         {/* TODO: Criar componente de link */}
-        <Input type="text" label="Nome de usuário ou Email" icon={FaUser} />
-        <Input type="password" label="Senha" icon={FaKey} />
+        <Input
+          type="text"
+          name="login"
+          label="Nome de usuário ou Email"
+          icon={FaUser}
+          register={register}
+        />
+        <Input
+          type="password"
+          name="password"
+          label="Senha"
+          icon={FaKey}
+          register={register}
+        />
         <a href="" className="text-end font-semibold text-sky-700">
           Esqueceu a senha?
         </a>

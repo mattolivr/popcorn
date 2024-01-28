@@ -1,6 +1,6 @@
-import { type User } from "../core/entities/user.entity";
-import { Service } from "./service";
+import type User from "../core/entities/user.entity";
 import prismaClient from "../database/prisma";
+import { Service } from "./service";
 
 class UserService extends Service<User> {
   protected getRequiredFields(): string[] {
