@@ -23,6 +23,15 @@ interface Action {
   function: () => void;
 }
 
+const defaultStyle = `peer block w-full rounded-lg bg-gray-100 px-4 py-3 text-sm 
+disabled:pointer-events-none disabled:opacity-5`;
+
+const errorStyle = (error: boolean) => error 
+  ? "border-red-600 border-2 focus:outline-red-400" 
+  : "border-transparent focus:outline-sky-500"
+
+const iconLeftPadding = (icon: boolean) => icon ? "ps-11" : ""; 
+
 export default function Input(props: InputProps) {
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -31,12 +40,9 @@ export default function Input(props: InputProps) {
     <>
       <div className={props.visible === false ? "hidden" : "relative"}>
         <div className="relative">
-          <Icon icon={props.icon} error={error} />
+          <Icon icon={props.icon} />
           <input
-            className={`peer block w-full rounded-lg bg-gray-100 px-4 py-3 text-sm 
-              focus:outline-sky-500 disabled:pointer-events-none disabled:opacity-5 
-              ${error ? "border-red-600 border-2 focus:outline-red-400" : "border-transparent"}
-              ${props.icon != null ? "ps-11" : ""}`}
+            className={` ${defaultStyle} ${errorStyle(error)} ${iconLeftPadding(props.icon != null)}`}
             placeholder={props.label}
             {...props.register(props.name, { required: props.required })}
             onChange={(event) => {handleChange(event, {setError, setErrorMessage}, props.validator)}}
