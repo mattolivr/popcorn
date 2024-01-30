@@ -12,7 +12,7 @@ export default function Divider({ text }: DividerType) {
 }
 
 function Span({ text }: { text?: string }) {
-  if (text) {
+  if (text != null) {
     return (
       <span
         className="absolute left-1/2 -translate-x-1/2 bg-white px-3

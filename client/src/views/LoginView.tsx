@@ -7,6 +7,8 @@ import Card from "../components/Card";
 import Divider from "../components/Divider";
 import Input from "../components/Input";
 import WelcomeLayout from "./layouts/WelcomeLayout";
+import Anchor from "../components/Anchor";
+import { validateEmail } from "../classes/input.validator";
 
 export default function LoginView() {
   const { register, handleSubmit } = useForm();
@@ -21,6 +23,7 @@ export default function LoginView() {
           label="Nome de usuário ou Email"
           icon={FaUser}
           register={register}
+          validator={validateEmail}
         />
         <Input
           type="password"
@@ -29,13 +32,9 @@ export default function LoginView() {
           icon={FaKey}
           register={register}
         />
-        <a href="" className="text-end font-semibold text-sky-700">
-          Esqueceu a senha?
-        </a>
+        <Anchor path="#" className="text-right">Esqueceu a senha?</Anchor>
         <Button>Fazer login</Button>
-        <Link to="/sign-in" className="text-center font-semibold text-sky-700">
-          Não possui conta? Cadastre-se
-        </Link>
+        <Anchor path="/sign-in">Não possui conta? Cadastre-se</Anchor>
         <Divider text="ou" />
         <Button variant="blank" icon={FcGoogle} disabled>
           Entre usando sua conta Google
