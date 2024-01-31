@@ -49,7 +49,7 @@ export default function SignInView() {
 
   return (
     <WelcomeLayout>
-      <Card title={title[step - 1]} className="w-full max-w-lg gap-2">
+      <Card title={title[step - 1]} className="max-w-lg gap-2">
         <form
           className="flex flex-col gap-2"
           // eslint-disable-next-line @typescript-eslint/no-misused-promises
