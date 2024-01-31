@@ -1,21 +1,20 @@
 import { useForm } from "react-hook-form";
 import { FaKey, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
-import { Link } from "react-router-dom";
+import { validateEmail } from "../classes/input.validator";
+import Anchor from "../components/Anchor";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import Divider from "../components/Divider";
 import Input from "../components/Input";
 import WelcomeLayout from "./layouts/WelcomeLayout";
-import Anchor from "../components/Anchor";
-import { validateEmail } from "../classes/input.validator";
 
 export default function LoginView() {
   const { register, handleSubmit } = useForm();
 
   return (
     <WelcomeLayout>
-      <Card title="Faça o Login" className="w-full max-w-lg gap-2">
+      <Card title="Faça o Login" className="max-w-lg gap-2">
         {/* TODO: Criar componente de link */}
         <Input
           type="text"
@@ -32,7 +31,9 @@ export default function LoginView() {
           icon={FaKey}
           register={register}
         />
-        <Anchor path="#" className="text-right">Esqueceu a senha?</Anchor>
+        <Anchor path="#" className="text-right">
+          Esqueceu a senha?
+        </Anchor>
         <Button>Fazer login</Button>
         <Anchor path="/sign-in">Não possui conta? Cadastre-se</Anchor>
         <Divider text="ou" />

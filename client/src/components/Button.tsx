@@ -10,7 +10,7 @@ interface Props {
   icon?: IconType;
   type?: "submit" | "reset" | "button";
 
-  link?: string;
+  path?: string;
 
   onClick?: React.MouseEventHandler;
 }
@@ -20,9 +20,9 @@ export default function Button(props: Props) {
     return <></>;
   }
 
-  if (props.link != null) {
+  if (props.path != null) {
     return (
-      <Link to={props.link} className={getClassName(props)}>
+      <Link to={props.path} className={getClassName(props)}>
         {props.children}
       </Link>
     );
