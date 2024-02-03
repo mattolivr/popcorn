@@ -1,28 +1,48 @@
+import { useState } from "react";
 import { FaBell, FaGlobe, FaPlus, FaSearch } from "react-icons/fa";
 import { FaMessage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import Menu from "../../components/ui/Menu";
 
 export interface MainLayoutProps {
   children: React.ReactNode;
 }
 
 export function MainLayout({ children }: MainLayoutProps) {
+  const [menuVisible, setMenuVisible] = useState(true);
+
   return (
-    <>
+    <div className="flex h-screen flex-col">
       <header className="flex w-full flex-row items-center bg-sky-500 px-4 py-2">
-        <Controlls />
+        <Controlls
+          toggleMenu={() => {
+            setMenuVisible(!menuVisible);
+          }}
+        />
         <SearchBar className="hidden w-8/12 xl:inline" />
         <Nav />
       </header>
-      <main></main>
-    </>
+      <main className="relative grow">
+        <Menu visible={menuVisible} />
+        <div className="flex min-h-full w-full justify-center bg-slate-100">
+          {children}
+        </div>
+      </main>
+    </div>
   );
 }
 
-function Controlls(): JSX.Element {
+interface ControllsProps {
+  toggleMenu: () => void;
+}
+
+function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
   return (
     <div className="flex w-full flex-row items-center gap-4">
-      <div className="h-10 w-10 rounded-full bg-orange-300"></div>
+      <button
+        className="h-10 w-10 rounded-full bg-orange-300"
+        onClick={toggleMenu}
+      />
       <ul className="flex flex-row items-center gap-4 text-2xl text-gray-100">
         <li>
           <FaBell />
