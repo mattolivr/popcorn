@@ -73,7 +73,7 @@ function Nav(): JSX.Element {
   return (
     <>
       <nav className="flex w-full flex-row items-center justify-end gap-2">
-        <ul className="text-md hidden flex-row-reverse items-center gap-4 font-semibold text-white xl:flex">
+        <ul className="text-md hidden flex-row items-center gap-4 font-semibold text-white xl:flex">
           <NavLinks />
         </ul>
 
@@ -83,7 +83,7 @@ function Nav(): JSX.Element {
 
         <img
           src="./src/assets/popcorn-logo.png"
-          className="h-10 w-10 shadow-lg"
+          className="ml-2 h-10 w-10 shadow-lg"
         />
       </nav>
     </>
@@ -91,31 +91,46 @@ function Nav(): JSX.Element {
 }
 
 function NavLinks({ linkStyle }: { linkStyle?: string }): JSX.Element {
-  return (
-    <>
-      <li className={linkStyle}>
-        <Link to={"/about"}>Sobre</Link>
-      </li>
-      <li className={linkStyle}>
-        <Link to={"/discover"}>Mais</Link>
-      </li>
-      <li className={linkStyle}>
-        <Link to={"/users"}>Perfis</Link>
-      </li>
-      <li className={linkStyle}>
-        <Link to={"/clubs"}>Clubes</Link>
-      </li>
-      <li className={linkStyle}>
-        <Link to={"/people"}>Pessoas</Link>
-      </li>
-      <li className={linkStyle}>
-        <Link to={"/shows"}>Séries</Link>
-      </li>
-      <li className={linkStyle}>
-        <Link to={"/movies"}>Filmes</Link>
-      </li>
-    </>
-  );
+  const links = [
+    {
+      path: "/movies",
+      label: "Filmes",
+    },
+    {
+      path: "/shows",
+      label: "Séries",
+    },
+    {
+      path: "/people",
+      label: "Elenco",
+    },
+    {
+      path: "/clubs",
+      label: "Clubes",
+    },
+    {
+      path: "/users",
+      label: "Perfis",
+    },
+    {
+      path: "/discover",
+      label: "Explorar",
+    },
+    {
+      path: "/about",
+      label: "Sobre",
+    },
+  ];
+
+  const components = links.map((link) => (
+    <li key={link.path} className={linkStyle}>
+      <Link to={link.path} className="w-full">
+        {link.label}
+      </Link>
+    </li>
+  ));
+
+  return <>{components}</>;
 }
 
 function NavDropdown(): JSX.Element {
@@ -148,12 +163,12 @@ function NavDropdown(): JSX.Element {
       </button>
 
       <div
-        className="hs-dropdown-menu duration mt-2 hidden min-w-[10rem] rounded-lg bg-white p-2 opacity-0 shadow-md 
-        transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full after:absolute 
-        after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100"
+        className="hs-dropdown-menu duration z-10 mt-2 hidden min-w-[10rem] rounded-lg bg-white p-2 opacity-0 
+        shadow-md transition-[opacity,margin] before:absolute before:-top-4 before:start-0 before:h-4 before:w-full 
+        after:absolute after:-bottom-4 after:start-0 after:h-4 after:w-full hs-dropdown-open:opacity-100"
         aria-labelledby="hs-dropdown-hover-event"
       >
-        <ul className="flex flex-col-reverse">
+        <ul className="flex flex-col">
           <NavLinks
             linkStyle="flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 
             focus:outline-none focus:bg-gray-100 font-regular"

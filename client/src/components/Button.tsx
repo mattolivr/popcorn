@@ -66,7 +66,7 @@ function getColor(props: Props): string {
    */
   switch (props.variant) {
     case "blank":
-      return "bg-white border border-gray-200 shadow-sm text-stone-900 outline-gray-400";
+      return "bg-white border border-gray-200 shadow-sm text-stone-900 outline-gray-400 hover:bg-gray-100";
     case "secundary":
       return "border-2 border-sky-500 text-stone-900";
     case "primary":
