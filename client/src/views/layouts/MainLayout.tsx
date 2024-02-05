@@ -124,7 +124,7 @@ function NavLinks({ linkStyle }: { linkStyle?: string }): JSX.Element {
 
   const components = links.map((link) => (
     <li key={link.path} className={linkStyle}>
-      <Link to={link.path} className="w-full">
+      <Link to={link.path} className="w-full outline-transparent">
         {link.label}
       </Link>
     </li>

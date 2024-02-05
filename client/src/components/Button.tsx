@@ -1,6 +1,5 @@
 import { type IconBaseProps, type IconType } from "react-icons";
 import { Link } from "react-router-dom";
-import { getColor, type Variant } from "../assets/color";
 
 interface Props {
   children: React.ReactNode;
@@ -17,6 +16,8 @@ interface Props {
 
   onClick?: React.MouseEventHandler;
 }
+
+export type Variant = "primary" | "secondary" | "blank" | "white" | undefined;
 
 export default function Button(props: Props) {
   if (props.visible === false) {
@@ -47,7 +48,7 @@ export default function Button(props: Props) {
 function Icon({ icon }: { icon?: IconType }): JSX.Element {
   if (icon != null) {
     const props: IconBaseProps = {
-      className: "inline mr-2 text-red-600",
+      className: `inline mr-2`,
     };
 
     return icon(props);
@@ -58,7 +59,11 @@ function Icon({ icon }: { icon?: IconType }): JSX.Element {
 function getStyle(props: Props): string {
   let style: string = "flex items-center rounded-2xl px-4 py-2 font-semibold ";
 
-  style += getColor(props.variant ?? "primary");
+  const value = variants[props.variant ?? "primary"];
+  if (value != null) {
+    style += `${value.style} ${value.text} `;
+  }
+
   style +=
     props.textAlign == null ? "justify-center " : `justify-${props.textAlign} `;
   style += props.width == null ? "w-full " : `w-${props.width} `;
@@ -67,3 +72,24 @@ function getStyle(props: Props): string {
 
   return style;
 }
+
+const variants = {
+  primary: {
+    style: "bg-sky-400 outline-sky-600 hover:bg-sky-300",
+    text: "text-white",
+  },
+  secondary: {
+    style:
+      "bg-transparent outline-sky-600 border border-gray-300 hover:bg-sky-400 hover:border-sky-400",
+    text: "text-gray-700 hover:text-white",
+  },
+  white: {
+    style:
+      "bg-white shadow-sm border border-gray-100 outline-gray-400 hover:bg-gray-100",
+    text: "text-gray-700",
+  },
+  blank: {
+    style: "bg-transparent outline-gray-400",
+    text: "text-gray-900",
+  },
+};

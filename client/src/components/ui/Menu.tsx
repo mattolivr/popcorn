@@ -33,7 +33,6 @@ function UserHeader(): JSX.Element {
 function UserControlls(): JSX.Element {
   interface Controll {
     label: string;
-    variant: Variant;
     icon: IconType;
     path: string;
   }
@@ -41,44 +40,40 @@ function UserControlls(): JSX.Element {
   const controlls: Controll[] = [
     {
       label: "Notificações",
-      variant: "primary",
       icon: FaBell,
       path: "/notifications",
     },
     {
       label: "Mensagens",
-      variant: "primary",
       icon: FaMessage,
       path: "/messages",
     },
     {
       label: "Avaliações",
-      variant: "primary",
       icon: FaStar,
       path: "/reviews",
     },
     {
       label: "Tópicos",
-      variant: "primary",
       icon: FaComment,
       path: "#",
     },
     {
       label: "Interesses",
-      variant: "primary",
       icon: FaBookmark,
       path: "#",
     },
   ];
 
   return (
-    <div className="px-2">
+    <div className="flex flex-col gap-1 px-2">
       {controlls.map((btn) => (
         <Button
           key={btn.label}
           path={btn.path}
-          variant={btn.variant}
+          variant="blank"
           icon={btn.icon}
+          textAlign="start"
         >
           {btn.label}
         </Button>
