@@ -1,5 +1,7 @@
-import { FaBell } from "react-icons/fa";
-import { FaBookmark, FaComment, FaMessage, FaStar } from "react-icons/fa6";
+import { type IconType } from "react-icons";
+import { FaBell, FaBookmark, FaComment, FaStar } from "react-icons/fa";
+import { FaMessage } from "react-icons/fa6";
+import { type Variant } from "../../assets/color";
 import Button from "../Button";
 import Divider from "../Divider";
 
@@ -29,23 +31,58 @@ function UserHeader(): JSX.Element {
 }
 
 function UserControlls(): JSX.Element {
+  interface Controll {
+    label: string;
+    variant: Variant;
+    icon: IconType;
+    path: string;
+  }
+
+  const controlls: Controll[] = [
+    {
+      label: "Notificações",
+      variant: "primary",
+      icon: FaBell,
+      path: "/notifications",
+    },
+    {
+      label: "Mensagens",
+      variant: "primary",
+      icon: FaMessage,
+      path: "/messages",
+    },
+    {
+      label: "Avaliações",
+      variant: "primary",
+      icon: FaStar,
+      path: "/reviews",
+    },
+    {
+      label: "Tópicos",
+      variant: "primary",
+      icon: FaComment,
+      path: "#",
+    },
+    {
+      label: "Interesses",
+      variant: "primary",
+      icon: FaBookmark,
+      path: "#",
+    },
+  ];
+
   return (
     <div className="px-2">
-      <Button variant="blank" icon={FaBell} path="/notifications">
-        Notificações
-      </Button>
-      <Button variant="blank" icon={FaMessage} path="/messages">
-        Mensagens
-      </Button>
-      <Button variant="blank" icon={FaStar} path="/reviews">
-        Avaliações
-      </Button>
-      <Button variant="blank" icon={FaComment} path="/topics">
-        Discussões
-      </Button>
-      <Button variant="blank" icon={FaBookmark} path="#">
-        Interesses
-      </Button>
+      {controlls.map((btn) => (
+        <Button
+          key={btn.label}
+          path={btn.path}
+          variant={btn.variant}
+          icon={btn.icon}
+        >
+          {btn.label}
+        </Button>
+      ))}
       <Divider className="px-2" />
     </div>
   );

@@ -1,14 +1,17 @@
 import { type IconBaseProps, type IconType } from "react-icons";
 import { Link } from "react-router-dom";
+import { getColor, type Variant } from "../assets/color";
 
 interface Props {
   children: React.ReactNode;
   className?: string;
-  variant?: "primary" | "secundary" | "blank";
+  variant?: Variant;
   visible?: boolean;
   disabled?: boolean;
   icon?: IconType;
   type?: "submit" | "reset" | "button";
+  textAlign?: "start" | "center" | "right";
+  width?: "full" | "fit" | number;
 
   path?: string;
 
@@ -22,14 +25,15 @@ export default function Button(props: Props) {
 
   if (props.path != null) {
     return (
-      <Link to={props.path} className={getClassName(props)}>
+      <Link to={props.path} className={getStyle(props)}>
+        <Icon icon={props.icon} />
         {props.children}
       </Link>
     );
   }
   return (
     <button
-      className={getClassName(props)}
+      className={getStyle(props)}
       onClick={props.onClick}
       disabled={props.disabled}
       type={props.type ?? "button"}
@@ -43,8 +47,7 @@ export default function Button(props: Props) {
 function Icon({ icon }: { icon?: IconType }): JSX.Element {
   if (icon != null) {
     const props: IconBaseProps = {
-      color: "#1c1917",
-      className: "inline mr-2",
+      className: "inline mr-2 text-red-600",
     };
 
     return icon(props);
@@ -52,25 +55,15 @@ function Icon({ icon }: { icon?: IconType }): JSX.Element {
   return <></>;
 }
 
-function getClassName(props: Props): string {
-  return `flex justify-center items-center font-semibold rounded-2xl px-1 py-2 
-  w-full ${getColor(props)} ${props.className ?? ""} 
-  ${props.disabled === true ? "cursor-not-allowed" : ""}`;
-}
+function getStyle(props: Props): string {
+  let style: string = "flex items-center rounded-2xl px-4 py-2 font-semibold ";
 
-function getColor(props: Props): string {
-  /**
-   * TODO: Melhorar esquema de cores para suportar:
-   * - Modo dark
-   * - Botões desabilitados
-   */
-  switch (props.variant) {
-    case "blank":
-      return "bg-white border border-gray-200 shadow-sm text-stone-900 outline-gray-400 hover:bg-gray-100";
-    case "secundary":
-      return "border-2 border-sky-500 text-stone-900";
-    case "primary":
-    default:
-      return "bg-sky-500 text-white outline-sky-800";
-  }
+  style += getColor(props.variant ?? "primary");
+  style +=
+    props.textAlign == null ? "justify-center " : `justify-${props.textAlign} `;
+  style += props.width == null ? "w-full " : `w-${props.width} `;
+  style += props.disabled === true ? "cursor-not-allowed " : "";
+  style += props.className == null ? "" : ` ${props.className} `;
+
+  return style;
 }

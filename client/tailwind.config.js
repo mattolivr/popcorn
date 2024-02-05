@@ -1,12 +1,16 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
+    "./index.html",
     "node_modules/preline/dist/*.js",
   ],
   theme: {
     extend: {},
   },
-  plugins: [require("preline/plugin")],
+  plugins: [
+    require("tailwindcss"),
+    require("autoprefixer"),
+    require("preline/plugin"),
+  ],
 };
