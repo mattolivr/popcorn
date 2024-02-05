@@ -1,10 +1,13 @@
 interface DividerType {
   text?: string;
+  className?: string;
 }
 
-export default function Divider({ text }: DividerType) {
+export default function Divider({ text, className }: DividerType) {
   return (
-    <div className="relative inline-flex w-full items-center justify-center">
+    <div
+      className={`relative inline-flex w-full items-center justify-center ${className}`}
+    >
       <hr className="my-2 h-0.5 w-full bg-slate-300" />
       <Span text={text} />
     </div>
