@@ -89,7 +89,7 @@ const variants = {
     text: "text-gray-700",
   },
   blank: {
-    style: "bg-transparent outline-gray-400",
+    style: "bg-transparent outline-gray-400 hover:bg-gray-100",
     text: "text-gray-900",
   },
 };
