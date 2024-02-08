@@ -1,21 +1,29 @@
-import { useState, type HTMLInputTypeAttribute } from "react";
+import { useId, useState } from "react";
 import { type FieldValues, type UseFormRegister } from "react-hook-form";
 import { type IconBaseProps, type IconType } from "react-icons";
 import { FaInfo } from "react-icons/fa";
 import { FaCheck } from "react-icons/fa6";
-interface InputProps {
-  label?: string;
-  name: string;
-  type: HTMLInputTypeAttribute;
-  ref?: React.MutableRefObject<HTMLInputElement | null>;
-  hint?: string;
-  action?: Action;
-  icon?: IconType;
-  visible?: boolean;
-  required?: boolean;
 
-  register: UseFormRegister<FieldValues>;
-  validator?: (value: string) => string | null; 
+export interface InputProps extends InputForm {
+  type: Type;
+
+  label?: string;
+  hint?: string;
+
+  action?: Action; // TODO: Implementar
+  icon?: IconType;
+
+  visible?: boolean;
+  required?: boolean; // TODO: Implementar
+  disabled?: boolean; // TODO: Implementar
+}
+
+interface InputForm {
+  name?: string;
+  register?: UseFormRegister<FieldValues>;
+
+  validator?: (value: string) => string | null;
+  sanitizer?: (value: string) => string; // TODO: Implementar
 }
 
 interface Action {
@@ -23,33 +31,60 @@ interface Action {
   function: () => void;
 }
 
-const defaultStyle = `peer block w-full rounded-lg bg-gray-100 px-4 py-3 text-sm 
-disabled:pointer-events-none disabled:opacity-5`;
+type Type =
+  | "text"
+  | "email"
+  | "password"
+  | "number"
+  | "integer"
+  | "date"
+  | "file";
 
-const errorStyle = (error: boolean) => error 
-  ? "border-red-600 border-2 focus:outline-red-400" 
-  : "border-transparent focus:outline-sky-500"
-
-const iconLeftPadding = (icon: boolean) => icon ? "ps-11" : ""; 
+enum State {
+  DEFAULT,
+  ERROR,
+  SUCCESS,
+}
 
 export default function Input(props: InputProps) {
-  const [error, setError] = useState(false);
+  const [state, setState] = useState(State.DEFAULT);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const id = useId();
+
+  const inputStyle = `${baseStyle} ${stateStyle(state)} 
+    ${iconLeftPadding(props.icon != null)}`;
+
+  let formProps = null;
+  if (props.register != null) {
+    if (props.name == null) {
+      throw new Error('Input: Necessário especificar a propriedade "name"');
+    }
+    formProps = props.register(props.name, { required: props.required });
+  }
 
   return (
     <>
       <div className={props.visible === false ? "hidden" : "relative"}>
+        <Label id={id} label={props.label} />
         <div className="relative">
-          <Icon icon={props.icon} />
+          <Icon icon={props.icon} state={state} />
           <input
-            className={` ${defaultStyle} ${errorStyle(error)} ${iconLeftPadding(props.icon != null)}`}
-            placeholder={props.label}
-            {...props.register(props.name, { required: props.required })}
-            onChange={(event) => {handleChange(event, {setError, setErrorMessage}, props.validator)}}
+            className={inputStyle}
+            placeholder={props.hint}
+            id={id}
+            {...formProps}
+            onChange={(event) => {
+              handleChange(
+                event,
+                { setState, state, setErrorMessage },
+                props.validator,
+              );
+            }}
           />
-          <Interation error={error}/>
+          <Interation state={state} />
         </div>
-        {error ? <p className="text-sm font-medium text-red-600 mt-1">{ errorMessage }</p> : <></>}        
+        <ErrorMessage state={state} errorMessage={errorMessage} />
       </div>
     </>
   );
@@ -57,23 +92,52 @@ export default function Input(props: InputProps) {
 
 function handleChange(
   event: React.ChangeEvent<HTMLInputElement>,
-  errorHandler: { 
-    setError: React.Dispatch<React.SetStateAction<boolean>>, 
-    setErrorMessage: React.Dispatch<React.SetStateAction<string>>
+  errorHandler: {
+    setState: React.Dispatch<React.SetStateAction<State>>;
+    state: State;
+    setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   },
-  validator?: (value: string) => string | null, 
+  validator?: (value: string) => string | null,
 ) {
   if (validator != null) {
-    const ret = validator(event.target.value);
-    errorHandler.setError(ret != null);
-    errorHandler.setErrorMessage(ret ?? "");
+    if (event.target.value === "") {
+      errorHandler.setState(State.DEFAULT);
+      errorHandler.setErrorMessage("");
+    } else {
+      const ret = validator(event.target.value);
+      errorHandler.setState(ret == null ? errorHandler.state : State.ERROR);
+      errorHandler.setErrorMessage(ret ?? "");
+    }
   }
 }
 
-function Icon({ icon }: { icon?: IconType }): JSX.Element {
+function Label({ id, label }: { id: string; label?: string }): JSX.Element {
+  if (label != null) {
+    return (
+      <label htmlFor={id} className="mb-1 block text-sm font-medium">
+        {label}
+      </label>
+    );
+  }
+  return <></>;
+}
+
+function Icon({ icon, state }: { icon?: IconType; state: State }): JSX.Element {
+  let color: string;
+  switch (state) {
+    case State.ERROR:
+      color = "text-red-700";
+      break;
+    case State.SUCCESS:
+      color = "text-green-700";
+      break;
+    default:
+      color = "text-gray-400";
+  }
+
   if (icon != null) {
     const props: IconBaseProps = {
-      color: "#9ca3af"
+      className: color,
     };
 
     return (
@@ -88,27 +152,65 @@ function Icon({ icon }: { icon?: IconType }): JSX.Element {
   return <></>;
 }
 
-const InterationMap = new Map<string, IconType>([
-  ["error", FaInfo], ["success", FaCheck]
-])
+function Interation({ state }: { state: State }): JSX.Element {
+  let iconType: IconType | null;
+  let color: string;
 
-function Interation({ error }: { error: boolean }): JSX.Element {
-  let iconType: string = "";
-  if (error) {
-    iconType = "error";
+  switch (state) {
+    case State.ERROR:
+      iconType = FaInfo;
+      color = "text-red-700";
+      break;
+    case State.SUCCESS:
+      iconType = FaCheck;
+      color = "text-green-700";
+      break;
+    default:
+      iconType = null;
+      color = "";
   }
 
-  const icon = InterationMap.get(iconType);
-  if (icon != null) {
+  if (iconType != null) {
     const props: IconBaseProps = {
-      color: "#dc2626"
+      className: color,
     };
 
     return (
-      <div className="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
-        {icon(props)}
+      <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3">
+        {iconType(props)}
       </div>
-    )
+    );
   }
-  return <></>
+  return <></>;
 }
+
+function ErrorMessage({
+  state,
+  errorMessage,
+}: {
+  state: State;
+  errorMessage: string;
+}): JSX.Element {
+  if (state === State.ERROR) {
+    return (
+      <p className="mt-1 text-sm font-medium text-red-600">{errorMessage}</p>
+    );
+  }
+  return <></>;
+}
+
+const baseStyle = `peer block w-full rounded-lg bg-gray-100 px-4 py-3 text-sm 
+disabled:pointer-events-none disabled:opacity-5`;
+
+const stateStyle = (state: State) => {
+  switch (state) {
+    case State.ERROR:
+      return "border-red-600 border-2 focus:outline-red-400";
+    case State.SUCCESS:
+      return "border-green-500 border-2 focus:outline-green-300";
+    default:
+      return "border-transparent focus:outline-sky-500";
+  }
+};
+
+const iconLeftPadding = (icon: boolean) => (icon ? "ps-11" : "");
