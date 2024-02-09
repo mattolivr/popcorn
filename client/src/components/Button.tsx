@@ -2,7 +2,7 @@ import { type IconBaseProps, type IconType } from "react-icons";
 import { Link } from "react-router-dom";
 
 interface Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   variant?: Variant;
   visible?: boolean;
@@ -10,7 +10,6 @@ interface Props {
   icon?: IconType;
   type?: "submit" | "reset" | "button";
   textAlign?: "start" | "center" | "right";
-  width?: "full" | "fit" | number;
 
   path?: string;
 
@@ -48,7 +47,7 @@ export default function Button(props: Props) {
 function Icon({ icon }: { icon?: IconType }): JSX.Element {
   if (icon != null) {
     const props: IconBaseProps = {
-      className: `inline mr-2`,
+      className: `inline`,
     };
 
     return icon(props);
@@ -64,9 +63,21 @@ function getStyle(props: Props): string {
     style += `${value.style} ${value.text} `;
   }
 
+  if (props.icon !== undefined) {
+    style += " gap-2 ";
+  }
+
+  const widthRegex = /(?:\s|^)w-(\d+)/;
+  const match = props.className?.match(widthRegex);
+  if (match?.[1] != null) {
+    style += `w-${match[1]} `;
+  } else {
+    style += "w-full ";
+  }
+
   style +=
     props.textAlign == null ? "justify-center " : `justify-${props.textAlign} `;
-  style += props.width == null ? "w-full " : `w-${props.width} `;
+  style += props.className?.includes("w-");
   style += props.disabled === true ? "cursor-not-allowed " : "";
   style += props.className == null ? "" : ` ${props.className} `;
 

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { FaBell, FaGlobe, FaPlus, FaSearch } from "react-icons/fa";
-import { FaMessage } from "react-icons/fa6";
+import { FaHouse, FaMessage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Menu from "../../components/ui/Menu";
+import { IconBaseProps, IconType } from "react-icons";
 
 export interface MainLayoutProps {
   children: React.ReactNode;
@@ -12,7 +13,7 @@ export function MainLayout({ children }: MainLayoutProps) {
   const [menuVisible, setMenuVisible] = useState(true);
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-svh flex-col">
       <header className="flex w-full flex-row items-center bg-sky-500 px-4 py-2">
         <Controlls
           toggleMenu={() => {
@@ -28,6 +29,7 @@ export function MainLayout({ children }: MainLayoutProps) {
           {children}
         </div>
       </main>
+      <BottomNav />
     </div>
   );
 }
@@ -43,7 +45,7 @@ function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
         className="h-10 w-10 rounded-full bg-orange-300"
         onClick={toggleMenu}
       />
-      <ul className="flex flex-row items-center gap-4 text-2xl text-gray-100">
+      <ul className="hidden flex-row items-center gap-4 text-2xl text-gray-100 sm:flex">
         <li>
           <FaBell />
         </li>
@@ -51,7 +53,7 @@ function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
           <FaMessage />
         </li>
         <li>
-          <FaPlus />
+          <FaPlus className="xs" />
         </li>
       </ul>
     </div>
@@ -62,7 +64,7 @@ function SearchBar({ className }: { className?: string }): JSX.Element {
   return (
     <div className={`relative h-9 ${className}`}>
       <button className="hidden h-full w-full cursor-text rounded-lg bg-gray-100 sm:inline-block"></button>
-      <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center rounded-xl pe-3 pl-3">
+      <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center rounded-xl pe-2 sm:pe-3 sm:pl-3">
         <FaSearch className="text-2xl text-white sm:text-base sm:text-gray-600" />
       </div>
     </div>
@@ -73,7 +75,7 @@ function Nav(): JSX.Element {
   return (
     <>
       <nav className="flex w-full flex-row items-center justify-end gap-2">
-        <ul className="text-md hidden flex-row items-center gap-4 font-semibold text-white xl:flex">
+        <ul className="text-md hidden flex-row items-center gap-3 font-semibold text-white xl:flex">
           <NavLinks />
         </ul>
 
@@ -83,7 +85,7 @@ function Nav(): JSX.Element {
 
         <img
           src="./src/assets/popcorn-logo.png"
-          className="ml-2 h-10 w-10 shadow-lg"
+          className="h-10 w-10 shadow-lg"
         />
       </nav>
     </>
@@ -176,5 +178,35 @@ function NavDropdown(): JSX.Element {
         </ul>
       </div>
     </div>
+  );
+}
+
+function BottomNav(): JSX.Element {
+  return (
+    <div className="flex h-12 w-full flex-row items-center justify-around bg-sky-500 sm:hidden">
+      <BottomNavItem icon={FaHouse} label="Página Inicial" path="/" />
+      <BottomNavItem icon={FaGlobe} label="Explorar" path="/explore" />
+      <BottomNavItem icon={FaPlus} label="Adicionar" path="#" />
+      <BottomNavItem icon={FaBell} label="Notificações" path="/notifications" />
+      <BottomNavItem icon={FaMessage} label="Mensagens" path="/messages" />
+    </div>
+  );
+}
+
+interface BottomNavItemProps {
+  icon: IconType;
+  label: string;
+  path: string;
+}
+
+function BottomNavItem(props: BottomNavItemProps): JSX.Element {
+  const iconProps: IconBaseProps = {
+    className: "text-white text-xl",
+  };
+
+  return (
+    <Link to={props.path} className="flex flex-col items-center">
+      {props.icon(iconProps)}
+    </Link>
   );
 }

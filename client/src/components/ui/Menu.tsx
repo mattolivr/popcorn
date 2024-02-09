@@ -1,14 +1,13 @@
 import { type IconType } from "react-icons";
 import { FaBell, FaBookmark, FaComment, FaStar } from "react-icons/fa";
 import { FaMessage } from "react-icons/fa6";
-import { type Variant } from "../../assets/color";
 import Button from "../Button";
 import Divider from "../Divider";
 
 export default function Menu({ visible }: { visible: boolean }): JSX.Element {
   return (
     <div
-      className={`left-0 top-0 h-full w-full bg-white sm:w-64 ${visible ? "absolute" : "hidden"}`}
+      className={`left-0 top-0 h-full w-64 bg-white ${visible ? "absolute" : "hidden"}`}
     >
       <UserHeader />
       <UserControlls />
