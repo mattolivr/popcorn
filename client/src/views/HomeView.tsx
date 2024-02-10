@@ -1,24 +1,18 @@
-import { useForm } from "react-hook-form";
 import { FaComment, FaPaperPlane, FaTrash } from "react-icons/fa";
 import { FaImage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Card from "../components/Card";
-import { MainLayout } from "./layouts/MainLayout";
 
 export default function HomeView() {
   return (
-    <MainLayout>
-      <div className="mt-4 w-full px-2 md:w-[700px]">
-        <NewPost />
-      </div>
-    </MainLayout>
+    <div className="mt-4 w-full px-2 md:w-[700px]">
+      <NewPost />
+    </div>
   );
 }
 
 function NewPost() {
-  const { handleSubmit, register } = useForm();
-
   return (
     <Card>
       <form action="">

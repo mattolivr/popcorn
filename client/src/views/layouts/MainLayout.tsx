@@ -2,14 +2,10 @@ import { useState } from "react";
 import { type IconBaseProps, type IconType } from "react-icons";
 import { FaBell, FaGlobe, FaPlus, FaSearch } from "react-icons/fa";
 import { FaHouse, FaMessage } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Menu from "../../components/ui/Menu";
 
-export interface MainLayoutProps {
-  children: React.ReactNode;
-}
-
-export function MainLayout({ children }: MainLayoutProps) {
+export function MainLayout() {
   const [menuVisible, setMenuVisible] = useState(true);
 
   return (
@@ -26,7 +22,7 @@ export function MainLayout({ children }: MainLayoutProps) {
       <main className="relative grow">
         <Menu visible={menuVisible} />
         <div className="flex min-h-full w-full justify-center bg-slate-100">
-          {children}
+          <Outlet />
         </div>
       </main>
       <BottomNav />
