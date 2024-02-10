@@ -1,15 +1,15 @@
+import { useForm } from "react-hook-form";
+import { FaComment, FaPaperPlane, FaTrash } from "react-icons/fa";
+import { FaImage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import Button from "../components/Button";
 import Card from "../components/Card";
 import { MainLayout } from "./layouts/MainLayout";
-import { useForm } from "react-hook-form";
-import Button from "../components/Button";
-import { FaImage } from "react-icons/fa6";
-import { FaComment, FaPaperPlane, FaTrash } from "react-icons/fa";
 
 export default function HomeView() {
   return (
     <MainLayout>
-      <div className="mt-4 w-[700px] px-2">
+      <div className="mt-4 w-full px-2 md:w-[700px]">
         <NewPost />
       </div>
     </MainLayout>
