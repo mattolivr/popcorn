@@ -1,6 +1,7 @@
 import { type IconType } from "react-icons";
-import { FaBell, FaBookmark, FaComment, FaStar } from "react-icons/fa";
-import { FaMessage } from "react-icons/fa6";
+import { FaBell, FaStar } from "react-icons/fa";
+import { FaHouse, FaMessage } from "react-icons/fa6";
+import { useLocation } from "react-router-dom";
 import Button from "../Button";
 import Divider from "../Divider";
 
@@ -36,7 +37,15 @@ function UserControlls(): JSX.Element {
     path: string;
   }
 
+  const currentPath = useLocation();
+  const isCurrentPath = (path: string) => currentPath.pathname === path;
+
   const controlls: Controll[] = [
+    {
+      label: "Página Inicial",
+      icon: FaHouse,
+      path: "/",
+    },
     {
       label: "Notificações",
       icon: FaBell,
@@ -52,16 +61,6 @@ function UserControlls(): JSX.Element {
       icon: FaStar,
       path: "/reviews",
     },
-    {
-      label: "Tópicos",
-      icon: FaComment,
-      path: "#",
-    },
-    {
-      label: "Interesses",
-      icon: FaBookmark,
-      path: "#",
-    },
   ];
 
   return (
@@ -70,7 +69,7 @@ function UserControlls(): JSX.Element {
         <Button
           key={btn.label}
           path={btn.path}
-          variant="blank"
+          variant={isCurrentPath(btn.path) ? "blank-selected" : "blank"}
           icon={btn.icon}
           textAlign="start"
         >

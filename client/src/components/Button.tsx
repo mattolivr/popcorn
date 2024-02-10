@@ -16,7 +16,13 @@ interface Props {
   onClick?: React.MouseEventHandler;
 }
 
-export type Variant = "primary" | "secondary" | "blank" | "white" | undefined;
+export type Variant =
+  | "primary"
+  | "secondary"
+  | "blank"
+  | "blank-selected"
+  | "white"
+  | undefined;
 
 export default function Button(props: Props) {
   if (props.visible === false) {
@@ -101,6 +107,10 @@ const variants = {
   },
   blank: {
     style: "bg-transparent outline-gray-400 hover:bg-gray-100",
+    text: "text-gray-900",
+  },
+  "blank-selected": {
+    style: "outline-sky-400 bg-sky-200",
     text: "text-gray-900",
   },
 };

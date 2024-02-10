@@ -6,7 +6,7 @@ import { Link, Outlet } from "react-router-dom";
 import Menu from "../../components/ui/Menu";
 
 export function MainLayout() {
-  const [menuVisible, setMenuVisible] = useState(true);
+  const [menuVisible, setMenuVisible] = useState(false);
 
   return (
     <div className="flex h-svh flex-col">
@@ -43,13 +43,29 @@ function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
       />
       <ul className="hidden flex-row items-center gap-4 text-2xl text-gray-100 sm:flex">
         <li>
-          <FaBell />
+          <Link className="outline-none focus:text-sky-300" to="/">
+            <FaHouse />
+          </Link>
         </li>
         <li>
-          <FaMessage />
+          <Link className="outline-none focus:text-sky-300" to="/notifications">
+            <FaBell />
+          </Link>
         </li>
         <li>
-          <FaPlus className="xs" />
+          <Link className="outline-none focus:text-sky-300" to="/messages">
+            <FaMessage />
+          </Link>
+        </li>
+        <li>
+          <button
+            className="outline-none focus:text-sky-300"
+            onClick={() => {
+              alert("TODO: Modal");
+            }}
+          >
+            <FaPlus />
+          </button>
         </li>
       </ul>
     </div>
@@ -122,7 +138,7 @@ function NavLinks({ linkStyle }: { linkStyle?: string }): JSX.Element {
 
   const components = links.map((link) => (
     <li key={link.path} className={linkStyle}>
-      <Link to={link.path} className="w-full outline-transparent">
+      <Link to={link.path} className="w-full outline-none focus:text-sky-300">
         {link.label}
       </Link>
     </li>
