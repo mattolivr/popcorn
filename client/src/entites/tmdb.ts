@@ -1,7 +1,7 @@
 export interface Media {
   adult: boolean;
   backdrop_path: string;
-  genres: { id: number; name: string };
+  genres: [{ id: number; name: string }];
   homepage: string;
   id: number;
   overview: string;
