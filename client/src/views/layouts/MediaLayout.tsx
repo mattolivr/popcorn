@@ -1,14 +1,15 @@
 import React from "react";
 
 export interface MediaLayoutProps {
+  highlight: React.ReactNode;
   children: React.ReactNode;
 }
 
-export default function MediaLayout({ children }: MediaLayoutProps) {
+export default function MediaLayout(props: MediaLayoutProps) {
   return (
     <div className="flex h-full w-full flex-col">
-      <div className="w-full bg-orange-300">teste</div>
-      {children}
+      {props.highlight}
+      {props.children}
     </div>
   );
 }

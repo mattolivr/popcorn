@@ -27,7 +27,7 @@ export const router = createBrowserRouter([
         Component: MessageView,
       },
       {
-        path: "movies",
+        path: "movies/:id",
         Component: MovieView,
       },
     ],
