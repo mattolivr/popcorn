@@ -2,7 +2,7 @@ import { useState } from "react";
 import { type IconBaseProps, type IconType } from "react-icons";
 import { FaBell, FaGlobe, FaPlus, FaSearch } from "react-icons/fa";
 import { FaHouse, FaMessage } from "react-icons/fa6";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import Menu from "../../components/ui/Menu";
 
 export function MainLayout() {
@@ -96,7 +96,7 @@ function Nav(): JSX.Element {
         <SearchBar className="inline w-10 sm:w-72 xl:hidden" />
 
         <img
-          src="./src/assets/popcorn-logo.png"
+          src="../src/assets/popcorn-logo.png"
           className="h-10 w-10 shadow-lg"
         />
       </nav>
@@ -195,12 +195,18 @@ function NavDropdown(): JSX.Element {
 
 function BottomNav(): JSX.Element {
   return (
-    <div className="flex h-12 w-full flex-row items-center justify-around bg-sky-500 sm:hidden">
-      <BottomNavItem icon={FaHouse} label="Página Inicial" path="/" />
-      <BottomNavItem icon={FaGlobe} label="Explorar" path="/explore" />
-      <BottomNavItem icon={FaPlus} label="Adicionar" path="#" />
-      <BottomNavItem icon={FaBell} label="Notificações" path="/notifications" />
-      <BottomNavItem icon={FaMessage} label="Mensagens" path="/messages" />
+    <div className="sticky bottom-0 w-full">
+      <div className="flex h-12 w-full flex-row items-center justify-around bg-sky-500 sm:hidden">
+        <BottomNavItem icon={FaHouse} label="Página Inicial" path="/" />
+        <BottomNavItem icon={FaSearch} label="Explorar" path="/explore" />
+        <BottomNavItem icon={FaPlus} label="Adicionar" path="#" />
+        <BottomNavItem
+          icon={FaBell}
+          label="Notificações"
+          path="/notifications"
+        />
+        <BottomNavItem icon={FaMessage} label="Mensagens" path="/messages" />
+      </div>
     </div>
   );
 }
@@ -212,13 +218,12 @@ interface BottomNavItemProps {
 }
 
 function BottomNavItem(props: BottomNavItemProps): JSX.Element {
+  const currentPath = useLocation();
+  const isCurrentPath = (path: string) => currentPath.pathname === path;
+
   const iconProps: IconBaseProps = {
-    className: "text-white text-xl",
+    className: `text-xl ${isCurrentPath(props.path) ? "text-orange-200" : "text-white"}`,
   };
 
-  return (
-    <Link to={props.path} className="flex flex-col items-center">
-      {props.icon(iconProps)}
-    </Link>
-  );
+  return <Link to={props.path}>{props.icon(iconProps)}</Link>;
 }

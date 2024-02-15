@@ -77,6 +77,8 @@ function getStyle(props: Props): string {
   const match = props.className?.match(widthRegex);
   if (match?.[1] != null) {
     style += `w-${match[1]} `;
+  } else if (props.className?.includes("w-fit") === true) {
+    style += `w-fit `;
   } else {
     style += "w-full ";
   }
@@ -92,7 +94,7 @@ function getStyle(props: Props): string {
 
 const variants = {
   primary: {
-    style: "bg-sky-400 outline-sky-600 hover:bg-sky-300",
+    style: "bg-sky-400 outline-sky-600 hover:bg-sky-300 active:bg-sky-500",
     text: "text-white",
   },
   secondary: {
