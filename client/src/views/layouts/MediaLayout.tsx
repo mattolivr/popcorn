@@ -1,15 +1,21 @@
-import React from "react";
-import { FaImage, FaListAlt, FaShareAlt } from "react-icons/fa";
+import React, { useId } from "react";
+import { FaImage } from "react-icons/fa";
 import {
+  FaBars,
   FaCircleDown,
   FaCircleMinus,
   FaCircleUp,
+  FaClock,
   FaComment,
+  FaEye,
+  FaHeart,
   FaPlus,
   FaStar,
 } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 import Button from "../../components/Button.tsx";
 import Card from "../../components/Card";
+import Divider from "../../components/Divider.tsx";
 import {
   getDate,
   getRuntime,
@@ -33,8 +39,8 @@ export default function MediaLayout(props: MediaLayoutProps): JSX.Element {
   return (
     <div className="flex h-full w-full flex-col">
       <Highlight />
-      <div className="flex justify-between gap-4 sm:mt-4 sm:px-2 xl:px-64">
-        <main className="flex w-full flex-col gap-1 sm:gap-4 lg:w-4/6">
+      <div className="lg-px-48 flex justify-between gap-4 sm:mt-4 sm:px-2 xl:px-64">
+        <main className="sm:7/8 flex w-full flex-col gap-1 sm:gap-4 lg:w-8/12">
           <Card className="block sm:hidden" title={getTitle(media)}>
             <div className="flex flex-row items-center gap-2">
               <p>{`${mediaDate?.startDate?.toLocaleDateString()}`}</p>
@@ -50,6 +56,8 @@ export default function MediaLayout(props: MediaLayoutProps): JSX.Element {
           </Card>
           <Card>
             <Overview />
+            <Divider />
+            <Cast />
           </Card>
           {props.children}
           <Button
@@ -57,8 +65,13 @@ export default function MediaLayout(props: MediaLayoutProps): JSX.Element {
             icon={FaPlus}
           />
         </main>
-        <aside className="hidden lg:block lg:w-2/6">
-          <Card>teste</Card>
+        <aside className="sm:1/8 hidden lg:block lg:w-4/12">
+          <Card>
+            <Controlls />
+            <Divider />
+            <ExtraControlls />
+            <Divider />
+          </Card>
         </aside>
       </div>
       {props.children}
@@ -107,24 +120,7 @@ function Highlight(): JSX.Element {
               Avaliação dos usuários
             </strong>
             <Vote />
-            <div className="mt-2 flex justify-start gap-2">
-              <Button
-                className="w-fit text-xl"
-                variant="white"
-                icon={FaListAlt}
-              />
-              <Button className="w-fit text-xl" variant="white" icon={FaStar} />
-              <Button
-                className="w-fit text-xl"
-                variant="white"
-                icon={FaComment}
-              />
-              <Button
-                className="w-fit text-xl"
-                variant="white"
-                icon={FaShareAlt}
-              />
-            </div>
+            <Genres />
           </div>
         </div>
       </div>
@@ -188,12 +184,30 @@ function Vote(): JSX.Element | undefined {
 
   if (votePercentage > 0) {
     return (
-      <div className={`flex items-center leading-3 ${color}`}>
-        <span className="font-semibold sm:text-3xl">{votePercentage}%</span>
+      <div
+        className={`flex w-fit items-center rounded-2xl bg-slate-900 px-4 py-1 leading-3 ${color} mb-2`}
+      >
+        <span className="font-bold sm:text-3xl">{votePercentage}%</span>
         <span className="ml-1 translate-y-[1px] sm:text-2xl">{icon({})}</span>
       </div>
     );
   }
+}
+
+function Genres(): JSX.Element {
+  return (
+    <div className="flex gap-1">
+      {media?.genres?.map((genre) => (
+        <Button
+          key={`genre-${genre.id}`}
+          variant="white"
+          path={`/genres/${genre.id}`}
+        >
+          {genre.name}
+        </Button>
+      ))}
+    </div>
+  );
 }
 
 function Overview(): JSX.Element {
@@ -209,6 +223,7 @@ function Overview(): JSX.Element {
 
   return (
     <div className={`${showElement(media?.overview)} text-pretty`}>
+      <h2 className="mb-1 text-2xl font-semibold">Sinopse</h2>
       <p className="hidden sm:block">{media?.overview}</p>
       <div className="block leading-relaxed sm:hidden">
         <p>{preview ?? text}</p>
@@ -248,5 +263,122 @@ function Overview(): JSX.Element {
         </p>
       </div>
     </div>
+  );
+}
+
+function Cast() {
+  // TODO: Mover para componente genérico
+  const cast = media?.credits?.cast.slice(0, 15);
+
+  return (
+    <div className="w-full">
+      <h2 className="mb-1 text-2xl font-semibold">Elenco</h2>
+      <div className="mt-2 flex snap-x gap-4 overflow-x-auto">
+        {cast?.map((cast) => (
+          <Link
+            to={`/person/${cast.id}`}
+            key={`cast-${cast.id}`}
+            className="mb-2 flex flex-col rounded-xl border bg-white shadow-sm transition hover:shadow-lg"
+          >
+            <div className="w-28 sm:w-40">
+              <img
+                className="h-auto w-full rounded-t-xl"
+                src={`https://image.tmdb.org/t/p/original${cast.profile_path}`}
+              />
+              <div className="p-2">
+                <h3 className="text-base font-bold sm:text-lg">{cast.name}</h3>
+                <p className="mt-1 text-gray-600">{cast.character}</p>
+              </div>
+            </div>
+          </Link>
+        ))}
+
+        <Link
+          to={"#"}
+          className={`mb-2 flex min-w-28 flex-col items-center justify-center rounded-xl
+          bg-white shadow-sm transition hover:shadow-lg sm:min-w-40`}
+        >
+          <FaPlus className="text-4xl text-gray-600" />
+          <span className="font-medium text-gray-600">Ver mais</span>
+        </Link>
+      </div>
+    </div>
+  );
+}
+
+function Controlls() {
+  const controlls = [
+    {
+      key: useId(),
+      icon: FaEye,
+      label: "Assistir",
+      activeLabel: "Assistido",
+      hoverLabel: "Remover",
+    },
+    {
+      key: useId(),
+      icon: FaHeart,
+      label: "Favoritar",
+      activeLabel: "Favorito",
+      hoverLabel: "Remover",
+    },
+    {
+      key: useId(),
+      icon: FaStar,
+      label: "Avaliar",
+      activeLabel: "Avaliado",
+      hoverLabel: "Remover",
+    },
+  ];
+
+  return (
+    <ul className="flex flex-row justify-around">
+      {controlls.map((ctrl) => (
+        <li key={ctrl.key}>
+          <Button
+            icon={ctrl.icon}
+            className="flex h-full flex-col gap-0 text-xl xl:text-2xl"
+            variant="blank"
+          >
+            <span className="mt-1 text-base text-gray-700">{ctrl.label}</span>
+          </Button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ExtraControlls() {
+  const extraControlls = [
+    {
+      key: useId(),
+      icon: FaClock,
+      label: "Assistir mais tarde",
+    },
+    {
+      key: useId(),
+      icon: FaBars,
+      label: "Adicionar à uma lista",
+    },
+    {
+      key: useId(),
+      icon: FaComment,
+      label: "Criar novo tópico",
+    },
+  ];
+
+  return (
+    <>
+      {extraControlls.map((ctrl) => (
+        <Button
+          key={ctrl.key}
+          variant="blank"
+          icon={ctrl.icon}
+          className="text-left"
+        >
+          {ctrl.label}
+        </Button>
+      ))}
+    </>
   );
 }

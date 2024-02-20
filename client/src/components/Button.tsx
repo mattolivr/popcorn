@@ -1,7 +1,7 @@
 import { type IconBaseProps, type IconType } from "react-icons";
 import { Link } from "react-router-dom";
 
-interface Props {
+export interface ButtonProps {
   children?: React.ReactNode;
   className?: string;
   variant?: Variant;
@@ -9,7 +9,6 @@ interface Props {
   disabled?: boolean;
   icon?: IconType;
   type?: "submit" | "reset" | "button";
-  textAlign?: "start" | "center" | "right";
 
   path?: string;
 
@@ -24,14 +23,14 @@ export type Variant =
   | "white"
   | undefined;
 
-export default function Button(props: Props) {
+export default function Button(props: ButtonProps) {
   if (props.visible === false) {
     return <></>;
   }
 
   if (props.path != null) {
     return (
-      <Link to={props.path} className={getStyle(props)}>
+      <Link to={props.path} className={`${props.className} ${getStyle(props)}`}>
         <Icon icon={props.icon} />
         {props.children}
       </Link>
@@ -39,7 +38,7 @@ export default function Button(props: Props) {
   }
   return (
     <button
-      className={getStyle(props)}
+      className={`${props.className} ${getStyle(props)}`}
       onClick={props.onClick}
       disabled={props.disabled}
       type={props.type ?? "button"}
@@ -61,7 +60,7 @@ function Icon({ icon }: { icon?: IconType }): JSX.Element {
   return <></>;
 }
 
-function getStyle(props: Props): string {
+function getStyle(props: ButtonProps): string {
   let style: string = "flex items-center rounded-2xl px-4 py-2 font-semibold ";
 
   const value = variants[props.variant ?? "primary"];
@@ -73,22 +72,7 @@ function getStyle(props: Props): string {
     style += " gap-2 ";
   }
 
-  const widthRegex = /(?:\s|^)w-(\d+)/;
-  const match = props.className?.match(widthRegex);
-  if (match?.[1] != null) {
-    style += `w-${match[1]} `;
-  } else if (props.className?.includes("w-fit") === true) {
-    style += `w-fit `;
-  } else {
-    style += "w-full ";
-  }
-
-  style +=
-    props.textAlign == null ? "justify-center " : `justify-${props.textAlign} `;
-  style += props.className?.includes("w-");
   style += props.disabled === true ? "cursor-not-allowed " : "";
-  style += props.className == null ? "" : ` ${props.className} `;
-
   return style;
 }
 
@@ -108,7 +92,7 @@ const variants = {
     text: "text-gray-700",
   },
   blank: {
-    style: "bg-transparent outline-gray-400 hover:bg-gray-100",
+    style: "bg-transparent outline-gray-400 hover:bg-gray-300",
     text: "text-gray-900",
   },
   "blank-selected": {

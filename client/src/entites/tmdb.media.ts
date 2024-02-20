@@ -13,6 +13,7 @@ export interface Media {
   tagline: string;
   vote_average: number;
   vote_count: number;
+  credits?: { cast: Cast[]; crew: Crew[] };
 }
 
 export interface Movie extends Media {
@@ -40,6 +41,27 @@ export interface TVShow extends Media {
       vote_avarage: number;
     },
   ];
+}
+
+export interface Cast {
+  id: number;
+  known_for_department: string;
+  name: string;
+  profile_path: string;
+  cast_id: number;
+  character: string;
+  credit_id: string;
+  order: number;
+}
+
+export interface Crew {
+  id: number;
+  known_for_department: string;
+  name: string;
+  profile_path: string;
+  credit_id: string;
+  department: string;
+  job: string;
 }
 
 export const getTitle = (media?: Movie | TVShow): string | undefined => {

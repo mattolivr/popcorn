@@ -11,7 +11,7 @@ export default function MovieView() {
   useEffect(() => {
     if (movie == null) {
       tmdb
-        .get(`/movie/${id}`)
+        .get(`/movie/${id}`, { params: { append_to_response: "credits" } })
         .then((response): void => {
           setMovie(response.data as Movie);
         })
