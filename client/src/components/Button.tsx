@@ -1,53 +1,66 @@
+import { type ComponentProps } from "react";
 import { type IconBaseProps, type IconType } from "react-icons";
 import { Link } from "react-router-dom";
+import { tv, type VariantProps } from "tailwind-variants";
 
-export interface ButtonProps {
-  children?: React.ReactNode;
-  className?: string;
-  variant?: Variant;
-  visible?: boolean;
-  disabled?: boolean;
-  icon?: IconType;
-  type?: "submit" | "reset" | "button";
+export type ButtonProps = ComponentProps<"button"> &
+  VariantProps<typeof button> & {
+    to?: string; // Navegação por Link -> React Router DOM
 
-  path?: string;
+    icon?: IconType;
+  };
 
-  onClick?: React.MouseEventHandler;
-}
+export default function Button({
+  to,
+  color,
+  align,
+  className,
+  ...props
+}: ButtonProps): JSX.Element {
+  const style = button({ color, align, className });
 
-export type Variant =
-  | "primary"
-  | "secondary"
-  | "blank"
-  | "blank-selected"
-  | "white"
-  | undefined;
-
-export default function Button(props: ButtonProps) {
-  if (props.visible === false) {
-    return <></>;
-  }
-
-  if (props.path != null) {
+  if (to != null) {
     return (
-      <Link to={props.path} className={`${props.className} ${getStyle(props)}`}>
+      <Link to={to} className={style}>
         <Icon icon={props.icon} />
         {props.children}
       </Link>
     );
   }
   return (
-    <button
-      className={`${props.className} ${getStyle(props)}`}
-      onClick={props.onClick}
-      disabled={props.disabled}
-      type={props.type ?? "button"}
-    >
+    <button className={style}>
       <Icon icon={props.icon} />
       {props.children}
     </button>
   );
 }
+
+const button = tv({
+  base: "rounded-xl px-4 h-9 font-semibold flex flex-row items-center gap-2",
+  variants: {
+    color: {
+      primary:
+        "bg-sky-500 outline-sky-600 text-white hover:bg-sky-600 active:bg-sky-700",
+      secondary:
+        "bg-transparent outline-sky-600 border border-sky-600 text-sky-600 hover:bg-sky-500 hover:border-sky-500 hover:text-white active:bg-sky-700 active:border-sky-700 active:text-white",
+      blank:
+        "bg-white outline-gray-400 shadow-sm border border-gray-100 hover:bg-gray-100 text-gray-700",
+      transparent:
+        "bg-transparent outline-gray-300 hover:bg-gray-200 text-gray-700",
+      transparent_selected:
+        "bg-sky-100 outline-sky-300 hover:bg-sky-200 text-sky-500 hover:text-sky-600",
+    },
+    align: {
+      start: "justify-start",
+      center: "justify-center",
+      end: "justify-end",
+    },
+  },
+  defaultVariants: {
+    color: "primary",
+    align: "center",
+  },
+});
 
 function Icon({ icon }: { icon?: IconType }): JSX.Element {
   if (icon != null) {
@@ -59,44 +72,3 @@ function Icon({ icon }: { icon?: IconType }): JSX.Element {
   }
   return <></>;
 }
-
-function getStyle(props: ButtonProps): string {
-  let style: string = "flex items-center rounded-2xl px-4 py-2 font-semibold ";
-
-  const value = variants[props.variant ?? "primary"];
-  if (value != null) {
-    style += `${value.style} ${value.text} `;
-  }
-
-  if (props.icon !== undefined) {
-    style += " gap-2 ";
-  }
-
-  style += props.disabled === true ? "cursor-not-allowed " : "";
-  return style;
-}
-
-const variants = {
-  primary: {
-    style: "bg-sky-400 outline-sky-600 hover:bg-sky-300 active:bg-sky-500",
-    text: "text-white",
-  },
-  secondary: {
-    style:
-      "bg-transparent outline-sky-600 border border-gray-300 hover:bg-sky-400 hover:border-sky-400",
-    text: "text-gray-700 hover:text-white",
-  },
-  white: {
-    style:
-      "bg-white shadow-sm border border-gray-100 outline-gray-400 hover:bg-gray-100",
-    text: "text-gray-700",
-  },
-  blank: {
-    style: "bg-transparent outline-gray-400 hover:bg-gray-300",
-    text: "text-gray-900",
-  },
-  "blank-selected": {
-    style: "outline-sky-400 bg-sky-200",
-    text: "text-gray-900",
-  },
-};

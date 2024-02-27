@@ -38,7 +38,8 @@ function UserControlls(): JSX.Element {
   }
 
   const currentPath = useLocation();
-  const isCurrentPath = (path: string) => currentPath.pathname === path;
+  const isCurrentPath = (path: string): boolean =>
+    currentPath.pathname === path;
 
   const controlls: Controll[] = [
     {
@@ -68,10 +69,12 @@ function UserControlls(): JSX.Element {
       {controlls.map((btn) => (
         <Button
           key={btn.label}
-          path={btn.path}
-          variant={isCurrentPath(btn.path) ? "blank-selected" : "blank"}
+          to={btn.path}
+          color={
+            isCurrentPath(btn.path) ? "transparent_selected" : "transparent"
+          }
           icon={btn.icon}
-          textAlign="start"
+          align="start"
         >
           {btn.label}
         </Button>

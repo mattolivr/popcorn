@@ -79,7 +79,7 @@ export default function MediaLayout(props: MediaLayoutProps): JSX.Element {
   );
 }
 
-export const showElement = (obj: any) =>
+export const showElement = (obj: any): string =>
   obj != null && obj !== "" ? "inline" : "hidden";
 
 function Highlight(): JSX.Element {
@@ -266,7 +266,7 @@ function Overview(): JSX.Element {
   );
 }
 
-function Cast() {
+function Cast(): JSX.Element {
   // TODO: Mover para componente genérico
   const cast = media?.credits?.cast.slice(0, 15);
 
@@ -306,7 +306,7 @@ function Cast() {
   );
 }
 
-function Controlls() {
+function Controlls(): JSX.Element {
   const controlls = [
     {
       key: useId(),
@@ -348,7 +348,7 @@ function Controlls() {
   );
 }
 
-function ExtraControlls() {
+function ExtraControlls(): JSX.Element {
   const extraControlls = [
     {
       key: useId(),

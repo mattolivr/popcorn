@@ -1,18 +1,20 @@
-import { FaComment, FaPaperPlane, FaTrash } from "react-icons/fa";
-import { FaImage } from "react-icons/fa6";
+import { FaPaperPlane } from "react-icons/fa";
+import { FaImage, FaMessage, FaX } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import Carousel from "../components/Carousel";
 
-export default function HomeView() {
+export default function HomeView(): JSX.Element {
   return (
-    <div className="mt-4 w-full px-2 md:w-[700px]">
+    <div className="mt-4 flex w-full flex-col gap-4 px-2 md:w-[700px]">
       <NewPost />
+      <Carousel />
     </div>
   );
 }
 
-function NewPost() {
+function NewPost(): JSX.Element {
   return (
     <Card>
       <form action="">
@@ -31,24 +33,20 @@ function NewPost() {
             placeholder="Crie uma nova postagem..."
           ></textarea>
         </div>
-        <ul className="ml-10 flex items-center justify-end pl-3 pt-2 sm:gap-3">
+        <ul className="ml-10 flex items-center justify-end pl-3 pt-2 sm:gap-1">
           <li>
-            <Button className="p-[0px]" variant="blank" icon={FaImage}>
-              <span className="hidden sm:block">Mídias</span>
-            </Button>
+            <Button color="transparent" icon={FaImage} />
           </li>
           <li>
-            <Button className="p-0" variant="blank" icon={FaComment}>
-              <span className="hidden sm:block">Novo Tópico</span>
-            </Button>
+            <Button color="transparent" icon={FaMessage} />
           </li>
           <li>
-            <Button className="p-0" variant="blank" icon={FaTrash}>
-              <span className="hidden sm:block">Cancelar</span>
-            </Button>
+            <Button color="transparent" icon={FaX} />
           </li>
           <li>
-            <Button icon={FaPaperPlane}>Enviar</Button>
+            <Button color="primary" icon={FaPaperPlane}>
+              Enviar
+            </Button>
           </li>
         </ul>
       </form>
@@ -56,7 +54,7 @@ function NewPost() {
   );
 }
 
-function autoResize(event: React.FormEvent<HTMLTextAreaElement>) {
+function autoResize(event: React.FormEvent<HTMLTextAreaElement>): void {
   const style = event.currentTarget.style;
   const offsetTop = 0;
 
