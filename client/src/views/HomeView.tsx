@@ -3,13 +3,11 @@ import { FaImage, FaMessage, FaX } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import Card from "../components/Card";
-import Carousel from "../components/Carousel";
 
 export default function HomeView(): JSX.Element {
   return (
     <div className="mt-4 flex w-full flex-col gap-4 px-2 md:w-[700px]">
       <NewPost />
-      <Carousel />
     </div>
   );
 }

@@ -15,6 +15,7 @@ import {
 import { Link } from "react-router-dom";
 import Button from "../../components/Button.tsx";
 import Card from "../../components/Card";
+import Carousel from "../../components/Carousel.tsx";
 import Divider from "../../components/Divider.tsx";
 import {
   getDate,
@@ -267,43 +268,40 @@ function Overview(): JSX.Element {
 }
 
 function Cast(): JSX.Element {
-  // TODO: Mover para componente genérico
   const cast = media?.credits?.cast.slice(0, 15);
 
-  return (
-    <div className="w-full">
-      <h2 className="mb-1 text-2xl font-semibold">Elenco</h2>
-      <div className="mt-2 flex snap-x gap-4 overflow-x-auto">
-        {cast?.map((cast) => (
-          <Link
-            to={`/person/${cast.id}`}
-            key={`cast-${cast.id}`}
-            className="mb-2 flex flex-col rounded-xl border bg-white shadow-sm transition hover:shadow-lg"
-          >
-            <div className="w-28 sm:w-40">
-              <img
-                className="h-auto w-full rounded-t-xl"
-                src={`https://image.tmdb.org/t/p/original${cast.profile_path}`}
-              />
-              <div className="p-2">
-                <h3 className="text-base font-bold sm:text-lg">{cast.name}</h3>
-                <p className="mt-1 text-gray-600">{cast.character}</p>
-              </div>
-            </div>
-          </Link>
-        ))}
-
-        <Link
-          to={"#"}
-          className={`mb-2 flex min-w-28 flex-col items-center justify-center rounded-xl
-          bg-white shadow-sm transition hover:shadow-lg sm:min-w-40`}
-        >
-          <FaPlus className="text-4xl text-gray-600" />
-          <span className="font-medium text-gray-600">Ver mais</span>
-        </Link>
+  const elements = cast?.map((cast) => (
+    <Link
+      to={`/person/${cast.id}`}
+      key={`cast-${cast.id}`}
+      className="flex flex-col rounded-xl border bg-white shadow-sm transition hover:shadow-lg"
+    >
+      <div className="w-28 sm:w-40">
+        <img
+          className="h-auto w-full rounded-t-xl"
+          src={`https://image.tmdb.org/t/p/original${cast.profile_path}`}
+        />
+        <div className="p-2">
+          <h3 className="text-base font-bold sm:text-lg">{cast.name}</h3>
+          <p className="mt-1 text-gray-600">{cast.character}</p>
+        </div>
       </div>
-    </div>
+    </Link>
+  ));
+
+  elements?.push(
+    <Link
+      key={"cast-more"}
+      to={"#"}
+      className={`flex min-w-28 flex-col items-center justify-center rounded-xl
+    bg-white shadow-sm transition hover:shadow-lg sm:min-w-40`}
+    >
+      <FaPlus className="text-4xl text-gray-600" />
+      <span className="font-medium text-gray-600">Ver mais</span>
+    </Link>,
   );
+
+  return <Carousel data={elements} />;
 }
 
 function Controlls(): JSX.Element {
@@ -337,8 +335,8 @@ function Controlls(): JSX.Element {
         <li key={ctrl.key}>
           <Button
             icon={ctrl.icon}
-            className="flex h-full flex-col gap-0 text-xl xl:text-2xl"
-            variant="blank"
+            className="flex h-full flex-col gap-0 py-2 text-xl xl:text-2xl"
+            color="transparent"
           >
             <span className="mt-1 text-base text-gray-700">{ctrl.label}</span>
           </Button>
@@ -372,9 +370,9 @@ function ExtraControlls(): JSX.Element {
       {extraControlls.map((ctrl) => (
         <Button
           key={ctrl.key}
-          variant="blank"
+          color="transparent"
+          align="start"
           icon={ctrl.icon}
-          className="text-left"
         >
           {ctrl.label}
         </Button>

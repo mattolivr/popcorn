@@ -4,7 +4,7 @@ import { tmdb } from "../adapters/tmdb";
 import { type Movie } from "../entites/tmdb.media";
 import MediaLayout from "./layouts/MediaLayout";
 
-export default function MovieView() {
+export default function MovieView(): JSX.Element {
   const [movie, setMovie] = useState<Movie>();
   const { id } = useParams();
 
