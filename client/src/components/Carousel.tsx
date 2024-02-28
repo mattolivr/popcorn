@@ -1,8 +1,8 @@
-import { type ComponentProps, useId, useState } from "react";
+import { useId, useState, type ComponentProps } from "react";
 import { type IconBaseProps, type IconType } from "react-icons";
 import { FaAngleLeft, FaAngleRight, FaImage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { VariantProps, tv } from "tailwind-variants";
+import { tv, type VariantProps } from "tailwind-variants";
 
 export type CarouselProps = ComponentProps<"div"> &
   VariantProps<typeof carousel> & {
@@ -36,7 +36,13 @@ export default function Carousel({
         position={position}
         setPosition={setPosition}
       />
-      <div id={sliderId} className={base()}>
+      <div
+        id={sliderId}
+        className={base()}
+        onScroll={(event) => {
+          handleScroll(event, setPosition);
+        }}
+      >
         <Content props={props} />
       </div>
       <Slider
@@ -166,4 +172,11 @@ const slide = (
       setPosition(position + 500);
     }
   }
+};
+
+const handleScroll = (
+  event: React.UIEvent<HTMLDivElement, UIEvent>,
+  setPosition: React.Dispatch<React.SetStateAction<number>>,
+): void => {
+  setPosition(event.currentTarget.scrollLeft);
 };
