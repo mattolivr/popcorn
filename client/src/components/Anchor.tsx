@@ -6,7 +6,7 @@ export interface AnchorProps {
   children: React.ReactNode;
 }
 
-export default function Anchor(props: AnchorProps) {
+export default function Anchor(props: AnchorProps): JSX.Element {
   return (
     <Link
       to={props.path}

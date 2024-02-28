@@ -1,5 +1,6 @@
 import React, { useId } from "react";
-import { FaImage } from "react-icons/fa";
+import { type IconType } from "react-icons";
+import { FaFacebook, FaImage, FaImdb, FaInstagram } from "react-icons/fa";
 import {
   FaBars,
   FaCircleDown,
@@ -11,11 +12,11 @@ import {
   FaHeart,
   FaPlus,
   FaStar,
+  FaXTwitter,
 } from "react-icons/fa6";
-import { Link } from "react-router-dom";
 import Button from "../../components/Button.tsx";
 import Card from "../../components/Card";
-import Carousel, { CarouselData } from "../../components/Carousel.tsx";
+import Carousel, { type CarouselData } from "../../components/Carousel.tsx";
 import Divider from "../../components/Divider.tsx";
 import {
   getDate,
@@ -40,7 +41,7 @@ export default function MediaLayout(props: MediaLayoutProps): JSX.Element {
   return (
     <div className="flex h-full w-full flex-col">
       <Highlight />
-      <div className="lg-px-48 flex justify-between gap-4 sm:mt-4 sm:px-2 xl:px-64">
+      <div className="lg-px-48 flex justify-between gap-4 sm:mt-4 sm:px-2 2xl:px-64">
         <main className="sm:7/8 flex w-full flex-col gap-1 sm:gap-4 lg:w-8/12">
           <Card className="block sm:hidden" title={getTitle(media)}>
             <div className="flex flex-row items-center gap-2">
@@ -69,9 +70,9 @@ export default function MediaLayout(props: MediaLayoutProps): JSX.Element {
         <aside className="sm:1/8 hidden lg:block lg:w-4/12">
           <Card>
             <Controlls />
-            <Divider />
             <ExtraControlls />
-            <Divider />
+            <ExternalIds />
+            <WatchProviders />
           </Card>
         </aside>
       </div>
@@ -89,7 +90,7 @@ function Highlight(): JSX.Element {
 
   return (
     <Backdrop>
-      <div className="flex bg-slate-700/40 py-4 sm:justify-start">
+      <div className="flex bg-slate-700/40 py-4 sm:justify-start 2xl:ms-64">
         <Poster />
         <div className="hidden flex-col items-start justify-between px-4 sm:flex">
           <div className="flex h-full flex-col justify-center">
@@ -145,7 +146,7 @@ function Backdrop({ children }: { children: React.ReactNode }): JSX.Element {
 
 function Poster(): JSX.Element {
   const className =
-    "h-[149px] w-[96px] rounded-xl shadow-md sm:h-[338px] sm:w-[225px] ms-2 xl:ms-64";
+    "h-[149px] w-[96px] rounded-xl shadow-md sm:h-[338px] sm:w-[225px] ms-2";
 
   if (media == null) {
     return (
@@ -274,19 +275,25 @@ function Cast(): JSX.Element {
     return <></>;
   }
 
-  let elements: CarouselData[] = cast.map((person) => {
-    return {
+  const elements: CarouselData[] = cast.map((person) => {
+    const t: CarouselData = {
       key: person.id.toString(),
       title: person.name,
       description: person.character,
       img:
         person.profile_path == null
-          ? null
+          ? undefined
           : `https://image.tmdb.org/t/p/original${person.profile_path}`,
-    } as CarouselData;
+    };
+    return t;
   });
 
-  return <Carousel data={elements} className="mb-5" />;
+  return (
+    <>
+      <h1 className="mb-2 text-2xl font-semibold text-stone-950">Elenco</h1>
+      <Carousel data={elements} className="mb-5" />
+    </>
+  );
 }
 
 function Controlls(): JSX.Element {
@@ -315,19 +322,18 @@ function Controlls(): JSX.Element {
   ];
 
   return (
-    <ul className="flex flex-row justify-around">
+    <div className="flex flex-row flex-wrap">
       {controlls.map((ctrl) => (
-        <li key={ctrl.key}>
-          <Button
-            icon={ctrl.icon}
-            className="flex h-full flex-col gap-0 py-2 text-xl xl:text-2xl"
-            color="transparent"
-          >
-            <span className="mt-1 text-base text-gray-700">{ctrl.label}</span>
-          </Button>
-        </li>
+        <Button
+          key={ctrl.key}
+          icon={ctrl.icon}
+          className="flex h-full grow flex-col gap-0 py-2 text-xl xl:text-2xl"
+          color="transparent"
+        >
+          <span className="mt-1 text-base text-gray-700">{ctrl.label}</span>
+        </Button>
       ))}
-    </ul>
+    </div>
   );
 }
 
@@ -352,6 +358,7 @@ function ExtraControlls(): JSX.Element {
 
   return (
     <>
+      <Divider />
       {extraControlls.map((ctrl) => (
         <Button
           key={ctrl.key}
@@ -362,6 +369,73 @@ function ExtraControlls(): JSX.Element {
           {ctrl.label}
         </Button>
       ))}
+    </>
+  );
+}
+
+interface ExternalIdButton {
+  id: string;
+  icon: IconType;
+  path: string;
+}
+
+function ExternalIds(): JSX.Element {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const { external_ids } = media ?? {};
+
+  const buttons: ExternalIdButton[] = [
+    {
+      id: "d" + external_ids?.imdb_id,
+      icon: FaImdb,
+      path: `https://www.imdb.com/title/${external_ids?.imdb_id}`,
+    },
+    {
+      id: "f" + external_ids?.facebook_id,
+      icon: FaFacebook,
+      path: `https://www.facebook.com/${external_ids?.facebook_id}`,
+    },
+    {
+      id: "i" + external_ids?.instagram_id,
+      icon: FaInstagram,
+      path: `https://www.instagram.com/${external_ids?.instagram_id}`,
+    },
+    {
+      id: "x" + external_ids?.twitter_id,
+      icon: FaXTwitter,
+      path: `https://twitter.com/${external_ids?.twitter_id}`,
+    },
+  ];
+
+  return (
+    <>
+      <Divider />
+      <div className="flex">
+        {buttons
+          .filter((button) => !button.id.includes("null"))
+          .map((button) => (
+            <Button
+              key={button.id}
+              to={button.path}
+              icon={button.icon}
+              color="transparent"
+              className="grow text-2xl"
+            />
+          ))}
+      </div>
+    </>
+  );
+}
+
+function WatchProviders(): JSX.Element {
+  const providers = media?.["watch/providers"].results.BR;
+
+  if (providers == null) {
+    return <></>;
+  }
+
+  return (
+    <>
+      <Divider />
     </>
   );
 }

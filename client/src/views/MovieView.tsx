@@ -11,9 +11,14 @@ export default function MovieView(): JSX.Element {
   useEffect(() => {
     if (movie == null) {
       tmdb
-        .get(`/movie/${id}`, { params: { append_to_response: "credits" } })
+        .get(`/movie/${id}`, {
+          params: {
+            append_to_response: "credits,external_ids,watch/providers",
+          },
+        })
         .then((response): void => {
           setMovie(response.data as Movie);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);

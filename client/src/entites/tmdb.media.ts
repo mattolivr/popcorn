@@ -14,6 +14,16 @@ export interface Media {
   vote_average: number;
   vote_count: number;
   credits?: { cast: Cast[]; crew: Crew[] };
+  external_ids?: ExternalIds;
+  "watch/providers": {
+    results: {
+      BR: {
+        buy: WatchProvider[];
+        flatrate: WatchProvider[];
+        rent: WatchProvider[];
+      };
+    };
+  };
 }
 
 export interface Movie extends Media {
@@ -62,6 +72,21 @@ export interface Crew {
   credit_id: string;
   department: string;
   job: string;
+}
+
+export interface ExternalIds {
+  imdb_id?: string;
+  wikidata_id?: string;
+  facebook_id?: string;
+  instagram_id?: string;
+  twitter_id?: string;
+}
+
+export interface WatchProvider {
+  logo_path: string;
+  provider_id: number;
+  provider_name: string;
+  display_priority: number;
 }
 
 export const getTitle = (media?: Movie | TVShow): string | undefined => {

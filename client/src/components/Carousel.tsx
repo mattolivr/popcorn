@@ -100,7 +100,7 @@ function Content({
             </div>
             <div className="text-wrap px-2 py-1">
               <strong>{entity.title}</strong>
-              <p>{entity.description}</p>
+              <p className="text-gray-700">{entity.description}</p>
             </div>
           </div>
         </Link>
@@ -117,7 +117,9 @@ interface SliderProps {
 }
 
 function Slider(props: SliderProps): JSX.Element {
-  const iconProps: IconBaseProps = {};
+  const iconProps: IconBaseProps = {
+    size: 28,
+  };
   const align = props.direction === "left" ? "left-0" : "right-0";
   const slider = document.getElementById(sliderId);
 
@@ -132,15 +134,19 @@ function Slider(props: SliderProps): JSX.Element {
     return <></>;
   }
   return (
-    <button
-      className={`absolute flex h-full w-10 items-center justify-center rounded-md bg-transparent hover:bg-slate-900 hover:bg-opacity-45 ${align}`}
-      onClick={() => {
-        slide(props.direction, props.position, props.setPosition);
-      }}
-      id={`${sliderId}-${props.direction}`}
+    <div
+      className={`absolute flex h-full w-10 items-center justify-center ${align}`}
     >
-      {props.icon(iconProps)}
-    </button>
+      <button
+        className=" rounded-full bg-sky-500 bg-opacity-0 p-3 text-white transition hover:bg-opacity-85"
+        onClick={() => {
+          slide(props.direction, props.position, props.setPosition);
+        }}
+        id={`${sliderId}-${props.direction}`}
+      >
+        {props.icon(iconProps)}
+      </button>
+    </div>
   );
 }
 
