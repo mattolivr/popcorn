@@ -15,7 +15,7 @@ import {
 import { Link } from "react-router-dom";
 import Button from "../../components/Button.tsx";
 import Card from "../../components/Card";
-import Carousel from "../../components/Carousel.tsx";
+import Carousel, { CarouselData } from "../../components/Carousel.tsx";
 import Divider from "../../components/Divider.tsx";
 import {
   getDate,
@@ -201,8 +201,8 @@ function Genres(): JSX.Element {
       {media?.genres?.map((genre) => (
         <Button
           key={`genre-${genre.id}`}
-          variant="white"
-          path={`/genres/${genre.id}`}
+          color="primary"
+          to={`/genres/${genre.id}`}
         >
           {genre.name}
         </Button>
@@ -270,38 +270,23 @@ function Overview(): JSX.Element {
 function Cast(): JSX.Element {
   const cast = media?.credits?.cast.slice(0, 15);
 
-  const elements = cast?.map((cast) => (
-    <Link
-      to={`/person/${cast.id}`}
-      key={`cast-${cast.id}`}
-      className="flex flex-col rounded-xl border bg-white shadow-sm transition hover:shadow-lg"
-    >
-      <div className="w-28 sm:w-40">
-        <img
-          className="h-auto w-full rounded-t-xl"
-          src={`https://image.tmdb.org/t/p/original${cast.profile_path}`}
-        />
-        <div className="p-2">
-          <h3 className="text-base font-bold sm:text-lg">{cast.name}</h3>
-          <p className="mt-1 text-gray-600">{cast.character}</p>
-        </div>
-      </div>
-    </Link>
-  ));
+  if (cast == null) {
+    return <></>;
+  }
 
-  elements?.push(
-    <Link
-      key={"cast-more"}
-      to={"#"}
-      className={`flex min-w-28 flex-col items-center justify-center rounded-xl
-    bg-white shadow-sm transition hover:shadow-lg sm:min-w-40`}
-    >
-      <FaPlus className="text-4xl text-gray-600" />
-      <span className="font-medium text-gray-600">Ver mais</span>
-    </Link>,
-  );
+  let elements: CarouselData[] = cast.map((person) => {
+    return {
+      key: person.id.toString(),
+      title: person.name,
+      description: person.character,
+      img:
+        person.profile_path == null
+          ? null
+          : `https://image.tmdb.org/t/p/original${person.profile_path}`,
+    } as CarouselData;
+  });
 
-  return <Carousel data={elements} />;
+  return <Carousel data={elements} className="mb-5" />;
 }
 
 function Controlls(): JSX.Element {

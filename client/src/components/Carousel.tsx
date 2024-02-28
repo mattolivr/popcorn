@@ -1,25 +1,32 @@
-import { useId, useState } from "react";
+import { type ComponentProps, useId, useState } from "react";
 import { type IconBaseProps, type IconType } from "react-icons";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+import { FaAngleLeft, FaAngleRight, FaImage } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { VariantProps, tv } from "tailwind-variants";
 
-export interface CarouselProps {
-  highlight?: boolean;
-  data?: JSX.Element[];
-}
+export type CarouselProps = ComponentProps<"div"> &
+  VariantProps<typeof carousel> & {
+    data?: CarouselData[];
+  };
 
 // TODO: Implementar
-export interface Data {
-  img?: string;
+export interface CarouselData {
+  key: string;
   title: string;
   description: string;
+  img?: string;
 }
 
 let sliderId = "";
 
-export default function Carousel(props: CarouselProps): JSX.Element {
-  // TODO: Implementar variantes
-  sliderId = useId();
+export default function Carousel({
+  className,
+  ...props
+}: CarouselProps): JSX.Element {
   const [position, setPosition] = useState(0);
+  const { base } = carousel({ className });
+
+  sliderId = useId();
 
   return (
     <div className="relative flex items-center">
@@ -29,11 +36,8 @@ export default function Carousel(props: CarouselProps): JSX.Element {
         position={position}
         setPosition={setPosition}
       />
-      <div
-        id={sliderId}
-        className="scroll no-scrollbar flex h-full w-full overflow-x-scroll scroll-smooth whitespace-nowrap"
-      >
-        {props.data}
+      <div id={sliderId} className={base()}>
+        <Content props={props} />
       </div>
       <Slider
         icon={FaAngleRight}
@@ -43,6 +47,60 @@ export default function Carousel(props: CarouselProps): JSX.Element {
       />
     </div>
   );
+}
+
+const carousel = tv({
+  slots: {
+    base: "scroll no-scrollbar flex gap-2 h-full w-full overflow-x-scroll scroll-smooth whitespace-nowrap",
+  },
+  variants: {
+    type: {
+      list: {},
+      highlight: {},
+    },
+  },
+});
+
+function Content({
+  props,
+}: {
+  props: CarouselProps;
+}): JSX.Element[] | undefined {
+  // TODO: Implementar botão "Ver Mais"
+  const data = props.data;
+
+  if (data == null) {
+    return;
+  }
+
+  switch (props.type) {
+    case "highlight": {
+      return;
+    }
+    default: {
+      return data.map((entity) => (
+        <Link
+          to={`/person/${entity.key}`}
+          key={`cast-${entity.key}`}
+          className="rounded-xl border bg-white shadow-sm transition hover:shadow-lg"
+        >
+          <div className="h-full w-28 sm:w-40">
+            <div className="flex h-40 w-full items-center justify-center rounded-t-xl bg-sky-900 text-2xl text-white sm:h-60 sm:text-4xl">
+              {entity.img == null ? (
+                <FaImage />
+              ) : (
+                <img src={entity.img} className="h-full w-full rounded-t-xl" />
+              )}
+            </div>
+            <div className="text-wrap px-2 py-1">
+              <strong>{entity.title}</strong>
+              <p>{entity.description}</p>
+            </div>
+          </div>
+        </Link>
+      ));
+    }
+  }
 }
 
 interface SliderProps {
