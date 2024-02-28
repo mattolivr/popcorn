@@ -19,12 +19,14 @@ import Card from "../../components/Card";
 import Carousel, { type CarouselData } from "../../components/Carousel.tsx";
 import Divider from "../../components/Divider.tsx";
 import {
+  getAllWatchProviders,
   getDate,
   getRuntime,
   getTitle,
   type Movie,
   type TVShow,
 } from "../../entites/tmdb.media.ts";
+import Tag from "../../components/Tag.tsx";
 
 let media: Movie | TVShow | undefined;
 
@@ -427,7 +429,9 @@ function ExternalIds(): JSX.Element {
 }
 
 function WatchProviders(): JSX.Element {
-  const providers = media?.["watch/providers"].results.BR;
+  const providers = getAllWatchProviders(media);
+
+  console.log("providers", providers);
 
   if (providers == null) {
     return <></>;
@@ -436,6 +440,48 @@ function WatchProviders(): JSX.Element {
   return (
     <>
       <Divider />
+      <a
+        className="flex cursor-pointer flex-col gap-2"
+        href={media?.["watch/providers"]?.results?.BR?.link}
+      >
+        {providers.map((provider) => (
+          <div
+            key={provider.provider_id}
+            className="flex h-14 w-full flex-row rounded-2xl border shadow-sm hover:bg-gray-100"
+          >
+            <img
+              src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+              className="h-full rounded-2xl"
+            />
+            <div className="flex w-full flex-col justify-center text-wrap px-2">
+              <strong>{provider.provider_name}</strong>
+              <div className="flex flex-row gap-1">
+                {provider.type.map((type) => {
+                  let props: { text: string; color: string };
+
+                  switch (type) {
+                    case "buy":
+                      props = { text: "Comprar", color: "bg-green-200" };
+                      break;
+                    case "rent":
+                      props = { text: "Alugar", color: "bg-yellow-200 " };
+                      break;
+                    default:
+                      props = { text: "Streaming", color: "bg-purple-200" };
+                      break;
+                  }
+
+                  return (
+                    <Tag key={provider.provider_id + type} color={props.color}>
+                      {props.text}
+                    </Tag>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        ))}
+      </a>
     </>
   );
 }

@@ -17,11 +17,7 @@ export interface Media {
   external_ids?: ExternalIds;
   "watch/providers": {
     results: {
-      BR: {
-        buy: WatchProvider[];
-        flatrate: WatchProvider[];
-        rent: WatchProvider[];
-      };
+      BR: Providers;
     };
   };
 }
@@ -82,11 +78,19 @@ export interface ExternalIds {
   twitter_id?: string;
 }
 
-export interface WatchProvider {
+export interface Provider {
+  type: string[];
   logo_path: string;
   provider_id: number;
   provider_name: string;
   display_priority: number;
+}
+
+interface Providers {
+  link: string;
+  buy: Provider[];
+  flatrate: Provider[];
+  rent: Provider[];
 }
 
 export const getTitle = (media?: Movie | TVShow): string | undefined => {
@@ -126,4 +130,39 @@ export const getRuntime = (
 
     return { hours, minutes };
   }
+};
+
+export const getAllWatchProviders = (media?: Movie | TVShow): Provider[] => {
+  const ret: Provider[] = [];
+  const providers = media?.["watch/providers"].results.BR;
+
+  if (providers == null) {
+    return ret;
+  }
+
+  const { buy, flatrate, rent } = providers;
+
+  const addProvidersWithType = (providers: Provider[], type: string) => {
+    if (providers == null || providers.length == 0) {
+      return;
+    }
+
+    providers.forEach((provider) => {
+      const existingProvider = ret.find(
+        (p) => p.provider_id === provider.provider_id,
+      );
+      if (existingProvider) {
+        existingProvider.type.push(type);
+      } else {
+        const newProvider: Provider = { ...provider, type: [type] };
+        ret.push(newProvider);
+      }
+    });
+  };
+
+  addProvidersWithType(buy, "buy");
+  addProvidersWithType(flatrate, "flatrate");
+  addProvidersWithType(rent, "rent");
+
+  return ret;
 };
