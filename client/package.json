@@ -10,11 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@preline/collapse": "^2.0.2",
-    "@preline/dropdown": "^2.0.2",
     "axios": "^1.6.5",
     "dotenv": "^16.4.2",
-    "preline": "^2.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.49.3",

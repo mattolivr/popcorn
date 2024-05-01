@@ -220,7 +220,8 @@ interface BottomNavItemProps {
 
 function BottomNavItem(props: BottomNavItemProps): JSX.Element {
   const currentPath = useLocation();
-  const isCurrentPath = (path: string) => currentPath.pathname === path;
+  const isCurrentPath = (path: string): boolean =>
+    currentPath.pathname === path;
 
   const iconProps: IconBaseProps = {
     className: `text-xl ${isCurrentPath(props.path) ? "text-orange-200" : "text-white"}`,

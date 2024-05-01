@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export type ButtonProps = ComponentProps<"button"> &
-  VariantProps<typeof button> & {
+  VariantProps<typeof buttonStyle> & {
     to?: string; // Navegação por Link -> React Router DOM
 
     icon?: IconType;
@@ -17,7 +17,7 @@ export default function Button({
   className,
   ...props
 }: ButtonProps): JSX.Element {
-  const style = button({ color, align, className });
+  const style = buttonStyle({ color, align, className });
 
   if (to != null) {
     return (
@@ -35,7 +35,7 @@ export default function Button({
   );
 }
 
-const button = tv({
+const buttonStyle = tv({
   base: "rounded-xl px-4 h-9 font-semibold flex flex-row items-center gap-2",
   variants: {
     color: {
