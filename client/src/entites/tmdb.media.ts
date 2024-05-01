@@ -132,6 +132,10 @@ export const getRuntime = (
   }
 };
 
+export const getVotePercentage = (media: Media | undefined): number => {
+  return Math.trunc(media != null ? media.vote_average * 10 : 0);
+};
+
 export const getAllWatchProviders = (media?: Movie | TVShow): Provider[] => {
   const ret: Provider[] = [];
   const providers = media?.["watch/providers"].results.BR;
@@ -142,8 +146,8 @@ export const getAllWatchProviders = (media?: Movie | TVShow): Provider[] => {
 
   const { buy, flatrate, rent } = providers;
 
-  const addProvidersWithType = (providers: Provider[], type: string) => {
-    if (providers == null || providers.length == 0) {
+  const addProvidersWithType = (providers: Provider[], type: string): void => {
+    if (providers == null || providers.length === 0) {
       return;
     }
 
@@ -151,7 +155,7 @@ export const getAllWatchProviders = (media?: Movie | TVShow): Provider[] => {
       const existingProvider = ret.find(
         (p) => p.provider_id === provider.provider_id,
       );
-      if (existingProvider) {
+      if (existingProvider != null) {
         existingProvider.type.push(type);
       } else {
         const newProvider: Provider = { ...provider, type: [type] };

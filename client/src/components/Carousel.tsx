@@ -91,7 +91,7 @@ function Content({
           className="rounded-xl border bg-white shadow-sm transition hover:shadow-lg"
         >
           <div className="h-full w-28 sm:w-40">
-            <div className="flex h-40 w-full items-center justify-center rounded-t-xl bg-sky-900 text-2xl text-white sm:h-60 sm:text-4xl">
+            <div className="flex h-40 w-full items-center justify-center rounded-t-xl bg-gray-300 text-2xl text-white sm:h-60 sm:text-4xl">
               {entity.img == null ? (
                 <FaImage />
               ) : (

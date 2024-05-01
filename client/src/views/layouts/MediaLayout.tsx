@@ -10,23 +10,25 @@ import {
   FaComment,
   FaEye,
   FaHeart,
-  FaPlus,
   FaStar,
   FaXTwitter,
 } from "react-icons/fa6";
+import Anchor from "../../components/Anchor.tsx";
 import Button from "../../components/Button.tsx";
 import Card from "../../components/Card";
 import Carousel, { type CarouselData } from "../../components/Carousel.tsx";
 import Divider from "../../components/Divider.tsx";
+import Tag from "../../components/Tag.tsx";
 import {
   getAllWatchProviders,
   getDate,
   getRuntime,
   getTitle,
+  getVotePercentage,
   type Movie,
+  type Provider,
   type TVShow,
 } from "../../entites/tmdb.media.ts";
-import Tag from "../../components/Tag.tsx";
 
 let media: Movie | TVShow | undefined;
 
@@ -37,48 +39,27 @@ export interface MediaLayoutProps {
 
 export default function MediaLayout(props: MediaLayoutProps): JSX.Element {
   media = props.media;
-  const mediaDate = getDate(media);
-  const runtime = getRuntime(media);
 
   return (
     <div className="flex h-full w-full flex-col">
       <Highlight />
-      <div className="lg-px-48 flex justify-between gap-4 sm:mt-4 sm:px-2 2xl:px-64">
-        <main className="sm:7/8 flex w-full flex-col gap-1 sm:gap-4 lg:w-8/12">
-          <Card className="block sm:hidden" title={getTitle(media)}>
-            <div className="flex flex-row items-center gap-2">
-              <p>{`${mediaDate?.startDate?.toLocaleDateString()}`}</p>
-              <p className={showElement(mediaDate?.endDate)}>
-                {`- ${mediaDate?.endDate?.toLocaleDateString()}`}
-              </p>
-              <p
-                className={showElement(runtime)}
-              >{`· ${runtime?.hours}h ${runtime?.minutes}min`}</p>
-              <Vote />
-            </div>
-            <p className="italic text-gray-700">{media?.tagline}</p>
-          </Card>
-          <Card>
-            <Overview />
-            <Divider />
-            <Cast />
-          </Card>
+      <div className="lg-px-48 my-1 flex justify-between gap-4 px-1 sm:my-4 sm:px-2 2xl:px-64">
+        <main className="sm:7/8 flex w-full flex-col gap-1 sm:gap-2 lg:w-8/12">
+          <Overview mobile />
+          <Synopsis />
+          <Cast />
           {props.children}
-          <Button
-            className="absolute bottom-4 right-4 h-14 w-14 rounded-full text-2xl sm:hidden"
-            icon={FaPlus}
-          />
+          {/* //TODO: Botão de controles mobile */}
         </main>
         <aside className="sm:1/8 hidden lg:block lg:w-4/12">
           <Card>
             <Controlls />
             <ExtraControlls />
-            <ExternalIds />
+            <ExternalLinks />
             <WatchProviders />
           </Card>
         </aside>
       </div>
-      {props.children}
     </div>
   );
 }
@@ -91,48 +72,51 @@ function Highlight(): JSX.Element {
   const runtime = getRuntime(media);
 
   return (
-    <Backdrop>
-      <div className="flex bg-slate-700/40 py-4 sm:justify-start 2xl:ms-64">
-        <Poster />
-        <div className="hidden flex-col items-start justify-between px-4 sm:flex">
-          <div className="flex h-full flex-col justify-center">
-            <div className="flex flex-row items-end">
-              <h1 className="text-3xl font-bold text-white xl:text-4xl">
-                {getTitle(media)}
-              </h1>
-              <span className="ml-3 text-2xl text-gray-200">
-                {mediaDate?.startDate?.getFullYear()}
-              </span>
+    <Background>
+      <div className="bg-slate-700/40">
+        <div className="flex py-4 sm:justify-start 2xl:ms-64">
+          <MediaPoster />
+          <div className="hidden flex-col items-start justify-between px-4 sm:flex">
+            <div className="flex h-full flex-col justify-center">
+              <div className="flex flex-row items-end">
+                <h1 className="text-3xl font-bold text-white xl:text-4xl">
+                  {getTitle(media)}
+                </h1>
+                <span className="ml-3 text-2xl text-gray-200">
+                  {mediaDate?.startDate?.getFullYear()}
+                </span>
+              </div>
+              <ul className="flex flex-row items-center gap-2 text-lg font-medium text-gray-200">
+                <li>{mediaDate?.startDate?.toLocaleDateString()}</li>
+                <li className={showElement(mediaDate?.endDate)}>-</li>
+                <li className={showElement(mediaDate?.endDate)}>
+                  {mediaDate?.endDate?.toLocaleDateString()}
+                </li>
+                <li>·</li>
+                <li
+                  className={showElement(runtime)}
+                >{`${runtime?.hours}h ${runtime?.minutes}min`}</li>
+              </ul>
+              <p className="mt-2 text-lg font-medium italic text-gray-200">
+                {media?.tagline}
+              </p>
             </div>
-            <ul className="flex flex-row items-center gap-2 text-lg font-medium text-gray-200">
-              <li>{mediaDate?.startDate?.toLocaleDateString()}</li>
-              <li className={showElement(mediaDate?.endDate)}>-</li>
-              <li className={showElement(mediaDate?.endDate)}>
-                {mediaDate?.endDate?.toLocaleDateString()}
-              </li>
-              <li>·</li>
-              <li
-                className={showElement(runtime)}
-              >{`${runtime?.hours}h ${runtime?.minutes}min`}</li>
-            </ul>
-            <p className="mt-2 text-lg font-medium italic text-gray-200">
-              {media?.tagline}
-            </p>
-          </div>
-          <div className="flex flex-col justify-end">
-            <strong className="text-lg text-white">
-              Avaliação dos usuários
-            </strong>
-            <Vote />
-            <Genres />
+            <div className="flex flex-col justify-end">
+              <strong className="text-lg text-white">
+                Avaliação dos usuários
+              </strong>
+              <Vote />
+              <Genres />
+            </div>
           </div>
         </div>
       </div>
-    </Backdrop>
+    </Background>
   );
 }
 
-function Backdrop({ children }: { children: React.ReactNode }): JSX.Element {
+function Background({ children }: { children: React.ReactNode }): JSX.Element {
+  // TODO: Adicionar Skeleton
   const style: React.CSSProperties = {
     backgroundImage: `url('https://image.tmdb.org/t/p/original${media?.backdrop_path}')`,
     backgroundPosition: "50% 30%",
@@ -146,7 +130,8 @@ function Backdrop({ children }: { children: React.ReactNode }): JSX.Element {
   );
 }
 
-function Poster(): JSX.Element {
+function MediaPoster(): JSX.Element {
+  // TODO: Adicionar Skeleton
   const className =
     "h-[149px] w-[96px] rounded-xl shadow-md sm:h-[338px] sm:w-[225px] ms-2";
 
@@ -169,10 +154,7 @@ function Poster(): JSX.Element {
 }
 
 function Vote(): JSX.Element | undefined {
-  const votePercentage = Math.trunc(
-    media != null ? media.vote_average * 10 : 0,
-  );
-
+  const votePercentage = getVotePercentage(media);
   let color = "text-red-400";
   let icon = FaCircleDown;
 
@@ -214,57 +196,120 @@ function Genres(): JSX.Element {
   );
 }
 
-function Overview(): JSX.Element {
-  const regex = /^.*?\..*?\./;
-  let preview;
+function Overview({ mobile }: { mobile?: boolean }): JSX.Element {
+  // TODO: Adicionar classificação indicativa
+  // TODO: Alterar porcentagem por estrelas
+  const title = getTitle(media);
+  const releaseDate = getDate(media);
+  const runtime = getRuntime(media);
+
+  const info: Array<string | undefined> = [
+    releaseDate?.startDate?.toLocaleDateString(),
+    releaseDate?.endDate?.toLocaleDateString(),
+    runtime === undefined
+      ? undefined
+      : `${runtime?.hours}h${runtime?.minutes}min`,
+    `${getVotePercentage(media).toString()}%`,
+  ];
+
+  const infoList: string[] = [];
+  info.forEach((value, index, array) => {
+    if (value !== undefined) {
+      infoList.push(value);
+      if (infoList.length > 0 && index !== array.length - 1) {
+        infoList.push("·");
+      }
+    }
+  });
+
+  // TODO: Adicionar gêneros
+
+  if (mobile != null && mobile) {
+    return (
+      <Card className="block sm:hidden" title={title}>
+        <div className="flex">
+          {infoList.map((value, index) => {
+            return (
+              <span
+                key={`movie-overview-${index}`}
+                className={index === 0 ? "" : "ml-1"}
+              >
+                {value}
+              </span>
+            );
+          })}
+        </div>
+      </Card>
+    );
+  }
+  return <></>;
+}
+
+function Synopsis(): JSX.Element {
   let text = media?.overview;
 
-  const res = media?.overview.match(regex);
+  let preview;
+  const previewRegex = /^.*?\..*?\./;
+  const res = media?.overview.match(previewRegex);
   if (res != null) {
     preview = res[0];
     text = text?.slice(preview.length);
   }
 
+  if (text == null) {
+    return <></>;
+  }
+
   return (
-    <div className={`${showElement(media?.overview)} text-pretty`}>
-      <h2 className="mb-1 text-2xl font-semibold">Sinopse</h2>
-      <p className="hidden sm:block">{media?.overview}</p>
-      <div className="block leading-relaxed sm:hidden">
-        <p>{preview ?? text}</p>
-        <div
-          id="hs-show-hide-collapse-heading"
-          className="hs-collapse hidden w-full overflow-hidden transition-[height] duration-300"
-          aria-labelledby="hs-show-hide-collapse"
-        >
-          <p>{text}</p>
-        </div>
-        <p className={`mt-2 ${showElement(preview)}`}>
-          <button
-            type="button"
-            className="hs-collapse-toggle inline-flex items-center gap-x-1 rounded-lg border 
+    <div className="text-pretty">
+      {/* Mobile */}
+      <div className="block sm:hidden">
+        <Card>
+          <p>{preview ?? text}</p>
+          <div
+            id="hs-show-hide-collapse-heading"
+            className="hs-collapse hidden w-full overflow-hidden transition-[height] duration-300"
+            aria-labelledby="hs-show-hide-collapse"
+          >
+            <p>{text}</p>
+          </div>
+          <p className={`mt-2 ${showElement(preview)}`}>
+            <button
+              type="button"
+              className="hs-collapse-toggle inline-flex items-center gap-x-1 rounded-lg border 
             border-transparent text-sm font-semibold text-sky-600 hover:text-sky-700 
             disabled:pointer-events-none disabled:opacity-50"
-            id="hs-show-hide-collapse"
-            data-hs-collapse="#hs-show-hide-collapse-heading"
-          >
-            <span className="hs-collapse-open:hidden">Mostrar mais</span>
-            <span className="hidden hs-collapse-open:block">Mostrar menos</span>
-            <svg
-              className="size-4 flex-shrink-0 hs-collapse-open:rotate-180"
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+              id="hs-show-hide-collapse"
+              data-hs-collapse="#hs-show-hide-collapse-heading"
             >
-              <path d="m6 9 6 6 6-6" />
-            </svg>
-          </button>
-        </p>
+              <span className="hs-collapse-open:hidden">Mostrar mais</span>
+              <span className="hidden hs-collapse-open:block">
+                Mostrar menos
+              </span>
+              <svg
+                className="size-4 flex-shrink-0 hs-collapse-open:rotate-180"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+          </p>
+        </Card>
+        <div className="block leading-relaxed sm:hidden"></div>
+      </div>
+      {/* Default */}
+      <div className="hidden sm:block">
+        <Card title="Sinopse">
+          <p>{media?.overview}</p>
+        </Card>
       </div>
     </div>
   );
@@ -291,10 +336,12 @@ function Cast(): JSX.Element {
   });
 
   return (
-    <>
-      <h1 className="mb-2 text-2xl font-semibold text-stone-950">Elenco</h1>
-      <Carousel data={elements} className="mb-5" />
-    </>
+    <Card title="Elenco">
+      <Carousel data={elements} />
+      <Anchor path="./cast" className="mt-1 text-right">
+        Ver todo o Elenco...
+      </Anchor>
+    </Card>
   );
 }
 
@@ -375,17 +422,17 @@ function ExtraControlls(): JSX.Element {
   );
 }
 
-interface ExternalIdButton {
+interface ExternalLinkButton {
   id: string;
   icon: IconType;
   path: string;
 }
 
-function ExternalIds(): JSX.Element {
+function ExternalLinks(): JSX.Element {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const { external_ids } = media ?? {};
 
-  const buttons: ExternalIdButton[] = [
+  const buttons: ExternalLinkButton[] = [
     {
       id: "d" + external_ids?.imdb_id,
       icon: FaImdb,
@@ -430,9 +477,6 @@ function ExternalIds(): JSX.Element {
 
 function WatchProviders(): JSX.Element {
   const providers = getAllWatchProviders(media);
-
-  console.log("providers", providers);
-
   if (providers == null) {
     return <></>;
   }
@@ -440,48 +484,60 @@ function WatchProviders(): JSX.Element {
   return (
     <>
       <Divider />
-      <a
-        className="flex cursor-pointer flex-col gap-2"
-        href={media?.["watch/providers"]?.results?.BR?.link}
-      >
-        {providers.map((provider) => (
-          <div
-            key={provider.provider_id}
-            className="flex h-14 w-full flex-row rounded-2xl border shadow-sm hover:bg-gray-100"
-          >
-            <img
-              src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
-              className="h-full rounded-2xl"
-            />
-            <div className="flex w-full flex-col justify-center text-wrap px-2">
-              <strong>{provider.provider_name}</strong>
-              <div className="flex flex-row gap-1">
-                {provider.type.map((type) => {
-                  let props: { text: string; color: string };
-
-                  switch (type) {
-                    case "buy":
-                      props = { text: "Comprar", color: "bg-green-200" };
-                      break;
-                    case "rent":
-                      props = { text: "Alugar", color: "bg-yellow-200 " };
-                      break;
-                    default:
-                      props = { text: "Streaming", color: "bg-purple-200" };
-                      break;
-                  }
-
-                  return (
-                    <Tag key={provider.provider_id + type} color={props.color}>
-                      {props.text}
-                    </Tag>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        ))}
-      </a>
+      {providers.map((provider) => (
+        <WatchProvider key={provider.provider_id} provider={provider} />
+      ))}
     </>
+  );
+}
+
+function WatchProvider({ provider }: { provider: Provider }): JSX.Element {
+  const getTypeProps = (type: string): { text: string; color: string } => {
+    switch (type) {
+      case "buy":
+        return {
+          text: "Comprar",
+          color: "bg-green-200",
+        };
+      case "rent":
+        return {
+          text: "Alugar",
+          color: "bg-yellow-200 ",
+        };
+      default:
+        return {
+          text: "Streaming",
+          color: "bg-purple-200",
+        };
+    }
+  };
+
+  return (
+    <a href={media?.["watch/providers"]?.results?.BR?.link}>
+      <div className="flex h-16 w-full flex-row rounded-2xl p-2 hover:bg-gray-200">
+        <img
+          src={`https://image.tmdb.org/t/p/original${provider.logo_path}`}
+          className="h-full rounded-xl"
+        />
+        <div className="flex w-full flex-col justify-center text-wrap px-2">
+          <strong>{provider.provider_name}</strong>
+          <div className="flex flex-row gap-1">
+            {provider.type.map((type) => {
+              const providerProps: { text: string; color: string } =
+                getTypeProps(type);
+
+              return (
+                <Tag
+                  key={provider.provider_id + type}
+                  color={providerProps.color}
+                >
+                  {providerProps.text}
+                </Tag>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </a>
   );
 }

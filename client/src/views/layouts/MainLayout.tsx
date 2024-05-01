@@ -5,11 +5,12 @@ import { FaHouse, FaMessage } from "react-icons/fa6";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import Menu from "../../components/ui/Menu";
 
-export function MainLayout() {
+export function MainLayout(): JSX.Element {
   const [menuVisible, setMenuVisible] = useState(false);
 
   return (
     <div className="flex h-svh flex-col">
+      {/* //TODO Deixar header fixado no topo da tela */}
       <header className="flex w-full flex-row items-center bg-sky-500 px-4 py-2">
         <Controlls
           toggleMenu={() => {

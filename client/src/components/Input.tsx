@@ -46,7 +46,7 @@ enum State {
   SUCCESS,
 }
 
-export default function Input(props: InputProps) {
+export default function Input(props: InputProps): JSX.Element {
   const [state, setState] = useState(State.DEFAULT);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -98,7 +98,7 @@ function handleChange(
     setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   },
   validator?: (value: string) => string | null,
-) {
+): void {
   if (validator != null) {
     if (event.target.value === "") {
       errorHandler.setState(State.DEFAULT);

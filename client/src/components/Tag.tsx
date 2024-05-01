@@ -1,5 +1,5 @@
-import { ComponentProps } from "react";
-import { IconType } from "react-icons";
+import { type ComponentProps } from "react";
+import { type IconType } from "react-icons";
 
 export type TagProps = ComponentProps<"span"> & {
   icon?: IconType;
@@ -11,7 +11,7 @@ export default function Tag({ icon, color, ...props }: TagProps): JSX.Element {
   const colorStyle = color.includes("#") ? `bg-[${color}]` : color;
 
   return (
-    <span className={`${colorStyle} rounded-lg px-1.5 py-0.5 font-medium`}>
+    <span className={`${colorStyle} rounded-lg px-2 py-0.5 font-medium`}>
       {icon != null ? icon({}) : <></>}
       {props.children}
     </span>
