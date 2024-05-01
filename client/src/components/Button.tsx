@@ -12,6 +12,7 @@ export type ButtonProps = ComponentProps<"button"> &
 
 export default function Button({
   to,
+  icon,
   color,
   align,
   className,
@@ -22,14 +23,14 @@ export default function Button({
   if (to != null) {
     return (
       <Link to={to} className={style}>
-        <Icon icon={props.icon} />
+        <Icon icon={icon} />
         {props.children}
       </Link>
     );
   }
   return (
-    <button className={style}>
-      <Icon icon={props.icon} />
+    <button className={style} {...props}>
+      <Icon icon={icon} />
       {props.children}
     </button>
   );
@@ -65,7 +66,7 @@ const buttonStyle = tv({
 function Icon({ icon }: { icon?: IconType }): JSX.Element {
   if (icon != null) {
     const props: IconBaseProps = {
-      className: `inline`,
+      className: `inline text-xl`,
     };
 
     return icon(props);

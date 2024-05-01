@@ -10,6 +10,9 @@ export function MainLayout(): JSX.Element {
 
   return (
     <div className="flex h-svh flex-col">
+      <Menu
+        visibility={{ visible: menuVisible, setVisibility: setMenuVisible }}
+      />
       {/* //TODO Deixar header fixado no topo da tela */}
       <header className="flex w-full flex-row items-center bg-sky-500 px-4 py-2">
         <Controlls
@@ -20,12 +23,9 @@ export function MainLayout(): JSX.Element {
         <SearchBar className="hidden w-8/12 xl:inline" />
         <Nav />
       </header>
-      <main className="relative grow">
-        <Menu visible={menuVisible} />
-        <div className="flex min-h-full w-full justify-center bg-slate-100">
-          <Outlet />
-        </div>
-      </main>
+      <div className="flex h-full w-full justify-center bg-gray-50">
+        <Outlet />
+      </div>
       <BottomNav />
     </div>
   );
@@ -91,15 +91,8 @@ function Nav(): JSX.Element {
         <ul className="text-md hidden flex-row items-center gap-3 font-semibold text-white xl:flex">
           <NavLinks />
         </ul>
-
         <NavDropdown />
-
         <SearchBar className="inline w-10 sm:w-72 xl:hidden" />
-
-        <img
-          src="../src/assets/popcorn-logo.png"
-          className="h-10 w-10 shadow-lg"
-        />
       </nav>
     </>
   );
