@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants";
 
 export const inputBaseStyle = tv({
-  base: "flex items-center rounded-lg",
+  base: "flex items-center rounded-lg w-full",
   variants: {
     status: {
       default: "bg-gray-100",
@@ -41,7 +41,10 @@ export const inputBaseStyle = tv({
 });
 
 export const inputTagStyle =
-  "bg-transparent border-none focus:ring-transparent w-full min-h-10 max-h-40";
+  "bg-transparent border-none focus:ring-transparent w-full h-10";
+
+export const inputTextAreaStyle =
+  "bg-transparent border-none focus:ring-transparent resize-none w-full min-h-10 max-h-40";
 
 export const inputIconStyle = tv({
   base: "text-md",

@@ -7,24 +7,27 @@ import {
   inputIconStyle,
   inputLabelStyle,
   inputTagStyle,
+  inputTextAreaStyle,
 } from "./Input.style";
 
-// TODO: Limitar tipos de input
-export type InputProps = ComponentProps<"input"> &
+export type InputProps = Omit<ComponentProps<"input">, "type"> &
   Omit<
     VariantProps<typeof inputBaseStyle>,
     "status" | "hasLeftIcon" | "hasRightIcon" | "focus"
   > & {
+    type?: InputType;
+
     label?: string;
     helper?: string | JSX.Element;
 
     icon?: IconType;
     rIcon?: IconType;
 
-    // TODO: Melhorar validator
     validator?: (value: any) => string | undefined;
     sanitizer?: (value: any) => any;
   };
+
+type InputType = "text" | "number" | "email" | "password" | "date" | "textarea";
 
 export default function Input(props: InputProps): JSX.Element {
   const id = useId();
@@ -33,8 +36,8 @@ export default function Input(props: InputProps): JSX.Element {
     useState<VariantProps<typeof inputBaseStyle>["status"]>("default");
   const [message, setMessage] = useState("");
 
-  const type = props.type ?? "text";
   const helper = message === "" ? props.helper : message;
+  const type = props.type ?? "text";
 
   const baseStyle = inputBaseStyle({
     status,
@@ -49,25 +52,92 @@ export default function Input(props: InputProps): JSX.Element {
       <Label label={props.label} id={id} />
       <div className={baseStyle}>
         <Icon icon={props.icon} style={iconStyle} />
-        <input
-          id={id}
+        <InputComponent
+          inputProps={props}
           type={type}
-          className={inputTagStyle}
-          onInput={(e) => {
-            onInputHandler(e, setStatus, setMessage, props.validator);
-          }}
-          onFocus={(e) => {
-            onFocusHandler(e, setFocus, "focus", props.onFocus);
-          }}
-          onBlur={(e) => {
-            onFocusHandler(e, setFocus, "blur", props.onFocus);
-          }}
+          focus={{ focus, setFocus }}
+          status={{ status, setStatus }}
+          message={{ message, setMessage }}
+          id={id}
         />
         <Icon icon={props.rIcon} style={iconStyle} />
       </div>
       <Helper status={status}>{helper}</Helper>
     </>
   );
+}
+
+function InputComponent({
+  inputProps,
+  type,
+  focus,
+  status,
+  message,
+  id,
+}: {
+  inputProps: InputProps;
+  type: InputType;
+  focus: {
+    focus: boolean;
+    setFocus: React.Dispatch<React.SetStateAction<boolean>>;
+  };
+  status: {
+    status: VariantProps<typeof inputBaseStyle>["status"];
+    setStatus: React.Dispatch<
+      React.SetStateAction<VariantProps<typeof inputBaseStyle>["status"]>
+    >;
+  };
+  message: {
+    message: string;
+    setMessage: React.Dispatch<React.SetStateAction<string>>;
+  };
+  id: string;
+}): JSX.Element {
+  switch (type) {
+    case "textarea": {
+      const p = inputProps as ComponentProps<"textarea">;
+      return (
+        <textarea
+          id={id}
+          className={inputTextAreaStyle}
+          onInput={(e) => {
+            autoResize(e);
+            if (p.onInput != null) {
+              p.onInput(e);
+            }
+          }}
+          {...p}
+        />
+      );
+    }
+    case "date": {
+      return <></>;
+    }
+    default: {
+      return (
+        <input
+          id={id}
+          type={type}
+          className={inputTagStyle}
+          onInput={(e) => {
+            onInputHandler(
+              e,
+              status.setStatus,
+              message.setMessage,
+              inputProps.validator,
+            );
+          }}
+          onFocus={(e) => {
+            onFocusHandler(e, focus.setFocus, "focus", inputProps.onFocus);
+          }}
+          onBlur={(e) => {
+            onFocusHandler(e, focus.setFocus, "blur", inputProps.onInput);
+          }}
+          {...inputProps}
+        />
+      );
+    }
+  }
 }
 
 function Label({ label, id }: { label?: string; id: string }): JSX.Element {
@@ -140,4 +210,12 @@ function onFocusHandler(
   if (onFocus != null) {
     onFocus(event);
   }
+}
+
+function autoResize(event: React.FormEvent<HTMLTextAreaElement>): void {
+  const style = event.currentTarget.style;
+  const offsetTop = 0;
+
+  style.height = "auto";
+  style.height = `${event.currentTarget.scrollHeight + offsetTop}px`;
 }
