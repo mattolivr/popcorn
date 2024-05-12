@@ -1,216 +1,143 @@
-import { useId, useState } from "react";
-import { type FieldValues, type UseFormRegister } from "react-hook-form";
-import { type IconBaseProps, type IconType } from "react-icons";
-import { FaInfo } from "react-icons/fa";
-import { FaCheck } from "react-icons/fa6";
+import { isValidElement, useId, useState, type ComponentProps } from "react";
+import { type IconType } from "react-icons";
+import { type VariantProps } from "tailwind-variants";
+import {
+  inputBaseStyle,
+  inputHelperStyle,
+  inputIconStyle,
+  inputLabelStyle,
+  inputTagStyle,
+} from "./Input.style";
 
-export interface InputProps extends InputForm {
-  type: Type;
+// TODO: Limitar tipos de input
+export type InputProps = ComponentProps<"input"> &
+  Omit<
+    VariantProps<typeof inputBaseStyle>,
+    "status" | "hasLeftIcon" | "hasRightIcon" | "focus"
+  > & {
+    label?: string;
+    helper?: string | JSX.Element;
 
-  label?: string;
-  hint?: string;
+    icon?: IconType;
+    rIcon?: IconType;
 
-  action?: Action; // TODO: Implementar
-  icon?: IconType;
-
-  visible?: boolean;
-  required?: boolean; // TODO: Implementar
-  disabled?: boolean; // TODO: Implementar
-}
-
-interface InputForm {
-  name?: string;
-  register?: UseFormRegister<FieldValues>;
-
-  validator?: (value: string) => string | null;
-  sanitizer?: (value: string) => string; // TODO: Implementar
-}
-
-interface Action {
-  name: string;
-  function: () => void;
-}
-
-type Type =
-  | "text"
-  | "email"
-  | "password"
-  | "number"
-  | "integer"
-  | "date"
-  | "file";
-
-enum State {
-  DEFAULT,
-  ERROR,
-  SUCCESS,
-}
+    // TODO: Melhorar validator
+    validator?: (value: any) => string | undefined;
+    sanitizer?: (value: any) => any;
+  };
 
 export default function Input(props: InputProps): JSX.Element {
-  const [state, setState] = useState(State.DEFAULT);
-  const [errorMessage, setErrorMessage] = useState("");
-
   const id = useId();
+  const [focus, setFocus] = useState(false);
+  const [status, setStatus] =
+    useState<VariantProps<typeof inputBaseStyle>["status"]>("default");
+  const [message, setMessage] = useState("");
 
-  const inputStyle = `${baseStyle} ${stateStyle(state)} 
-    ${iconLeftPadding(props.icon != null)}`;
+  const type = props.type ?? "text";
+  const helper = message === "" ? props.helper : message;
 
-  let formProps = null;
-  if (props.register != null) {
-    if (props.name == null) {
-      throw new Error('Input: Necessário especificar a propriedade "name"');
-    }
-    formProps = props.register(props.name, { required: props.required });
-  }
+  const baseStyle = inputBaseStyle({
+    status,
+    hasLeftIcon: props.icon != null,
+    hasRightIcon: props.rIcon != null,
+    focus,
+  });
+  const iconStyle = inputIconStyle({ status });
 
   return (
     <>
-      <div className={props.visible === false ? "hidden" : "relative"}>
-        <Label id={id} label={props.label} />
-        <div className="relative">
-          <Icon icon={props.icon} state={state} />
-          <input
-            className={inputStyle}
-            placeholder={props.hint}
-            id={id}
-            {...formProps}
-            onChange={(event) => {
-              handleChange(
-                event,
-                { setState, state, setErrorMessage },
-                props.validator,
-              );
-            }}
-          />
-          <Interation state={state} />
-        </div>
-        <ErrorMessage state={state} errorMessage={errorMessage} />
+      <Label label={props.label} id={id} />
+      <div className={baseStyle}>
+        <Icon icon={props.icon} style={iconStyle} />
+        <input
+          id={id}
+          type={type}
+          className={inputTagStyle}
+          onInput={(e) => {
+            onInputHandler(e, setStatus, setMessage, props.validator);
+          }}
+          onFocus={(e) => {
+            onFocusHandler(e, setFocus, "focus", props.onFocus);
+          }}
+          onBlur={(e) => {
+            onFocusHandler(e, setFocus, "blur", props.onFocus);
+          }}
+        />
+        <Icon icon={props.rIcon} style={iconStyle} />
       </div>
+      <Helper status={status}>{helper}</Helper>
     </>
   );
 }
 
-function handleChange(
-  event: React.ChangeEvent<HTMLInputElement>,
-  errorHandler: {
-    setState: React.Dispatch<React.SetStateAction<State>>;
-    state: State;
-    setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
-  },
-  validator?: (value: string) => string | null,
-): void {
-  if (validator != null) {
-    if (event.target.value === "") {
-      errorHandler.setState(State.DEFAULT);
-      errorHandler.setErrorMessage("");
-    } else {
-      const ret = validator(event.target.value);
-      errorHandler.setState(ret == null ? errorHandler.state : State.ERROR);
-      errorHandler.setErrorMessage(ret ?? "");
-    }
+function Label({ label, id }: { label?: string; id: string }): JSX.Element {
+  if (label == null) {
+    return <></>;
   }
+  return (
+    <label htmlFor={id} className={inputLabelStyle}>
+      {label}
+    </label>
+  );
 }
 
-function Label({ id, label }: { id: string; label?: string }): JSX.Element {
-  if (label != null) {
-    return (
-      <label htmlFor={id} className="mb-1 block text-sm font-medium">
-        {label}
-      </label>
-    );
-  }
-  return <></>;
+interface IconProps {
+  icon?: IconType;
+  style: string;
 }
 
-function Icon({ icon, state }: { icon?: IconType; state: State }): JSX.Element {
-  let color: string;
-  switch (state) {
-    case State.ERROR:
-      color = "text-red-700";
-      break;
-    case State.SUCCESS:
-      color = "text-green-700";
-      break;
-    default:
-      color = "text-gray-400";
+function Icon({ icon, style }: IconProps): JSX.Element {
+  if (icon == null) {
+    return <></>;
   }
-
-  if (icon != null) {
-    const props: IconBaseProps = {
-      className: color,
-    };
-
-    return (
-      <div
-        className={`pointer-events-none absolute inset-y-0 start-0 flex items-center 
-        ps-4 peer-disabled:pointer-events-none peer-disabled:opacity-50`}
-      >
-        {icon(props)}
-      </div>
-    );
-  }
-  return <></>;
+  return icon({ className: style });
 }
 
-function Interation({ state }: { state: State }): JSX.Element {
-  let iconType: IconType | null;
-  let color: string;
-
-  switch (state) {
-    case State.ERROR:
-      iconType = FaInfo;
-      color = "text-red-700";
-      break;
-    case State.SUCCESS:
-      iconType = FaCheck;
-      color = "text-green-700";
-      break;
-    default:
-      iconType = null;
-      color = "";
-  }
-
-  if (iconType != null) {
-    const props: IconBaseProps = {
-      className: color,
-    };
-
-    return (
-      <div className="pointer-events-none absolute inset-y-0 end-0 flex items-center pe-3">
-        {iconType(props)}
-      </div>
-    );
-  }
-  return <></>;
-}
-
-function ErrorMessage({
-  state,
-  errorMessage,
+function Helper({
+  status,
+  children,
 }: {
-  state: State;
-  errorMessage: string;
+  status: VariantProps<typeof inputBaseStyle>["status"];
+  children?: string | JSX.Element;
 }): JSX.Element {
-  if (state === State.ERROR) {
-    return (
-      <p className="mt-1 text-sm font-medium text-red-600">{errorMessage}</p>
-    );
+  if (children == null) {
+    return <></>;
   }
-  return <></>;
+  if (isValidElement(children)) {
+    return children;
+  }
+  return <p className={inputHelperStyle({ status })}>{children}</p>;
 }
 
-const baseStyle = `peer block w-full rounded-lg bg-gray-100 px-4 py-3 text-sm 
-disabled:pointer-events-none disabled:opacity-5`;
+function onInputHandler(
+  event: React.FormEvent<HTMLInputElement>,
+  setStatus: React.Dispatch<
+    React.SetStateAction<VariantProps<typeof inputBaseStyle>["status"]>
+  >,
+  setMessage: React.Dispatch<React.SetStateAction<string>>,
+  validator?: (value: any) => string | undefined,
+  sanitizer?: (value: any) => any,
+): void {
+  const value = event.currentTarget.value;
 
-const stateStyle = (state: State) => {
-  switch (state) {
-    case State.ERROR:
-      return "border-red-600 border-2 focus:outline-red-400";
-    case State.SUCCESS:
-      return "border-green-500 border-2 focus:outline-green-300";
-    default:
-      return "border-transparent focus:outline-sky-500";
+  if (validator != null) {
+    const error = validator(value);
+    setStatus(error != null ? "error" : "default");
+    setMessage(error ?? "");
   }
-};
+  if (sanitizer != null) {
+    event.currentTarget.value = sanitizer(event.currentTarget.value);
+  }
+}
 
-const iconLeftPadding = (icon: boolean) => (icon ? "ps-11" : "");
+function onFocusHandler(
+  event: React.FocusEvent<HTMLInputElement, Element>,
+  setFocus: React.Dispatch<React.SetStateAction<boolean>>,
+  type: "focus" | "blur",
+  onFocus?: React.FocusEventHandler<HTMLInputElement>,
+): void {
+  setFocus(type === "focus");
+  if (onFocus != null) {
+    onFocus(event);
+  }
+}
