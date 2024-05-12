@@ -106,6 +106,12 @@ function InputComponent({
               p.onInput(e);
             }
           }}
+          onFocus={(e) => {
+            onFocusHandler(e, focus.setFocus, "focus", p.onFocus);
+          }}
+          onBlur={(e) => {
+            onFocusHandler(e, focus.setFocus, "blur", p.onInput);
+          }}
           {...p}
         />
       );
@@ -201,10 +207,10 @@ function onInputHandler(
 }
 
 function onFocusHandler(
-  event: React.FocusEvent<HTMLInputElement, Element>,
+  event: React.FocusEvent<any, Element>,
   setFocus: React.Dispatch<React.SetStateAction<boolean>>,
   type: "focus" | "blur",
-  onFocus?: React.FocusEventHandler<HTMLInputElement>,
+  onFocus?: React.FocusEventHandler<any>,
 ): void {
   setFocus(type === "focus");
   if (onFocus != null) {
