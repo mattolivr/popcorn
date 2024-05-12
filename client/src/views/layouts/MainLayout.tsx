@@ -10,9 +10,6 @@ export function MainLayout(): JSX.Element {
 
   return (
     <div className="flex h-svh flex-col">
-      <Menu
-        visibility={{ visible: menuVisible, setVisibility: setMenuVisible }}
-      />
       {/* //TODO Deixar header fixado no topo da tela */}
       <header className="flex w-full flex-row items-center bg-sky-500 px-4 py-2">
         <Controlls
@@ -23,7 +20,10 @@ export function MainLayout(): JSX.Element {
         <SearchBar className="hidden w-8/12 xl:inline" />
         <Nav />
       </header>
-      <div className="flex h-full w-full justify-center bg-gray-50">
+      <div className="flex h-full w-full justify-center bg-gray-200 relative">
+        <Menu
+          visibility={{ visible: menuVisible, setVisibility: setMenuVisible }}
+        />
         <Outlet />
       </div>
       <BottomNav />

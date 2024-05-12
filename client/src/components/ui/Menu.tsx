@@ -1,9 +1,10 @@
 import { Avatar } from "flowbite-react";
 import { type IconType } from "react-icons";
-import { HiChat, HiChevronDoubleLeft } from "react-icons/hi";
+import { HiChat } from "react-icons/hi";
 import { HiBell, HiHome, HiStar } from "react-icons/hi2";
 import { useLocation } from "react-router-dom";
 import Button from "../Button";
+import Card from "../Card";
 
 export interface MenuProps {
   visibility: {
@@ -15,27 +16,15 @@ export interface MenuProps {
 export default function Menu({ visibility }: MenuProps): JSX.Element {
   return (
     <div
-      className={`left-0 top-0 flex h-full w-64 flex-col gap-3 bg-gray-200 
-        px-2 pt-2 shadow-sm ${visibility.visible ? "absolute" : "hidden"}`}
+      className={`left-0 top-0 flex h-full w-64 flex-col
+        px-2 py-4 ${visibility.visible ? "absolute" : "hidden"}`}
     >
-      <Header visibility={visibility} />
-      <User />
-      <Navigation />
-    </div>
-  );
-}
-
-function Header({ visibility }: MenuProps): JSX.Element {
-  return (
-    <div className="flex flex-row items-center justify-between">
-      <img src="../src/assets/popcorn-logo.png" className="h-8 w-8" />
-      <Button
-        icon={HiChevronDoubleLeft}
-        color="transparent"
-        onClick={() => {
-          visibility.setVisibility(false);
-        }}
-      />
+      <Card
+        className="gap-3 h-full"
+      >
+        <User />
+        <Navigation />
+      </Card>
     </div>
   );
 }
