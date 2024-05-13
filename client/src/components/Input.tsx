@@ -49,7 +49,7 @@ export default function Input(props: InputProps): JSX.Element {
 
   return (
     <>
-      <Label label={props.label} id={id} />
+      <Label label={props.label} id={props.id ?? id} />
       <div className={baseStyle}>
         <Icon icon={props.icon} style={iconStyle} />
         <InputComponent
@@ -58,7 +58,7 @@ export default function Input(props: InputProps): JSX.Element {
           focus={{ focus, setFocus }}
           status={{ status, setStatus }}
           message={{ message, setMessage }}
-          id={id}
+          id={props.id ?? id}
         />
         <Icon icon={props.rIcon} style={iconStyle} />
       </div>
@@ -98,9 +98,11 @@ function InputComponent({
       const p = inputProps as ComponentProps<"textarea">;
       return (
         <textarea
+          {...p}
           id={id}
           className={inputTextAreaStyle}
           onInput={(e) => {
+            console.log("onInput");
             autoResize(e);
             if (p.onInput != null) {
               p.onInput(e);
@@ -110,9 +112,8 @@ function InputComponent({
             onFocusHandler(e, focus.setFocus, "focus", p.onFocus);
           }}
           onBlur={(e) => {
-            onFocusHandler(e, focus.setFocus, "blur", p.onInput);
+            onFocusHandler(e, focus.setFocus, "blur", p.onBlur);
           }}
-          {...p}
         />
       );
     }
@@ -122,6 +123,7 @@ function InputComponent({
     default: {
       return (
         <input
+          {...inputProps}
           id={id}
           type={type}
           className={inputTagStyle}
@@ -137,9 +139,8 @@ function InputComponent({
             onFocusHandler(e, focus.setFocus, "focus", inputProps.onFocus);
           }}
           onBlur={(e) => {
-            onFocusHandler(e, focus.setFocus, "blur", inputProps.onInput);
+            onFocusHandler(e, focus.setFocus, "blur", inputProps.onBlur);
           }}
-          {...inputProps}
         />
       );
     }
@@ -220,8 +221,10 @@ function onFocusHandler(
 
 function autoResize(event: React.FormEvent<HTMLTextAreaElement>): void {
   const style = event.currentTarget.style;
-  const offsetTop = 0;
 
-  style.height = "auto";
-  style.height = `${event.currentTarget.scrollHeight + offsetTop}px`;
+  if (event.currentTarget.value === "") {
+    style.height = "40px";
+    return;
+  }
+  style.height = `${event.currentTarget.scrollHeight}px`;
 }

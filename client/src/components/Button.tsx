@@ -41,9 +41,9 @@ const buttonStyle = tv({
   variants: {
     color: {
       primary:
-        "bg-sky-500 outline-sky-600 text-white hover:bg-sky-600 active:bg-sky-700",
+        "bg-sky-500 outline-sky-600 text-white hover:bg-sky-600 active:bg-sky-700 disabled:bg-gray-400",
       secondary:
-        "bg-transparent outline-sky-600 border border-sky-600 text-sky-600 hover:bg-sky-500 hover:border-sky-500 hover:text-white active:bg-sky-700 active:border-sky-700 active:text-white",
+        "bg-transparent border-2 border-sky-300 text-sky-400 hover:bg-sky-400 hover:border-sky-400 hover:text-white active:bg-sky-500 active:border-sky-500 active:text-white",
       blank:
         "bg-white outline-gray-400 shadow-sm border border-gray-100 hover:bg-gray-100 text-gray-700",
       transparent:

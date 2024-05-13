@@ -44,7 +44,7 @@ export const inputTagStyle =
   "bg-transparent border-none focus:ring-transparent w-full h-10";
 
 export const inputTextAreaStyle =
-  "bg-transparent border-none focus:ring-transparent resize-none w-full min-h-10 max-h-40";
+  "bg-transparent border-none focus:ring-transparent resize-none w-full min-h-10 h-10 max-h-40";
 
 export const inputIconStyle = tv({
   base: "text-md",
