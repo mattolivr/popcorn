@@ -16,12 +16,10 @@ export interface MenuProps {
 export default function Menu({ visibility }: MenuProps): JSX.Element {
   return (
     <div
-      className={`left-0 top-0 flex h-full w-64 flex-col
-        px-2 py-4 ${visibility.visible ? "absolute" : "hidden"}`}
+      className={`left-0 top-0 z-50 flex h-full w-full flex-col sm:w-fit sm:px-2
+        sm:py-4 xl:w-[17rem] ${visibility.visible ? "absolute" : "hidden"}`}
     >
-      <Card
-        className="gap-3 h-full"
-      >
+      <Card className="h-full gap-3">
         <User />
         <Navigation />
       </Card>
@@ -32,15 +30,14 @@ export default function Menu({ visibility }: MenuProps): JSX.Element {
 function User(): JSX.Element {
   return (
     <a
-      className="flex flex-col items-center rounded-xl p-2 hover:bg-gray-300"
+      className="flex flex-col items-center rounded-xl
+      p-2 hover:bg-gray-300 sm:p-0
+      sm:hover:bg-transparent xl:p-2 xl:hover:bg-gray-300"
       href="/teste"
     >
       <div className="flex w-full items-center justify-start gap-2">
-        <Avatar
-          img="https://source.unsplash.com/random/700x700/?person"
-          rounded
-        />
-        <div className="flex flex-col leading-5">
+        <Avatar rounded />
+        <div className="flex flex-col leading-5 sm:hidden xl:flex">
           <span className="font-medium">Nome do usuário</span>
           <span className="text-slate-700">@username</span>
         </div>
@@ -65,11 +62,12 @@ function MenuButton({ button }: { button: MenuButtonProps }): JSX.Element {
       key={button.label}
       to={button.path}
       color="transparent"
-      className={`hover:bg-gray-300 ${backgroundColor}`}
+      className={`hover:bg-gray-300 ${backgroundColor} w-full 
+        justify-start p-2 sm:justify-center sm:p-0 xl:justify-start xl:p-2`}
       icon={button.icon}
       align="start"
     >
-      {button.label}
+      <span className="inline sm:hidden xl:inline">{button.label}</span>
     </Button>
   );
 }

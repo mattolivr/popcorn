@@ -15,7 +15,7 @@ export default function Carousel(props: CarouselProps): JSX.Element {
   // TODO: Ajustar responsivididade, z-index maior que o Menu e ring dos botões
   return (
     <div className="h-56 sm:h-64 xl:h-80 2xl:h-96">
-      <FbCarousel slide={false}>
+      <FbCarousel>
         {props.data?.map((item) => (
           <CarouselContentItem key={item.key} item={item} />
         ))}
@@ -36,7 +36,8 @@ function CarouselContentItem({ item }: { item: CarouselItem }): JSX.Element {
     >
       <img
         src={item.background}
-        className="absolute bg-center object-cover object-center mix-blend-overlay"
+        className="absolute mix-blend-overlay sm:translate-y-[20%] sm:object-cover
+          xl:translate-y-[25%]"
       />
       <span className="absolute mb-10 text-lg font-bold text-white">
         {item.title}

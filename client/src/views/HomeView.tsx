@@ -1,7 +1,8 @@
+import { type AxiosResponse } from "axios";
 import { useEffect, useId, useState } from "react";
 import { FaImage, FaMessage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import { tmdb } from "../adapters/tmdb";
+import { get } from "../adapters/tmdb";
 import Button from "../components/Button";
 import Card from "../components/Card";
 import Carousel, { type CarouselItem } from "../components/Carousel";
@@ -15,7 +16,7 @@ import {
 
 export default function HomeView(): JSX.Element {
   return (
-    <div className="mt-4 flex w-full flex-col gap-2 px-2 md:w-[900px]">
+    <div className="mt-4 flex w-full flex-col gap-2 px-2 md:w-3/4 lg:w-7/12">
       <Highlights />
       <NewPost />
     </div>
@@ -67,7 +68,7 @@ function NewPost(): JSX.Element {
               className={clean ? "hidden" : ""}
               color="secondary"
               onClick={() => {
-                clearTextArea(textAreaId);
+                setText("");
               }}
             >
               Limpar
@@ -88,35 +89,22 @@ function Highlights(): JSX.Element {
   const [data, setData] = useState<CarouselItem[]>();
 
   useEffect(() => {
-    if (data != null) {
-      return;
+    function getMedia(response: AxiosResponse<any, any>): void {
+      setData(
+        response.data?.results?.map((media: Movie | TVShow) => {
+          return {
+            key: media.id,
+            title: getTitle(media) ?? "",
+            background: `https://image.tmdb.org/t/p/original/${media.backdrop_path}`,
+            link: `/${isMovie(media) ? "movies" : "shows"}/${media.id}`,
+          };
+        }) as CarouselItem[],
+      );
     }
-    tmdb
-      .get(`trending/all/day`)
-      .then((response) => {
-        const trending: CarouselItem[] = response.data?.results?.map(
-          (media: Movie | TVShow) => {
-            return {
-              key: media.id,
-              title: getTitle(media) ?? "",
-              background: `https://image.tmdb.org/t/p/original/${media.backdrop_path}`,
-              link: `/${isMovie(media) ? "movies" : "shows"}/${media.id}`,
-            };
-          },
-        );
-        setData(trending);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (data == null) {
+      get("trending/all/day", getMedia);
+    }
   });
 
   return <Carousel data={data} />;
-}
-
-function clearTextArea(id: string): void {
-  const textArea = document.getElementById(id);
-  if (textArea != null) {
-    textArea.innerHTML = "";
-  }
 }

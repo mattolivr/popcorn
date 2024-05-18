@@ -39,6 +39,7 @@ export interface MediaLayoutProps {
 
 export default function MediaLayout(props: MediaLayoutProps): JSX.Element {
   media = props.media;
+  document.title = `Popcorn ${media == null ? "Club" : `| ${getTitle(media)}`}`;
 
   return (
     <div className="flex h-full w-full flex-col">

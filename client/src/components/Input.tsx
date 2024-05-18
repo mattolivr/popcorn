@@ -21,7 +21,7 @@ export type InputProps = Omit<ComponentProps<"input">, "type"> &
     helper?: string | JSX.Element;
 
     icon?: IconType;
-    rIcon?: IconType;
+    ricon?: IconType;
 
     validator?: (value: any) => string | undefined;
     sanitizer?: (value: any) => any;
@@ -42,8 +42,9 @@ export default function Input(props: InputProps): JSX.Element {
   const baseStyle = inputBaseStyle({
     status,
     hasLeftIcon: props.icon != null,
-    hasRightIcon: props.rIcon != null,
+    hasRightIcon: props.ricon != null,
     focus,
+    className: props.className,
   });
   const iconStyle = inputIconStyle({ status });
 
@@ -60,7 +61,7 @@ export default function Input(props: InputProps): JSX.Element {
           message={{ message, setMessage }}
           id={props.id ?? id}
         />
-        <Icon icon={props.rIcon} style={iconStyle} />
+        <Icon icon={props.ricon} style={iconStyle} />
       </div>
       <Helper status={status}>{helper}</Helper>
     </>
@@ -120,9 +121,10 @@ function InputComponent({
       return <></>;
     }
     default: {
+      const p = inputProps as ComponentProps<"input">;
       return (
         <input
-          {...inputProps}
+          {...p}
           id={id}
           type={type}
           className={inputTagStyle}

@@ -25,11 +25,6 @@ export default function MovieView(): JSX.Element {
     }
   });
 
-  if (movie != null) {
-    // TODO: Melhorar forma que é implementado, talvez com uma biblioteca chamada React Helmet
-    document.title = `Popcorn | ${movie.title}`;
-  }
-
   return (
     <MediaLayout media={movie}>
       <></>
