@@ -1,13 +1,22 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { FaImage, FaMessage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { tmdb } from "../adapters/tmdb";
 import Button from "../components/Button";
 import Card from "../components/Card";
+import Carousel, { type CarouselItem } from "../components/Carousel";
 import Input from "../components/Input";
+import {
+  getTitle,
+  isMovie,
+  type Movie,
+  type TVShow,
+} from "../entites/tmdb.media";
 
 export default function HomeView(): JSX.Element {
   return (
-    <div className="mt-4 flex w-full flex-col gap-2 px-2 md:w-[700px]">
+    <div className="mt-4 flex w-full flex-col gap-2 px-2 md:w-[900px]">
+      <Highlights />
       <NewPost />
     </div>
   );
@@ -40,7 +49,6 @@ function NewPost(): JSX.Element {
               setFocused(true);
             }}
             onBlur={() => {
-              console.log("onBlur");
               setFocused(false);
             }}
           />
@@ -74,6 +82,36 @@ function NewPost(): JSX.Element {
       </form>
     </Card>
   );
+}
+
+function Highlights(): JSX.Element {
+  const [data, setData] = useState<CarouselItem[]>();
+
+  useEffect(() => {
+    if (data != null) {
+      return;
+    }
+    tmdb
+      .get(`trending/all/day`)
+      .then((response) => {
+        const trending: CarouselItem[] = response.data?.results?.map(
+          (media: Movie | TVShow) => {
+            return {
+              key: media.id,
+              title: getTitle(media) ?? "",
+              background: `https://image.tmdb.org/t/p/original/${media.backdrop_path}`,
+              link: `/${isMovie(media) ? "movies" : "shows"}/${media.id}`,
+            };
+          },
+        );
+        setData(trending);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  });
+
+  return <Carousel data={data} />;
 }
 
 function clearTextArea(id: string): void {

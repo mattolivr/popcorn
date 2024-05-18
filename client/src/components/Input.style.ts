@@ -47,7 +47,6 @@ export const inputTextAreaStyle =
   "bg-transparent border-none focus:ring-transparent resize-none w-full min-h-10 h-10 max-h-40";
 
 export const inputIconStyle = tv({
-  base: "text-md",
   variants: {
     status: {
       default: "text-gray-600",

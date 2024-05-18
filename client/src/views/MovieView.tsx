@@ -18,7 +18,6 @@ export default function MovieView(): JSX.Element {
         })
         .then((response): void => {
           setMovie(response.data as Movie);
-          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);

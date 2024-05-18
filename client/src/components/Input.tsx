@@ -102,7 +102,6 @@ function InputComponent({
           id={id}
           className={inputTextAreaStyle}
           onInput={(e) => {
-            console.log("onInput");
             autoResize(e);
             if (p.onInput != null) {
               p.onInput(e);

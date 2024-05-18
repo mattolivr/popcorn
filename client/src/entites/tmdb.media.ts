@@ -93,6 +93,13 @@ interface Providers {
   rent: Provider[];
 }
 
+export const isMovie = (media?: Movie | TVShow): media is Movie => {
+  if (media != null && "title" in media) {
+    return true;
+  }
+  return false;
+};
+
 export const getTitle = (media?: Movie | TVShow): string | undefined => {
   if (media != null) {
     return "name" in media ? media.name : media.title;

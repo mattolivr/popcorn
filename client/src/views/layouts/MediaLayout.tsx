@@ -16,8 +16,8 @@ import {
 import Anchor from "../../components/Anchor.tsx";
 import Button from "../../components/Button.tsx";
 import Card from "../../components/Card";
-import Carousel, { type CarouselData } from "../../components/Carousel.tsx";
 import Divider from "../../components/Divider.tsx";
+import Slider, { type SliderData } from "../../components/Slider.tsx";
 import Tag from "../../components/Tag.tsx";
 import {
   getAllWatchProviders,
@@ -283,11 +283,11 @@ function Synopsis(): JSX.Element {
               data-hs-collapse="#hs-show-hide-collapse-heading"
             >
               <span className="hs-collapse-open:hidden">Mostrar mais</span>
-              <span className="hidden hs-collapse-open:block">
+              <span className="hs-collapse-open:block hidden">
                 Mostrar menos
               </span>
               <svg
-                className="size-4 flex-shrink-0 hs-collapse-open:rotate-180"
+                className="hs-collapse-open:rotate-180 size-4 flex-shrink-0"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -322,8 +322,8 @@ function Cast(): JSX.Element {
     return <></>;
   }
 
-  const elements: CarouselData[] = cast.map((person) => {
-    const t: CarouselData = {
+  const elements: SliderData[] = cast.map((person) => {
+    const t: SliderData = {
       key: person.id.toString(),
       title: person.name,
       description: person.character,
@@ -337,7 +337,7 @@ function Cast(): JSX.Element {
 
   return (
     <Card title="Elenco">
-      <Carousel data={elements} />
+      <Slider data={elements} />
       <Anchor path="./cast" className="mt-1 text-right">
         Ver todo o Elenco...
       </Anchor>
