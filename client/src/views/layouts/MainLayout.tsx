@@ -1,19 +1,19 @@
 import { Avatar, type CustomFlowbiteTheme, Dropdown } from "flowbite-react";
 import { useState } from "react";
-import { type IconBaseProps, type IconType } from "react-icons";
-import { FaBell, FaInfoCircle, FaPlus, FaSearch } from "react-icons/fa";
+import { FaInfoCircle, FaPlus } from "react-icons/fa";
 import {
   FaBars,
+  FaBell,
+  FaEnvelope,
   FaFilm,
   FaGlobe,
   FaHouse,
   FaMagnifyingGlass,
-  FaMessage,
   FaTv,
   FaUser,
   FaUserGroup,
 } from "react-icons/fa6";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import Button, { type ButtonProps } from "../../components/Button";
 import Input from "../../components/Input";
 import Menu from "../../components/ui/Menu";
@@ -22,9 +22,8 @@ export function MainLayout(): JSX.Element {
   const [menuVisible, setMenuVisible] = useState(false);
 
   return (
-    <div className="flex h-svh flex-col">
-      {/* //TODO Deixar header fixado no topo da tela */}
-      <header className="flex w-full flex-row items-center bg-sky-500 px-4 py-2">
+    <div className="min-h-dvh w-full bg-gray-200">
+      <header className="sticky top-0 z-50 flex w-full flex-row items-center bg-sky-500 px-4 py-2">
         <Controlls
           toggleMenu={() => {
             setMenuVisible(!menuVisible);
@@ -37,10 +36,10 @@ export function MainLayout(): JSX.Element {
           }}
         />
       </header>
-      <div className="relative flex h-full w-full justify-center bg-gray-200">
-        <Menu
-          visibility={{ visible: menuVisible, setVisibility: setMenuVisible }}
-        />
+      <Menu
+        visibility={{ visible: menuVisible, setVisibility: setMenuVisible }}
+      />
+      <div className="relative flex h-max w-full justify-center">
         <Outlet />
       </div>
       <BottomNav />
@@ -75,7 +74,7 @@ function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
       <ul className="hidden flex-row items-center text-2xl text-gray-100 sm:flex">
         {controllButtons.map((btn) => (
           <li key={btn.key}>
-            <Button {...btn} />
+            <Button {...btn} className="px-3 py-2" />
           </li>
         ))}
       </ul>
@@ -94,7 +93,7 @@ interface NavProps {
 function Nav({ toggleMenu }: NavProps): JSX.Element {
   return (
     <nav className="flex w-full flex-row items-center justify-end gap-0 sm:gap-3">
-      <ul className="text-md hidden flex-row items-center gap-3 font-semibold text-white xl:flex">
+      <ul className="text-md hidden flex-row items-center font-semibold text-white xl:flex">
         <NavLinks />
       </ul>
       <NavDropdown />
@@ -149,9 +148,12 @@ const links = [
 function NavLinks({ linkStyle }: { linkStyle?: string }): JSX.Element {
   const components = links.map((link) => (
     <li key={link.path} className={linkStyle}>
-      <Link to={link.path} className="w-full outline-none focus:text-sky-300">
+      {/* <Link to={link.path} className="w-full outline-none focus:text-sky-300">
         {link.label}
-      </Link>
+      </Link> */}
+      <Button to={link.path} className="px-3 py-2">
+        {link.label}
+      </Button>
     </li>
   ));
 
@@ -175,41 +177,22 @@ function NavDropdown(): JSX.Element {
 }
 
 const navDropdownStyle: CustomFlowbiteTheme["dropdown"] = {
-  inlineWrapper: "flex items-center text-white font-semibold",
+  inlineWrapper:
+    "flex items-center text-white font-semibold hover:bg-sky-600 py-2 px-3 rounded-xl",
 };
 
 function BottomNav(): JSX.Element {
   return (
-    <div className="sticky bottom-0 w-full">
-      <div className="flex h-12 w-full flex-row items-center justify-around bg-sky-500 sm:hidden">
-        <BottomNavItem icon={FaHouse} label="Página Inicial" path="/" />
-        <BottomNavItem icon={FaSearch} label="Explorar" path="/explore" />
-        <BottomNavItem icon={FaPlus} label="Adicionar" path="#" />
-        <BottomNavItem
-          icon={FaBell}
-          label="Notificações"
-          path="/notifications"
-        />
-        <BottomNavItem icon={FaMessage} label="Mensagens" path="/messages" />
+    <div className="fixed bottom-0 z-50 w-full">
+      <div className="flex h-12 w-full flex-row items-center bg-sky-500 px-2 md:hidden">
+        <Button icon={FaHouse} to="/" className="w-full" />
+        <Button icon={FaEnvelope} to="/messages" className="w-full" />
+        <Button icon={FaPlus} className="w-full" />
+        <Button icon={FaBell} to="/notifications" className="w-full" />
+        <Button to="/users" className="w-full">
+          <Avatar size="xs" rounded />
+        </Button>
       </div>
     </div>
   );
-}
-
-interface BottomNavItemProps {
-  icon: IconType;
-  label: string;
-  path: string;
-}
-
-function BottomNavItem(props: BottomNavItemProps): JSX.Element {
-  const currentPath = useLocation();
-  const isCurrentPath = (path: string): boolean =>
-    currentPath.pathname === path;
-
-  const iconProps: IconBaseProps = {
-    className: `text-xl ${isCurrentPath(props.path) ? "text-orange-200" : "text-white"}`,
-  };
-
-  return <Link to={props.path}>{props.icon(iconProps)}</Link>;
 }

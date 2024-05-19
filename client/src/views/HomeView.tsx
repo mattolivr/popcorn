@@ -16,7 +16,7 @@ import {
 
 export default function HomeView(): JSX.Element {
   return (
-    <div className="mt-4 flex w-full flex-col gap-2 px-2 md:w-3/4 lg:w-7/12">
+    <div className="mt-2 flex h-fit w-full flex-col gap-2 px-3 sm:mt-4 sm:px-2 md:w-3/4 lg:w-7/12 2xl:w-5/12">
       <Highlights />
       <NewPost />
     </div>
@@ -91,14 +91,18 @@ function Highlights(): JSX.Element {
   useEffect(() => {
     function getMedia(response: AxiosResponse<any, any>): void {
       setData(
-        response.data?.results?.map((media: Movie | TVShow) => {
-          return {
-            key: media.id,
-            title: getTitle(media) ?? "",
-            background: `https://image.tmdb.org/t/p/original/${media.backdrop_path}`,
-            link: `/${isMovie(media) ? "movies" : "shows"}/${media.id}`,
-          };
-        }) as CarouselItem[],
+        response.data?.results
+          ?.map((media: Movie | TVShow) => {
+            return {
+              key: media.id,
+              title: getTitle(media) ?? "",
+              background: `https://image.tmdb.org/t/p/original/${media.backdrop_path}`,
+              link: `/${isMovie(media) ? "movies" : "shows"}/${media.id}`,
+            };
+          })
+          .filter((_media: Movie | TVShow, index: number) => {
+            return index < 6;
+          }) as CarouselItem[],
       );
     }
     if (data == null) {
