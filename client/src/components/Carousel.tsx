@@ -32,7 +32,9 @@ export default function Carousel(props: CarouselProps): JSX.Element {
 function CarouselContentItem({ item }: { item: CarouselItem }): JSX.Element {
   const cursor = item.link == null ? "cursor-default" : "cursor-pointer";
   const gradient =
-    item.title != null ?? "bg-gradient-to-b from-transparent to-neutral-950";
+    item.title == null
+      ? ""
+      : "bg-gradient-to-b from-transparent to-neutral-950";
 
   // TODO: Adicionar tratativa de erro ao não encontrar uma imagem
   return (
