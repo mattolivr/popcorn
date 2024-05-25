@@ -7,13 +7,13 @@ import Button from "../components/Button";
 import Card from "../components/Card";
 import Divider from "../components/Divider";
 import Input from "../components/Input";
-import WelcomeLayout from "./layouts/WelcomeLayout";
+import DialogLayout from "./layouts/DialogLayout";
 
 export default function LoginView() {
   const { register, handleSubmit } = useForm();
 
   return (
-    <WelcomeLayout>
+    <DialogLayout>
       <Card title="Faça o Login" className="max-w-lg gap-2">
         {/* TODO: Criar componente de link */}
         <Input
@@ -41,6 +41,6 @@ export default function LoginView() {
           Entre usando sua conta Google
         </Button>
       </Card>
-    </WelcomeLayout>
+    </DialogLayout>
   );
 }

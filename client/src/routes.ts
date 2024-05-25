@@ -12,7 +12,7 @@ export const router = createBrowserRouter([
   {
     path: "/",
     Component: MainLayout,
-    errorElement: ErrorView(),
+    ErrorBoundary: ErrorView,
     children: [
       {
         path: "/",

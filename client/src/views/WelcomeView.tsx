@@ -1,17 +1,17 @@
 import Anchor from "../components/Anchor";
 import Button from "../components/Button";
 import Card from "../components/Card";
-import WelcomeLayout from "./layouts/WelcomeLayout";
+import DialogLayout from "./layouts/DialogLayout";
 
 export default function WelcomeView() {
   return (
     <>
-      <WelcomeLayout highlight={Highlight()}>
+      <DialogLayout highlight={Highlight()}>
         <Card title="Venha fazer parte!" className="max-w-lg gap-2">
           <Button path="/sign-in">Cadastre-se</Button>
           <Anchor path="/login">Ja possui conta? Faça login</Anchor>
         </Card>
-      </WelcomeLayout>
+      </DialogLayout>
     </>
   );
 }

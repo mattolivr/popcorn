@@ -9,7 +9,7 @@ import Button from "../components/Button";
 import Card from "../components/Card";
 import Divider from "../components/Divider";
 import Input from "../components/Input";
-import WelcomeLayout from "./layouts/WelcomeLayout";
+import DialogLayout from "./layouts/DialogLayout";
 
 export default function SignInView() {
   const [step, setStep] = useState(1);
@@ -48,7 +48,7 @@ export default function SignInView() {
   };
 
   return (
-    <WelcomeLayout>
+    <DialogLayout>
       <Card title={title[step - 1]} className="max-w-lg gap-2">
         <form
           className="flex flex-col gap-2"
@@ -135,6 +135,6 @@ export default function SignInView() {
           Entre usando sua conta Google
         </Button>
       </Card>
-    </WelcomeLayout>
+    </DialogLayout>
   );
 }
