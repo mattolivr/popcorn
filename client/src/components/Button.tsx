@@ -47,7 +47,7 @@ const buttonStyle = tv({
       blank:
         "bg-white outline-gray-400 shadow-sm border border-gray-100 hover:bg-gray-100 text-gray-700",
       transparent:
-        "bg-transparent outline-gray-300 hover:bg-gray-200 text-gray-700",
+        "bg-transparent outline-gray-300 text-gray-700 hover:bg-gray-200 active:bg-gray-300",
       transparent_selected:
         "bg-sky-100 outline-sky-300 hover:bg-sky-200 text-sky-500 hover:text-sky-600",
     },

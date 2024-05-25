@@ -1,12 +1,10 @@
 import { type AxiosResponse } from "axios";
-import { useEffect, useId, useState } from "react";
-import { FaImage, FaMessage } from "react-icons/fa6";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { get } from "../adapters/tmdb";
-import Button from "../components/Button";
 import Card from "../components/Card";
 import Carousel, { type CarouselItem } from "../components/Carousel";
-import Input from "../components/Input";
+import PostInput from "../components/PostInput";
+import Post from "../components/ui/Post";
 import {
   getTitle,
   isMovie,
@@ -16,72 +14,11 @@ import {
 
 export default function HomeView(): JSX.Element {
   return (
-    <div className="mt-2 flex h-fit w-full flex-col gap-2 px-3 sm:mt-4 sm:px-2 md:w-3/4 lg:w-7/12 2xl:w-5/12">
+    <div className="my-2 flex h-fit w-full flex-col gap-2 px-3 sm:px-2 md:w-3/4 lg:w-7/12 xl:w-5/12 2xl:w-2/5">
       <Highlights />
       <NewPost />
+      <Post id="1" />
     </div>
-  );
-}
-
-function NewPost(): JSX.Element {
-  const textAreaId = useId();
-  const [text, setText] = useState("");
-  const [focused, setFocused] = useState(false);
-  const clean = text === "";
-
-  return (
-    <Card>
-      <form action="">
-        <div className="flex flex-row items-start gap-3">
-          <div className="hidden w-10 items-center sm:flex">
-            <Link
-              to="/users"
-              className="block h-10 w-10 rounded-full bg-orange-300"
-            />
-          </div>
-          <Input
-            id={textAreaId}
-            type="textarea"
-            placeholder="O que está pensando?..."
-            onInput={(e) => {
-              setText(e.currentTarget.value);
-            }}
-            onFocus={() => {
-              setFocused(true);
-            }}
-            onBlur={() => {
-              setFocused(false);
-            }}
-          />
-        </div>
-        <ul
-          className={`ml-10 items-center justify-end pl-3 pt-2 sm:gap-1 ${clean && !focused ? "hidden" : "flex"}`}
-        >
-          <li>
-            <Button color="transparent" icon={FaImage} />
-          </li>
-          <li>
-            <Button color="transparent" icon={FaMessage} />
-          </li>
-          <li>
-            <Button
-              className={clean ? "hidden" : ""}
-              color="secondary"
-              onClick={() => {
-                setText("");
-              }}
-            >
-              Limpar
-            </Button>
-          </li>
-          <li>
-            <Button disabled={clean} color="primary">
-              Enviar
-            </Button>
-          </li>
-        </ul>
-      </form>
-    </Card>
   );
 }
 
@@ -111,4 +48,12 @@ function Highlights(): JSX.Element {
   });
 
   return <Carousel data={data} />;
+}
+
+function NewPost(): JSX.Element {
+  return (
+    <Card>
+      <PostInput />
+    </Card>
+  );
 }

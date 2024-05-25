@@ -227,7 +227,8 @@ function Overview({ mobile }: { mobile?: boolean }): JSX.Element {
 
   if (mobile != null && mobile) {
     return (
-      <Card className="block sm:hidden" title={title}>
+      <Card className="block sm:hidden">
+        <span className="text-2xl font-semibold">{title}</span>
         <div className="flex">
           {infoList.map((value, index) => {
             return (
