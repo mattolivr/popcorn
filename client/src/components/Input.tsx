@@ -50,7 +50,7 @@ export default function Input(props: InputProps): JSX.Element {
   const iconStyle = inputIconStyle({ status });
 
   return (
-    <div>
+    <div hidden={props.hidden}>
       <Label
         label={props.label}
         id={props.id ?? id}

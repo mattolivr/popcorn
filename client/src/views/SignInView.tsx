@@ -11,25 +11,59 @@ import DialogLayout from "./layouts/DialogLayout";
 export default function SignInView(): JSX.Element {
   // TODO: Adicionar stepper
   const [step, setStep] = useState(1);
+  const showAtStep = (s: number): boolean => s !== step;
+  const totalSteps = 4;
+
   const titles: string[] = [
     "Criar uma nova conta",
     "Criar uma nova conta",
     "Personalize o perfil",
     "Confirme as informações",
   ];
-  const totalSteps = 4;
-
-  const stepProps: StepProps = {
-    step,
-    setStep,
-  };
 
   return (
     <DialogLayout title={titles[step - 1]}>
-      <Step1 {...stepProps} />
-      <Step2 {...stepProps} />
-      <Step3 {...stepProps} />
-      <Step4 {...stepProps} />
+      <Input
+        label="Nome"
+        icon={FaUser}
+        helper="O nome que será exibido no seu perfil"
+        hidden={showAtStep(1)}
+      />
+      <Input
+        label="Nome de Usuário"
+        icon={FaAt}
+        helper="A sua tag única que te difere de outros usuários"
+        hidden={showAtStep(1)}
+      />
+      <Input label="Email" icon={FaEnvelope} hidden={showAtStep(1)} />
+      <Input label="Senha" icon={FaKey} hidden={showAtStep(2)} />
+      <Input label="Confirme a Senha" icon={FaKey} hidden={showAtStep(2)} />
+      <div
+        className="relative mb-[2.5rem] h-28 w-full rounded-lg bg-orange-300"
+        hidden={step < 3}
+      >
+        <Avatar
+          rounded
+          size="lg"
+          className="absolute left-[50%] top-full translate-x-[-50%] translate-y-[-50%]"
+        />
+      </div>
+      <Input
+        label="Foto de Perfil"
+        icon={FaImage}
+        hidden={showAtStep(3)}
+        optional
+      />
+      <Input
+        label="Fundo de Perfil"
+        icon={FaImage}
+        hidden={showAtStep(3)}
+        optional
+      />
+      <div hidden={showAtStep(4)}>
+        <p className="text-center font-semibold">Nome do Usuário</p>
+        <p className="text-center text-slate-700">@username</p>
+      </div>
       {step > 1 && (
         <Button
           color="transparent"
@@ -59,88 +93,6 @@ export default function SignInView(): JSX.Element {
       <Stepper totalSteps={totalSteps} step={step} setStep={setStep} />
     </DialogLayout>
   );
-}
-
-interface StepProps {
-  step: number;
-  setStep: React.Dispatch<React.SetStateAction<number>>;
-}
-
-function Step1(props: StepProps): JSX.Element {
-  const { step } = props;
-  if (step === 1) {
-    return (
-      <>
-        <Input
-          label="Nome"
-          icon={FaUser}
-          helper="O nome que será exibido no seu perfil"
-        />
-        <Input
-          label="Nome de Usuário"
-          icon={FaAt}
-          helper="A sua tag única que te difere de outros usuários"
-        />
-        <Input label="Email" icon={FaEnvelope} />
-      </>
-    );
-  }
-  return <></>;
-}
-
-function Step2(props: StepProps): JSX.Element {
-  const { step } = props;
-  if (step === 2) {
-    return (
-      <>
-        <Input label="Senha" icon={FaKey} />
-        <Input label="Confirme a Senha" icon={FaKey} />
-      </>
-    );
-  }
-  return <></>;
-}
-
-function Step3(props: StepProps): JSX.Element {
-  const { step } = props;
-  if (step === 3) {
-    return (
-      <>
-        <div className="relative mb-[2.5rem] h-28 w-full rounded-lg bg-orange-300">
-          <Avatar
-            rounded
-            size="lg"
-            className="absolute left-[50%] top-full translate-x-[-50%] translate-y-[-50%]"
-          />
-        </div>
-        <Input label="Foto de Perfil" icon={FaImage} optional />
-        <Input label="Fundo de Perfil" icon={FaImage} optional />
-      </>
-    );
-  }
-  return <></>;
-}
-
-function Step4(props: StepProps): JSX.Element {
-  const { step } = props;
-  if (step === 4) {
-    return (
-      <>
-        <div className="relative mb-[2.5rem] h-28 w-full rounded-lg bg-orange-300">
-          <Avatar
-            rounded
-            size="lg"
-            className="absolute left-[50%] top-full translate-x-[-50%] translate-y-[-50%]"
-          />
-        </div>
-        <div className="">
-          <p className="text-center font-semibold">Nome do Usuário</p>
-          <p className="text-center text-slate-700">@username</p>
-        </div>
-      </>
-    );
-  }
-  return <></>;
 }
 
 function Stepper(props: {
