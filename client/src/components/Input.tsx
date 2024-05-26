@@ -19,6 +19,7 @@ export type InputProps = Omit<ComponentProps<"input">, "type"> &
 
     label?: string;
     helper?: string | JSX.Element;
+    optional?: boolean;
 
     icon?: IconType;
     ricon?: IconType;
@@ -49,8 +50,12 @@ export default function Input(props: InputProps): JSX.Element {
   const iconStyle = inputIconStyle({ status });
 
   return (
-    <>
-      <Label label={props.label} id={props.id ?? id} />
+    <div>
+      <Label
+        label={props.label}
+        id={props.id ?? id}
+        optional={props.optional}
+      />
       <div className={baseStyle}>
         <Icon icon={props.icon} style={iconStyle} />
         <InputComponent
@@ -64,7 +69,7 @@ export default function Input(props: InputProps): JSX.Element {
         <Icon icon={props.ricon} style={iconStyle} />
       </div>
       <Helper status={status}>{helper}</Helper>
-    </>
+    </div>
   );
 }
 
@@ -148,13 +153,20 @@ function InputComponent({
   }
 }
 
-function Label({ label, id }: { label?: string; id: string }): JSX.Element {
+function Label(props: {
+  label?: string;
+  id: string;
+  optional?: boolean;
+}): JSX.Element {
+  const { label, id, optional } = props;
+  const isOpticional = optional != null && optional;
+
   if (label == null) {
     return <></>;
   }
   return (
     <label htmlFor={id} className={inputLabelStyle}>
-      {label}
+      {label} {isOpticional && <span className="text-sm">(opcional)</span>}
     </label>
   );
 }

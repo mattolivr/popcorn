@@ -61,7 +61,7 @@ export const inputIconStyle = tv({
 
 export const inputLabelStyle = "font-medium mb-1";
 export const inputHelperStyle = tv({
-  base: "mt-2 text-sm",
+  base: "mt-1 ml-1 text-sm",
   variants: {
     status: {
       default: "text-gray-500",
