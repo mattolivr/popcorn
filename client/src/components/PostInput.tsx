@@ -3,7 +3,7 @@ import { useId, useState } from "react";
 import { FaImage, FaMessage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Button from "./Button";
-import Input from "./Input";
+// import Input from "./Input";
 
 export default function PostInput(): JSX.Element {
   const textAreaId = useId();
@@ -17,14 +17,14 @@ export default function PostInput(): JSX.Element {
           <Link to="/users" className="hidden sm:block">
             <Avatar rounded />
           </Link>
-          <Input
+          {/* <Input
             id={textAreaId}
             type="textarea"
             placeholder="O que está pensando?..."
             onInput={(e) => {
               setText(e.currentTarget.value);
             }}
-          />
+          /> */}
         </div>
         <ul
           className={`ml-10 flex items-center justify-end pl-3 pt-2 sm:gap-1`}

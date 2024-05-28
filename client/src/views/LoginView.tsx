@@ -1,11 +1,11 @@
 import { Alert } from "flowbite-react";
 import { useState } from "react";
-import { FaExclamationCircle, FaKey, FaUser } from "react-icons/fa";
+import { FaExclamationCircle } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import Anchor from "../components/Anchor";
 import Button from "../components/Button";
 import Divider from "../components/Divider";
-import Input from "../components/Input";
+// import Input from "../components/Input";
 import DialogLayout from "./layouts/DialogLayout";
 
 export default function LoginView(): JSX.Element {
@@ -17,13 +17,13 @@ export default function LoginView(): JSX.Element {
         src="/src/assets/storyset/watching.svg"
         className="my-4 max-h-[20rem] w-auto"
       />
-      <Input
+      {/* <Input
         type="text"
         name="login"
         label="Nome de usuário ou Email"
         icon={FaUser}
       />
-      <Input type="password" name="password" label="Senha" icon={FaKey} />
+      <Input type="password" name="password" label="Senha" icon={FaKey} /> */}
       <Anchor path="#" className="text-right">
         Esqueceu a senha?
       </Anchor>

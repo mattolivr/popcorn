@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa6";
 import { Link, Outlet } from "react-router-dom";
 import Button, { type ButtonProps } from "../../components/Button";
-import Input from "../../components/Input";
+// import Input from "../../components/Input";
 import Menu from "../../components/ui/Menu";
 
 export function MainLayout(): JSX.Element {
@@ -83,7 +83,7 @@ function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
 }
 
 function SearchBar({ className }: { className?: string }): JSX.Element {
-  return <Input ricon={FaMagnifyingGlass} className={className} />;
+  // return <Input ricon={FaMagnifyingGlass} className={className} />;
 }
 
 interface NavProps {
