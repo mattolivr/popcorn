@@ -2,17 +2,22 @@ import { Link } from "react-router-dom";
 import { tv, type VariantProps } from "tailwind-variants";
 
 export type AnchorProps = VariantProps<typeof anchorStyle> & {
-  path: string;
+  to: string;
   className?: string;
   children: React.ReactNode;
+  hidden?: boolean;
 };
 
 export default function Anchor(props: AnchorProps): JSX.Element {
-  const { color, path, className, children } = props;
+  const { color, to, className, children, hidden } = props;
   const style = anchorStyle({ color, className });
 
+  if (hidden) {
+    return <></>;
+  }
+
   return (
-    <Link to={path} className={style}>
+    <Link to={to} className={style}>
       {children}
     </Link>
   );

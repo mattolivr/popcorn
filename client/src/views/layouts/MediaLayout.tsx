@@ -65,8 +65,7 @@ export default function MediaLayout(props: MediaLayoutProps): JSX.Element {
   );
 }
 
-export const showElement = (obj: any): string =>
-  obj != null && obj !== "" ? "inline" : "hidden";
+export const showElement = (obj: any): string => (obj != null && obj !== "" ? "inline" : "hidden");
 
 function Highlight(): JSX.Element {
   const mediaDate = getDate(media);
@@ -80,9 +79,7 @@ function Highlight(): JSX.Element {
           <div className="hidden flex-col items-start justify-between px-4 sm:flex">
             <div className="flex h-full flex-col justify-center">
               <div className="flex flex-row items-end">
-                <h1 className="text-3xl font-bold text-white xl:text-4xl">
-                  {getTitle(media)}
-                </h1>
+                <h1 className="text-3xl font-bold text-white xl:text-4xl">{getTitle(media)}</h1>
                 <span className="ml-3 text-2xl text-gray-200">
                   {mediaDate?.startDate?.getFullYear()}
                 </span>
@@ -98,14 +95,10 @@ function Highlight(): JSX.Element {
                   className={showElement(runtime)}
                 >{`${runtime?.hours}h ${runtime?.minutes}min`}</li>
               </ul>
-              <p className="mt-2 text-lg font-medium italic text-gray-200">
-                {media?.tagline}
-              </p>
+              <p className="mt-2 text-lg font-medium italic text-gray-200">{media?.tagline}</p>
             </div>
             <div className="flex flex-col justify-end">
-              <strong className="text-lg text-white">
-                Avaliação dos usuários
-              </strong>
+              <strong className="text-lg text-white">Avaliação dos usuários</strong>
               <Vote />
               <Genres />
             </div>
@@ -133,14 +126,11 @@ function Background({ children }: { children: React.ReactNode }): JSX.Element {
 
 function MediaPoster(): JSX.Element {
   // TODO: Adicionar Skeleton
-  const className =
-    "h-[149px] w-[96px] rounded-xl shadow-md sm:h-[338px] sm:w-[225px] ms-2";
+  const className = "h-[149px] w-[96px] rounded-xl shadow-md sm:h-[338px] sm:w-[225px] ms-2";
 
   if (media == null) {
     return (
-      <div
-        className={`${className} flex items-center justify-center bg-sky-900`}
-      >
+      <div className={`${className} flex items-center justify-center bg-sky-900`}>
         <FaImage className="text-4xl text-sky-600" />
       </div>
     );
@@ -185,11 +175,7 @@ function Genres(): JSX.Element {
   return (
     <div className="flex gap-1">
       {media?.genres?.map((genre) => (
-        <Button
-          key={`genre-${genre.id}`}
-          color="primary"
-          to={`/genres/${genre.id}`}
-        >
+        <Button key={`genre-${genre.id}`} color="primary" to={`/genres/${genre.id}`}>
           {genre.name}
         </Button>
       ))}
@@ -207,9 +193,7 @@ function Overview({ mobile }: { mobile?: boolean }): JSX.Element {
   const info: Array<string | undefined> = [
     releaseDate?.startDate?.toLocaleDateString(),
     releaseDate?.endDate?.toLocaleDateString(),
-    runtime === undefined
-      ? undefined
-      : `${runtime?.hours}h${runtime?.minutes}min`,
+    runtime === undefined ? undefined : `${runtime?.hours}h${runtime?.minutes}min`,
     `${getVotePercentage(media).toString()}%`,
   ];
 
@@ -232,10 +216,7 @@ function Overview({ mobile }: { mobile?: boolean }): JSX.Element {
         <div className="flex">
           {infoList.map((value, index) => {
             return (
-              <span
-                key={`movie-overview-${index}`}
-                className={index === 0 ? "" : "ml-1"}
-              >
+              <span key={`movie-overview-${index}`} className={index === 0 ? "" : "ml-1"}>
                 {value}
               </span>
             );
@@ -285,9 +266,7 @@ function Synopsis(): JSX.Element {
               data-hs-collapse="#hs-show-hide-collapse-heading"
             >
               <span className="hs-collapse-open:hidden">Mostrar mais</span>
-              <span className="hs-collapse-open:block hidden">
-                Mostrar menos
-              </span>
+              <span className="hs-collapse-open:block hidden">Mostrar menos</span>
               <svg
                 className="hs-collapse-open:rotate-180 size-4 flex-shrink-0"
                 xmlns="http://www.w3.org/2000/svg"
@@ -340,7 +319,7 @@ function Cast(): JSX.Element {
   return (
     <Card title="Elenco">
       <Slider data={elements} />
-      <Anchor path="./cast" className="mt-1 text-right">
+      <Anchor to="./cast" className="mt-1 text-right">
         Ver todo o Elenco...
       </Anchor>
     </Card>
@@ -411,12 +390,7 @@ function ExtraControlls(): JSX.Element {
     <>
       <Divider />
       {extraControlls.map((ctrl) => (
-        <Button
-          key={ctrl.key}
-          color="transparent"
-          align="start"
-          icon={ctrl.icon}
-        >
+        <Button key={ctrl.key} color="transparent" align="start" icon={ctrl.icon}>
           {ctrl.label}
         </Button>
       ))}
@@ -525,14 +499,10 @@ function WatchProvider({ provider }: { provider: Provider }): JSX.Element {
           <strong>{provider.provider_name}</strong>
           <div className="flex flex-row gap-1">
             {provider.type.map((type) => {
-              const providerProps: { text: string; color: string } =
-                getTypeProps(type);
+              const providerProps: { text: string; color: string } = getTypeProps(type);
 
               return (
-                <Tag
-                  key={provider.provider_id + type}
-                  color={providerProps.color}
-                >
+                <Tag key={provider.provider_id + type} color={providerProps.color}>
                   {providerProps.text}
                 </Tag>
               );

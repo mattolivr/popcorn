@@ -15,8 +15,11 @@ export function InputHint(props: InputHintProps): React.ReactNode {
     },
   } = useInputContext();
 
-  const showHint = message == null ? focus : true;
+  if ((message == null || message === "") && text === "") {
+    return <></>;
+  }
 
+  const showHint = message == null ? focus : true;
   return (
     <span className={hintStyle({ state, className })} hidden={!showHint}>
       {message ?? text}

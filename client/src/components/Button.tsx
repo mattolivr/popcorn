@@ -20,6 +20,10 @@ export default function Button({
 }: ButtonProps): JSX.Element {
   const style = buttonStyle({ color, align, className });
 
+  if (props.hidden) {
+    return <></>;
+  }
+
   if (to != null) {
     return (
       <Link to={to} className={style}>

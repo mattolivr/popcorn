@@ -15,7 +15,7 @@ export function InputLabel(props: InputLabelProps): React.ReactNode {
   } = useInputContext();
 
   return (
-    <label htmlFor={id}>
+    <label htmlFor={id} className="mb-1">
       <span className={labelStyle({ className })}>{text}</span>
       <span className={addonTagStyle({ className: addonClassName })}>
         {optional && "(opcional)"}
@@ -25,9 +25,9 @@ export function InputLabel(props: InputLabelProps): React.ReactNode {
 }
 
 const labelStyle = tv({
-  base: "font-medium mb-1",
+  base: "font-medium",
 });
 
 const addonTagStyle = tv({
-  base: "font-medium mb-1 ml-1 text-sm",
+  base: "font-medium ml-1 text-sm",
 });

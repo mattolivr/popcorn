@@ -44,10 +44,6 @@ export function Input(props: InputRootProps): React.ReactNode {
     }
   }
 
-  if (hidden != null && hidden) {
-    return <></>;
-  }
-
   const input: InputType = {
     id,
     name,
@@ -58,7 +54,7 @@ export function Input(props: InputRootProps): React.ReactNode {
 
   return (
     <InputContext.Provider value={{ input }}>
-      <div className="flex flex-col">
+      <div className={`${hidden ? "hidden" : "flex"} flex-col`}>
         {label}
         <InputBase>
           {icon}
