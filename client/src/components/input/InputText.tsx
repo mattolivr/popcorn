@@ -3,9 +3,7 @@ import { tv } from "tailwind-variants";
 import { useFormContext } from "../form/context";
 import { useInputContext } from "./context";
 
-export function InputText(
-  props: InputHTMLAttributes<HTMLInputElement>,
-): React.ReactNode {
+export function InputText(props: InputHTMLAttributes<HTMLInputElement>): React.ReactNode {
   const {
     input: {
       focus: { setFocus },
@@ -13,16 +11,18 @@ export function InputText(
       name,
     },
   } = useInputContext();
+  const formContext = useFormContext();
 
   const isRequired = optional == null || !optional;
 
-  const formContext = useFormContext();
+  const onBlur = (): void => {
+    setFocus(false);
+  };
+
   let registerProps;
   if (formContext != null && name != null) {
     registerProps = formContext.form.register(name, {
-      onBlur: () => {
-        setFocus(false);
-      },
+      onBlur,
       required: isRequired,
     });
   }
@@ -37,6 +37,7 @@ export function InputText(
           props.onFocus(e);
         }
       }}
+      onBlur={onBlur}
       {...registerProps}
     />
   );

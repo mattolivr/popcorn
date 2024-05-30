@@ -10,27 +10,28 @@ export function InputBase(props: InputBaseProps): React.ReactNode {
   const { children, className } = props;
   const {
     input: {
+      state: { state },
       focus: { focus },
     },
   } = useInputContext();
 
-  const style = baseStyle({ focus, className });
+  const style = baseStyle({ state, focus, className });
   return <div className={style}>{children}</div>;
 }
 
 const baseStyle = tv({
-  base: "flex items-center rounded-lg w-full gap-2 px-3",
+  base: "flex items-center rounded-xl w-full gap-2 px-3",
   variants: {
-    status: {
-      default: "bg-gray-100",
-      error: "bg-red-100 text-red-800 placeholder-red-700",
-      success: "bg-emerald-100 text-emerald-800 placeholder-emerald-700",
+    state: {
+      default: "bg-gray-100 ring-gray-300",
+      error: "bg-red-200 text-red-800 placeholder-red-700 ring-red-300",
+      success: "bg-emerald-100 text-emerald-800 placeholder-emerald-700 ring-emerald-300",
     },
     focus: {
-      true: "ring-2 ring-gray-300",
+      true: "ring-2",
     },
   },
   defaultVariants: {
-    status: "default",
+    state: "default",
   },
 });

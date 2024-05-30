@@ -1,27 +1,33 @@
 import { useForm } from "react-hook-form";
-import { FaStar } from "react-icons/fa";
-import { Form } from "../components/form/index.tsx";
-import { Input } from "../components/input/index.tsx";
+import { FaHourglassEnd } from "react-icons/fa6";
+import Form from "../components/form/Form.tsx";
+import { Input } from "../components/input/Input.tsx";
+import { InputText } from "../components/input/InputText.tsx";
 import DialogLayout from "./layouts/DialogLayout";
 
 export default function SignInView(): JSX.Element {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState } = useForm();
   const onSubmit = handleSubmit((data) => {
     console.log(data);
   });
 
   return (
     <DialogLayout>
-      <Form.Container register={register} onSubmit={onSubmit}>
-        <Input.Root name="teste">
-          <Input.Label text="Teste" />
-          <Input.Base>
-            <Input.Icon icon={FaStar} />
-            <Input.InputText />
-          </Input.Base>
-        </Input.Root>
-        <Form.Submit />
-      </Form.Container>
+      <Form
+        register={register}
+        onSubmit={onSubmit}
+        formState={formState}
+        className="flex flex-col gap-2"
+      >
+        <Input
+          name="teste"
+          label={<Input.Label text="Testeeee" />}
+          type={<InputText />}
+          icon={<Input.Icon icon={FaHourglassEnd} />}
+          hint={<Input.Hint text="Dica de como utilizar o componente" />}
+        />
+        <Form.Submit>Teste</Form.Submit>
+      </Form>
     </DialogLayout>
   );
 

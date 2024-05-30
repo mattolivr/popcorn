@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { type InputType } from "./index.tsx";
+import { type InputType } from "./Input";
 
 const InputContext = createContext<{ input: InputType } | null>(null);
 
