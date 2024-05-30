@@ -14,7 +14,7 @@ import {
   FaXTwitter,
 } from "react-icons/fa6";
 import Anchor from "../../components/Anchor.tsx";
-import Button from "../../components/Button.tsx";
+import Button from "../../components/button/Button.tsx";
 import Card from "../../components/Card";
 import Divider from "../../components/Divider.tsx";
 import Slider, { type SliderData } from "../../components/Slider.tsx";

@@ -14,8 +14,8 @@ import {
   FaUserGroup,
 } from "react-icons/fa6";
 import { Link, Outlet } from "react-router-dom";
-import Button, { type ButtonProps } from "../../components/Button";
 // import Input from "../../components/Input";
+import Button, { type ButtonProps } from "../../components/button/Button";
 import Menu from "../../components/ui/Menu";
 
 export function MainLayout(): JSX.Element {
@@ -36,9 +36,7 @@ export function MainLayout(): JSX.Element {
           }}
         />
       </header>
-      <Menu
-        visibility={{ visible: menuVisible, setVisibility: setMenuVisible }}
-      />
+      <Menu visibility={{ visible: menuVisible, setVisibility: setMenuVisible }} />
       <div className="relative flex h-max w-full justify-center">
         <Outlet />
       </div>
@@ -53,9 +51,8 @@ interface ControllsProps {
 
 function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
   const controllButtons: ButtonProps[] = [
-    { key: "header-btn-1", onClick: toggleMenu, icon: FaBars },
+    { onClick: toggleMenu, icon: FaBars },
     {
-      key: "header-btn-2",
       onClick: () => {
         alert("TODO: Modal");
       },
@@ -72,8 +69,8 @@ function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
         />
       </Link>
       <ul className="hidden flex-row items-center text-2xl text-gray-100 sm:flex">
-        {controllButtons.map((btn) => (
-          <li key={btn.key}>
+        {controllButtons.map((btn, index) => (
+          <li key={`header-btn-${index}`}>
             <Button {...btn} className="px-3 py-2" />
           </li>
         ))}
@@ -82,8 +79,9 @@ function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
   );
 }
 
-function SearchBar({ className }: { className?: string }): JSX.Element {
+function SearchBar({ className }: { className?: string }): React.ReactNode {
   // return <Input ricon={FaMagnifyingGlass} className={className} />;
+  return <></>;
 }
 
 interface NavProps {
@@ -177,8 +175,7 @@ function NavDropdown(): JSX.Element {
 }
 
 const navDropdownStyle: CustomFlowbiteTheme["dropdown"] = {
-  inlineWrapper:
-    "flex items-center text-white font-semibold hover:bg-sky-600 py-2 px-3 rounded-xl",
+  inlineWrapper: "flex items-center text-white font-semibold hover:bg-sky-600 py-2 px-3 rounded-xl",
 };
 
 function BottomNav(): JSX.Element {

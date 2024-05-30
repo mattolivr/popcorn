@@ -1,6 +1,6 @@
 import { type FieldValues, type FormState, type UseFormRegister } from "react-hook-form";
 import FormContext from "./context";
-import FormSubmit from "./FromSubmit";
+import FormSubmit from "./FormSubmit";
 
 interface FormProps {
   children: React.ReactNode;

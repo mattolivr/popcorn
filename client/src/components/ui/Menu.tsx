@@ -2,8 +2,8 @@ import { Avatar } from "flowbite-react";
 import { type IconType } from "react-icons";
 import { FaBell, FaEnvelope, FaHouse, FaStar } from "react-icons/fa6";
 import { useLocation } from "react-router-dom";
-import Button from "../Button";
 import Card from "../Card";
+import Button from "../button/Button";
 
 export interface MenuProps {
   visibility: {

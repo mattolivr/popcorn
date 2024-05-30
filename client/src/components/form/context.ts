@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { type FormType } from ".";
+import { type FormType } from "./Form";
 
 const FormContext = createContext<{ form: FormType } | null>(null);
 

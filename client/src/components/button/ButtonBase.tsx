@@ -1,47 +1,35 @@
-import { type ComponentProps } from "react";
-import { type IconBaseProps, type IconType } from "react-icons";
+import { type ButtonHTMLAttributes } from "react";
 import { Link } from "react-router-dom";
-import { tv, type VariantProps } from "tailwind-variants";
+import { tv } from "tailwind-variants";
+import { useButtonContext } from "./context";
 
-export type ButtonProps = ComponentProps<"button"> &
-  VariantProps<typeof buttonStyle> & {
-    to?: string; // Navegação por Link -> React Router DOM
+export default function ButtonBase(
+  props: ButtonHTMLAttributes<HTMLButtonElement | HTMLAnchorElement>,
+): React.ReactNode {
+  const {
+    button: { align, color, className, to },
+  } = useButtonContext();
 
-    icon?: IconType;
-  };
-
-export default function Button({
-  to,
-  icon,
-  color,
-  align,
-  className,
-  ...props
-}: ButtonProps): JSX.Element {
-  const style = buttonStyle({ color, align, className });
-
-  if (props.hidden) {
-    return <></>;
-  }
-
-  if (to != null) {
+  if (to == null || to === "") {
     return (
-      <Link to={to} className={style}>
-        <Icon icon={icon} />
+      <button {...props} className={buttonStyle({ align, color, hidden: props.hidden, className })}>
         {props.children}
-      </Link>
+      </button>
     );
   }
   return (
-    <button className={style} {...props}>
-      <Icon icon={icon} />
+    <Link
+      to={to}
+      {...props}
+      className={buttonStyle({ align, color, hidden: props.hidden, className })}
+    >
       {props.children}
-    </button>
+    </Link>
   );
 }
 
-const buttonStyle = tv({
-  base: "rounded-xl px-4 h-9 font-semibold flex flex-row items-center gap-2",
+export const buttonStyle = tv({
+  base: "rounded-xl px-4 h-9 font-semibold flex-row items-center gap-2",
   variants: {
     color: {
       primary:
@@ -60,20 +48,14 @@ const buttonStyle = tv({
       center: "justify-center",
       end: "justify-end",
     },
+    hidden: {
+      true: "hidden",
+      false: "flex",
+    },
   },
   defaultVariants: {
     color: "primary",
     align: "center",
+    hidden: false,
   },
 });
-
-function Icon({ icon }: { icon?: IconType }): JSX.Element {
-  if (icon != null) {
-    const props: IconBaseProps = {
-      className: `inline text-xl`,
-    };
-
-    return icon(props);
-  }
-  return <></>;
-}

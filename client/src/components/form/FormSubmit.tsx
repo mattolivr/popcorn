@@ -1,4 +1,4 @@
-import Button, { type ButtonProps } from "../Button";
+import Button, { type ButtonProps } from "../button/Button";
 import { useFormContext } from "./context";
 
 export default function FormSubmit(props: ButtonProps): React.ReactNode {

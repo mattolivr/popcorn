@@ -1,7 +1,7 @@
 import { type InputHTMLAttributes } from "react";
 import { tv } from "tailwind-variants";
-import { useFormContext } from "../form/context";
-import { useInputContext } from "./context";
+import { useFormContext } from "../../form/context";
+import { useInputContext } from "../context";
 
 export function InputText(props: InputHTMLAttributes<HTMLInputElement>): React.ReactNode {
   const {

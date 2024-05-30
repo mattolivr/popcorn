@@ -1,7 +1,7 @@
 import { Alert } from "flowbite-react";
 import { FaExclamationCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/Button";
+import Button from "../components/button/Button";
 import DialogLayout from "./layouts/DialogLayout";
 
 export default function ErrorView(): React.ReactNode {

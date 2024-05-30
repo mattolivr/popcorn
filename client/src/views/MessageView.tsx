@@ -1,6 +1,6 @@
 import Card from "../components/Card";
 
-export default function MessageView() {
+export default function MessageView(): React.ReactNode {
   return (
     <Card title="Mensagens" className="my-4 h-full w-full px-2 md:w-[700px]">
       Teste

@@ -1,12 +1,7 @@
 import { Avatar } from "flowbite-react";
 import { useId } from "react";
-import {
-  FaComment,
-  FaEllipsisVertical,
-  FaHeart,
-  FaShare,
-} from "react-icons/fa6";
-import Button from "../Button";
+import { FaComment, FaEllipsisVertical, FaHeart, FaShare } from "react-icons/fa6";
+import Button from "../button/Button";
 import Card from "../Card";
 import Carousel, { type CarouselItem } from "../Carousel";
 import PostInput from "../PostInput";
@@ -53,11 +48,7 @@ function Header(props: PostProps): JSX.Element {
         <span className="font-medium">Nome do usuário</span>
         <span className="text-slate-700">@username</span>
       </div>
-      <Button
-        icon={FaEllipsisVertical}
-        color="transparent"
-        className="px-3 py-2"
-      />
+      <Button icon={FaEllipsisVertical} color="transparent" className="px-3 py-2" />
     </div>
   );
 }
@@ -66,9 +57,9 @@ function Body(props: PostProps): JSX.Element {
   return (
     <>
       <p className="my-2">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore veniam
-        enim eveniet nisi quia sapiente commodi obcaecati, quaerat molestias ea
-        quibusdam veritatis ipsam! Porro sit quisquam, velit maiores autem odit!
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempore veniam enim eveniet nisi
+        quia sapiente commodi obcaecati, quaerat molestias ea quibusdam veritatis ipsam! Porro sit
+        quisquam, velit maiores autem odit!
       </p>
       <Medias {...props} />
       <Controlls {...props} />
@@ -87,9 +78,7 @@ function Medias(props: PostProps): JSX.Element {
   }
 
   if (media.length === 1) {
-    return (
-      <img className="h-80 w-full rounded-lg object-cover" src={media[0]} />
-    );
+    return <img className="h-80 w-full rounded-lg object-cover" src={media[0]} />;
   }
 
   const medias: CarouselItem[] = media.map((path, index) => {

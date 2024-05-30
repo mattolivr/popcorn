@@ -2,7 +2,7 @@ import { Avatar } from "flowbite-react";
 import { useId, useState } from "react";
 import { FaImage, FaMessage } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import Button from "./Button";
+import Button from "./button/Button";
 // import Input from "./Input";
 
 export default function PostInput(): JSX.Element {
@@ -26,9 +26,7 @@ export default function PostInput(): JSX.Element {
             }}
           /> */}
         </div>
-        <ul
-          className={`ml-10 flex items-center justify-end pl-3 pt-2 sm:gap-1`}
-        >
+        <ul className={`ml-10 flex items-center justify-end pl-3 pt-2 sm:gap-1`}>
           <li>
             <Button color="transparent" icon={FaImage} />
           </li>

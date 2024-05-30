@@ -2,14 +2,15 @@ import { Avatar } from "flowbite-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEnvelope } from "react-icons/fa";
-import { FaAt, FaImage, FaImagePortrait, FaKey, FaUser } from "react-icons/fa6";
+import { FaAt, FaCakeCandles, FaImage, FaImagePortrait, FaKey, FaUser } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import Anchor from "../components/Anchor.tsx";
-import Button from "../components/Button.tsx";
+import Button from "../components/button/Button.tsx";
 import Divider from "../components/Divider.tsx";
 import Form from "../components/form/Form.tsx";
 import { Input } from "../components/input/Input.tsx";
-import { InputText } from "../components/input/InputText.tsx";
+import { InputFile } from "../components/input/type/InputFile.tsx";
+import { InputText } from "../components/input/type/InputText.tsx";
 import DialogLayout from "./layouts/DialogLayout";
 
 export default function SignInView(): React.ReactNode {
@@ -65,6 +66,13 @@ export default function SignInView(): React.ReactNode {
           hidden={showAtStep(1)}
         />
         <Input
+          name="birthday"
+          label={<Input.Label text="Data de Nascimento" />}
+          type={<InputText />}
+          icon={<Input.Icon icon={FaCakeCandles} />}
+          hidden={showAtStep(1)}
+        />
+        <Input
           name="password"
           label={<Input.Label text="Senha" />}
           type={<InputText />}
@@ -85,7 +93,7 @@ export default function SignInView(): React.ReactNode {
         <Input
           name="photo"
           label={<Input.Label text="Foto de Perfil" />}
-          type={<InputText />}
+          type={<InputFile />}
           icon={<Input.Icon icon={FaImagePortrait} />}
           hidden={showAtStep(3)}
           optional
@@ -93,7 +101,7 @@ export default function SignInView(): React.ReactNode {
         <Input
           name="background"
           label={<Input.Label text="Fundo de Perfil" />}
-          type={<InputText />}
+          type={<InputFile />}
           icon={<Input.Icon icon={FaImage} />}
           hidden={showAtStep(3)}
           optional
@@ -123,7 +131,7 @@ function LoginRedirect({ hidden }: { hidden: boolean }): React.ReactNode {
   return (
     <>
       <Divider>ou</Divider>
-      <Button color="transparent" icon={FcGoogle}>
+      <Button color="transparent" icon={<Button.Icon icon={FcGoogle} />}>
         Cadastre-se usando sua conta Google
       </Button>
     </>

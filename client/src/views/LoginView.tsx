@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form";
 import { FaExclamationCircle, FaKey, FaUser } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import Anchor from "../components/Anchor";
-import Button from "../components/Button";
+import Button from "../components/button/Button";
 import Divider from "../components/Divider";
 import Form from "../components/form/Form";
 import { Input } from "../components/input/Input";
-import { InputText } from "../components/input/InputText";
+import { InputText } from "../components/input/type/InputText";
 import DialogLayout from "./layouts/DialogLayout";
 
 export default function LoginView(): JSX.Element {
@@ -52,7 +52,7 @@ export default function LoginView(): JSX.Element {
         </Alert>
       )}
       <Divider>ou</Divider>
-      <Button color="transparent" icon={FcGoogle}>
+      <Button color="transparent" icon={<Button.Icon icon={FcGoogle} />}>
         Entre usando sua conta Google
       </Button>
     </DialogLayout>
