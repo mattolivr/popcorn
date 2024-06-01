@@ -38,7 +38,7 @@ export function MainLayout(): React.ReactNode {
         />
       </header>
       <Menu visibility={{ visible: menuVisible, setVisibility: setMenuVisible }} />
-      <div className="relative flex grow justify-center">
+      <div className="relative mb-12 flex grow justify-center sm:mb-0">
         <Outlet />
       </div>
       <BottomNav />

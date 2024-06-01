@@ -28,7 +28,9 @@ export function MediaLayoutMobileWatchProviders(): React.ReactNode {
     return (
       <Card
         title={<Card.Title text="Assista em" />}
-        className={mediaLayoutWatchProvidersStyle({ className: "flex gap-2 lg:hidden" })}
+        className={mediaLayoutWatchProvidersStyle({
+          className: "flex gap-2 shadow-none lg:hidden",
+        })}
       >
         {media.providers.map((provider, index) => (
           <WatchProvider key={index} provider={provider} mobile />
@@ -128,7 +130,11 @@ function WatchProviderContainer({
   if (mobile) {
     return <div className="flex flex-row gap-2 rounded-md active:bg-gray-200">{children}</div>;
   }
-  return <Card className="flex-row gap-2 shadow-md hover:bg-gray-100">{children}</Card>;
+  return (
+    <Card className="flex-row gap-2 rounded-xl border-2 border-gray-100 hover:bg-gray-100">
+      {children}
+    </Card>
+  );
 }
 
 const mediaLayoutWatchProvidersStyle = tv({

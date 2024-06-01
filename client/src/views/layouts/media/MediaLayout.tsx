@@ -19,6 +19,7 @@ export interface MediaLayoutProps {
 
 export default function MediaLayout(props: MediaLayoutProps): React.ReactNode {
   // TODO: Implementar React Helmet
+  // TODO: Ajustar tamanho da tela para conter sempre o Menu
   const { media } = props;
 
   return (
@@ -74,7 +75,7 @@ function MediaLayoutMobileInfos(): React.ReactNode {
 function MediaLayoutOverview(): React.ReactNode {
   const { media } = useMediaLayoutContext();
   const { text, preview } = getTextPreview(media?.overview);
-  const [allText, setAllText] = useState(preview === undefined);
+  const [allText, setAllText] = useState(false);
 
   return (
     text && (
@@ -86,7 +87,7 @@ function MediaLayoutOverview(): React.ReactNode {
           <span>{allText ? text : preview}</span>
           <span
             className="cursor-pointer font-semibold text-sky-700"
-            hidden={preview === undefined}
+            hidden={preview?.length === text.length}
             onClick={() => {
               setAllText(!allText);
             }}
@@ -111,7 +112,7 @@ function getTextPreview(text?: string): { text?: string; preview?: string } {
     };
   }
 
-  return { text };
+  return { text, preview: text };
 }
 
 function MediaLayoutGenres({ mobile }: { mobile?: boolean }): React.ReactNode {
