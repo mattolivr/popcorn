@@ -1,179 +1,202 @@
-export interface Media {
-  adult: boolean;
-  backdrop_path: string;
-  genres: [{ id: number; name: string }];
-  homepage: string;
+import { Cast, Crew } from "./tmdb.person";
+import { getWatchProviderType, type WatchProvider } from "./tmdb.provider";
+
+export abstract class Media {
   id: number;
-  overview: string;
-  popularity: number;
+  externalIds: {
+    imdbId?: string;
+    facebookId?: string;
+    instagramId?: string;
+    twitterId?: string;
+  };
+
   poster_path: string;
+  backdrop_path: string;
+
+  overview: string;
+  tagline: string;
+  status: string;
+  homepage: string;
+  adult: boolean;
+
+  genres: [{ id: number; name: string }];
+  credits: { cast?: Cast[]; crew?: Crew[] };
   production_companies: any[];
   production_countries: any[];
-  status: string;
-  tagline: string;
+
+  popularity: number;
   vote_average: number;
   vote_count: number;
-  credits?: { cast: Cast[]; crew: Crew[] };
-  external_ids?: ExternalIds;
-  "watch/providers": {
-    results: {
-      BR: Providers;
+
+  providers: WatchProvider[] = [];
+  providersLink?: string;
+
+  constructor(object: any) {
+    this.id = object.id;
+    this.externalIds = {
+      imdbId: object.external_ids?.imdb_id,
+      facebookId: object.external_ids?.facebook_id,
+      instagramId: object.external_ids?.instagram_id,
+      twitterId: object.external_ids?.twitter_id,
     };
-  };
+
+    this.poster_path = object.poster_path;
+    this.backdrop_path = object.backdrop_path;
+
+    this.overview = object.overview;
+    this.tagline = object.tagline;
+    this.status = object.status;
+    this.homepage = object.homepage;
+    this.adult = object.adult;
+
+    this.genres = object.genres;
+    this.credits = {
+      cast: object.credits?.cast?.map((cast: any) => new Cast(cast)),
+      crew: object.credits?.crew?.map((crew: any) => new Crew(crew)),
+    };
+    this.production_companies = object.production_companies;
+    this.production_countries = object.production_countries;
+
+    this.popularity = object.popularity;
+    this.vote_average = object.vote_average;
+    this.vote_count = object.vote_count;
+
+    const providers = object["watch/providers"]?.results?.BR;
+    if (providers) {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+      Object.entries(providers).forEach((entry) => {
+        if (Array.isArray(entry[1])) {
+          entry[1].forEach((provider) => {
+            this.providers.push({
+              type: getWatchProviderType(entry[0]),
+              provider_id: provider.provider_id,
+              provider_name: provider.provider_name,
+              logo_path: provider.logo_path,
+              display_priority: provider.display_priority,
+            });
+          });
+        }
+      });
+      this.providersLink = providers?.link;
+    }
+  }
+
+  abstract isMovie(): boolean;
+  abstract getTitle(): string | undefined;
+  abstract getDate(): { start?: string; end?: string };
+  abstract getYear(): string | undefined;
+  abstract getRuntime(): { hours?: number; minutes?: number };
+
+  getVotePercentage(): number {
+    if (!this.vote_average) {
+      return 0;
+    }
+    return Math.trunc(this.vote_average * 10);
+  }
+
+  getInfos(): string[] {
+    const infos: Array<string | undefined> = [this.getDate().start, this.getDate().end];
+
+    if (this.getRuntime().hours != null) {
+      infos.push(`${this.getRuntime().hours}h ${this.getRuntime().minutes}min`);
+    }
+
+    const dividedInfos: string[] = [];
+    infos.forEach((info, index, array) => {
+      if (info) {
+        dividedInfos.push(info);
+        if (index < array.length - 1) {
+          dividedInfos.push("·");
+        }
+      }
+    });
+
+    return dividedInfos;
+  }
 }
 
-export interface Movie extends Media {
-  release_date: string;
-  runtime: number;
-  title: string;
-}
+export class Movie extends Media {
+  title?: string;
+  runtime?: number;
+  release_date?: string;
 
-export interface TVShow extends Media {
-  first_air_date: string;
-  in_production: boolean;
-  last_air_date: string;
-  name: string;
-  number_of_episodes: number;
-  number_of_seasons: number;
-  seasons: [
-    {
-      air_date: string;
-      episode_count: number;
-      id: number;
-      name: string;
-      overview: string;
-      poster_path: string;
-      season_number: number;
-      vote_avarage: number;
-    },
-  ];
-}
+  constructor(object: any) {
+    super(object);
 
-export interface Cast {
-  id: number;
-  known_for_department: string;
-  name: string;
-  profile_path: string;
-  cast_id: number;
-  character: string;
-  credit_id: string;
-  order: number;
-}
+    this.title = object.title;
+    this.runtime = object.runtime;
+    this.release_date = object.release_date;
+  }
 
-export interface Crew {
-  id: number;
-  known_for_department: string;
-  name: string;
-  profile_path: string;
-  credit_id: string;
-  department: string;
-  job: string;
-}
-
-export interface ExternalIds {
-  imdb_id?: string;
-  wikidata_id?: string;
-  facebook_id?: string;
-  instagram_id?: string;
-  twitter_id?: string;
-}
-
-export interface Provider {
-  type: string[];
-  logo_path: string;
-  provider_id: number;
-  provider_name: string;
-  display_priority: number;
-}
-
-interface Providers {
-  link: string;
-  buy: Provider[];
-  flatrate: Provider[];
-  rent: Provider[];
-}
-
-export const isMovie = (media?: Movie | TVShow): media is Movie => {
-  if (media != null && "title" in media) {
+  isMovie(): boolean {
     return true;
   }
-  return false;
-};
 
-export const getTitle = (media?: Movie | TVShow): string | undefined => {
-  if (media != null) {
-    return "name" in media ? media.name : media.title;
+  getTitle(): string | undefined {
+    return this.title;
   }
-};
 
-export const getDate = (
-  media?: Movie | TVShow,
-): { startDate?: Date; endDate?: Date } | undefined => {
-  let startDate, endDate;
-
-  if (media != null) {
-    if ("release_date" in media) {
-      startDate = new Date(media.release_date);
-    }
-
-    if ("first_air_date" in media) {
-      startDate = new Date(media.first_air_date);
-    }
-
-    if ("last_air_date" in media && media.last_air_date != null) {
-      endDate = new Date(media.last_air_date);
-    }
-
-    return { startDate, endDate };
+  getDate(): { start?: string; end?: string } {
+    return {
+      start: this.release_date && new Date(this.release_date).toLocaleDateString(),
+    };
   }
-};
 
-export const getRuntime = (
-  media?: Movie | TVShow,
-): { hours: number; minutes: number } | undefined => {
-  if (media != null && "runtime" in media) {
-    const hours = Math.floor(media.runtime / 60);
-    const minutes = media.runtime % 60;
+  getYear(): string | undefined {
+    return this.release_date && new Date(this.release_date).getFullYear().toString();
+  }
+
+  getRuntime(): { hours?: number; minutes?: number } {
+    const hours = this.runtime && Math.floor(this.runtime / 60);
+    const minutes = this.runtime && this.runtime % 60;
 
     return { hours, minutes };
   }
-};
+}
 
-export const getVotePercentage = (media: Media | undefined): number => {
-  return Math.trunc(media != null ? media.vote_average * 10 : 0);
-};
+export class TVShow extends Media {
+  name?: string;
 
-export const getAllWatchProviders = (media?: Movie | TVShow): Provider[] => {
-  const ret: Provider[] = [];
-  const providers = media?.["watch/providers"].results.BR;
+  first_air_date?: string;
+  last_air_date?: string;
 
-  if (providers == null) {
-    return ret;
+  in_production?: boolean;
+  number_of_episodes?: number;
+  number_of_seasons?: number;
+
+  constructor(object: any) {
+    super(object);
+
+    this.name = object.name;
+
+    this.first_air_date = object.first_air_date;
+    this.last_air_date = object.last_air_date;
+
+    this.in_production = object.in_production;
+    this.number_of_episodes = object.number_of_episodes;
+    this.number_of_seasons = object.number_of_seasons;
   }
 
-  const { buy, flatrate, rent } = providers;
+  isMovie(): boolean {
+    return false;
+  }
 
-  const addProvidersWithType = (providers: Provider[], type: string): void => {
-    if (providers == null || providers.length === 0) {
-      return;
-    }
+  getTitle(): string | undefined {
+    return this.name;
+  }
 
-    providers.forEach((provider) => {
-      const existingProvider = ret.find(
-        (p) => p.provider_id === provider.provider_id,
-      );
-      if (existingProvider != null) {
-        existingProvider.type.push(type);
-      } else {
-        const newProvider: Provider = { ...provider, type: [type] };
-        ret.push(newProvider);
-      }
-    });
-  };
+  getDate(): { start?: string; end?: string } {
+    return {
+      start: this.first_air_date && new Date(this.first_air_date).toLocaleDateString(),
+      end: this.last_air_date && new Date(this.last_air_date).toLocaleDateString(),
+    };
+  }
 
-  addProvidersWithType(buy, "buy");
-  addProvidersWithType(flatrate, "flatrate");
-  addProvidersWithType(rent, "rent");
+  getYear(): string | undefined {
+    return this.first_air_date && new Date(this.first_air_date).getFullYear().toString();
+  }
 
-  return ret;
-};
+  getRuntime(): { hours?: number; minutes?: number } {
+    return {};
+  }
+}

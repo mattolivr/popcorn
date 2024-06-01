@@ -6,15 +6,18 @@ interface CardProps {
   title?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  hidden?: boolean;
 }
 
 export default function Card(props: CardProps): React.ReactNode {
-  const { title, children, className } = props;
+  const { title, children, className, hidden } = props;
   return (
-    <div className={cardStyle({ className })}>
-      {title}
-      {children}
-    </div>
+    !hidden && (
+      <div className={cardStyle({ className })}>
+        {title}
+        {children}
+      </div>
+    )
   );
 }
 

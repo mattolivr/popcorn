@@ -19,11 +19,11 @@ import { Input } from "../../components/input/Input";
 import { InputText } from "../../components/input/type/InputText";
 import Menu from "../../components/ui/Menu";
 
-export function MainLayout(): JSX.Element {
+export function MainLayout(): React.ReactNode {
   const [menuVisible, setMenuVisible] = useState(false);
 
   return (
-    <div className="min-h-dvh w-full bg-gray-200">
+    <div className="flex min-h-dvh w-full flex-col bg-gray-200">
       <header className="sticky top-0 z-50 flex w-full flex-row items-center bg-sky-500 px-4 py-2">
         <Controlls
           toggleMenu={() => {
@@ -38,7 +38,7 @@ export function MainLayout(): JSX.Element {
         />
       </header>
       <Menu visibility={{ visible: menuVisible, setVisibility: setMenuVisible }} />
-      <div className="relative flex h-max w-full justify-center">
+      <div className="relative flex grow justify-center">
         <Outlet />
       </div>
       <BottomNav />

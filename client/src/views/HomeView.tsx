@@ -6,7 +6,7 @@ import Carousel, { type CarouselItem } from "../components/Carousel";
 import Post from "../components/post/Post";
 import UserInput from "../components/ui/UserInput";
 import { type Post as PostType } from "../entites/pop.post";
-import { getTitle, isMovie, type Movie, type TVShow } from "../entites/tmdb.media";
+import { type Media, Movie, TVShow } from "../entites/tmdb.media";
 
 export default function HomeView(): JSX.Element {
   const post: PostType = {
@@ -41,15 +41,16 @@ function Highlights(): JSX.Element {
     function getMedia(response: AxiosResponse<any, any>): void {
       setData(
         response.data?.results
-          ?.map((media: Movie | TVShow) => {
+          ?.map((result: any) => {
+            const media: Media = "title" in result ? new Movie(result) : new TVShow(result);
             return {
               key: media.id,
-              title: getTitle(media) ?? "",
+              title: media.getTitle(),
               background: `https://image.tmdb.org/t/p/original/${media.backdrop_path}`,
-              link: `/${isMovie(media) ? "movies" : "shows"}/${media.id}`,
+              link: `/${media.isMovie() ? "movies" : "shows"}/${media.id}`,
             };
           })
-          .filter((_media: Movie | TVShow, index: number) => {
+          .filter((_media: Media, index: number) => {
             return index < 6;
           }) as CarouselItem[],
       );

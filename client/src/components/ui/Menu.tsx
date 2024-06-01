@@ -19,7 +19,7 @@ export default function Menu({ visibility }: MenuProps): React.ReactNode {
       pb-[48px] pt-[56px] md:w-fit md:px-2 md:pb-[8px] md:pt-[64px] xl:w-[17rem]
        ${visibility.visible ? "fixed" : "hidden"}`}
     >
-      <Card className="h-full gap-3">
+      <Card className="h-full gap-3 rounded-none sm:rounded-md">
         <User />
         <Navigation />
       </Card>

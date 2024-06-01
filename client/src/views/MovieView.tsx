@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { tmdb } from "../adapters/tmdb";
-import { type Movie } from "../entites/tmdb.media";
-import MediaLayout from "./layouts/MediaLayout";
+import { Movie } from "../entites/tmdb.media";
+import MediaLayout from "./layouts/media/MediaLayout";
 
-export default function MovieView(): JSX.Element {
+export default function MovieView(): React.ReactNode {
   const [movie, setMovie] = useState<Movie>();
   const { id } = useParams();
 
@@ -17,7 +17,7 @@ export default function MovieView(): JSX.Element {
           },
         })
         .then((response): void => {
-          setMovie(response.data as Movie);
+          setMovie(new Movie(response.data));
         })
         .catch((error) => {
           console.log(error);

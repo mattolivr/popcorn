@@ -36,12 +36,9 @@ export const buttonStyle = tv({
         "bg-sky-500 outline-transparent text-white hover:bg-sky-600 focus:bg-sky-600 active:bg-sky-700 disabled:bg-gray-400",
       secondary:
         "bg-transparent border-2 border-sky-300 text-sky-400 hover:bg-sky-400 hover:border-sky-400 hover:text-white active:bg-sky-500 active:border-sky-500 active:text-white",
-      blank:
-        "bg-white outline-gray-400 shadow-sm border border-gray-100 hover:bg-gray-100 text-gray-700",
+      blank: "",
       transparent:
         "bg-transparent outline-transparent text-gray-700 hover:bg-gray-200 focus:bg-gray-200 active:bg-gray-300 disabled:bg-gray-300",
-      transparent_selected:
-        "bg-sky-100 outline-sky-300 hover:bg-sky-200 text-sky-500 hover:text-sky-600",
     },
     align: {
       start: "justify-start",

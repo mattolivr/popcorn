@@ -10,14 +10,15 @@ export const tmdb = axios.create({
   },
 });
 
-export function get(
-  path: string,
-  onResponse: (response: AxiosResponse<any, any>) => void,
-): void {
+export function get(path: string, onResponse: (response: AxiosResponse<any, any>) => void): void {
   tmdb
     .get(path)
     .then(onResponse)
     .catch((error) => {
       console.log(error);
     });
+}
+
+export function getImage(path: string): string {
+  return `https://image.tmdb.org/t/p/original/${path}`;
 }

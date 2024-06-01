@@ -12,5 +12,5 @@ export default function CardTitle(props: CardTitleProps): React.ReactNode | unde
 }
 
 const cardTitleStyle = tv({
-  base: "mb-2 text-lg font-semibold text-stone-950 sm:text-2xl",
+  base: "mb-2 text-xl font-semibold text-stone-950 sm:text-2xl",
 });
