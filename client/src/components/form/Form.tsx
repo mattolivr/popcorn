@@ -7,7 +7,7 @@ interface FormProps {
 
   register: UseFormRegister<FieldValues>;
   onSubmit: (e?: React.BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
-  formState: FormState<FieldValues>;
+  formState?: FormState<FieldValues>;
 
   className?: string;
 }
@@ -32,5 +32,5 @@ Form.Submit = FormSubmit;
 export interface FormType {
   register: UseFormRegister<FieldValues>;
   onSubmit: (e?: React.BaseSyntheticEvent<object, any, any> | undefined) => Promise<void>;
-  formState: FormState<FieldValues>;
+  formState?: FormState<FieldValues>;
 }

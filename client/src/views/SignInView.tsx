@@ -124,17 +124,15 @@ export default function SignInView(): React.ReactNode {
 }
 
 function LoginRedirect({ hidden }: { hidden: boolean }): React.ReactNode {
-  if (hidden) {
-    return <></>;
-  }
-
   return (
-    <>
-      <Divider>ou</Divider>
-      <Button color="transparent" icon={<Button.Icon icon={FcGoogle} />}>
-        Cadastre-se usando sua conta Google
-      </Button>
-    </>
+    !hidden && (
+      <>
+        <Divider>ou</Divider>
+        <Button color="transparent" icon={<Button.Icon icon={FcGoogle} />}>
+          Cadastre-se usando sua conta Google
+        </Button>
+      </>
+    )
   );
 }
 

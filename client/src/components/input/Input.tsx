@@ -1,5 +1,6 @@
 import { useId, useState } from "react";
 import { type FieldErrors } from "react-hook-form";
+import { tv } from "tailwind-variants";
 import { useFormContext } from "../form/context";
 import InputContext from "./context";
 import { InputBase } from "./InputBase";
@@ -18,11 +19,13 @@ interface InputRootProps {
 
   hidden?: boolean;
   optional?: boolean;
+
+  className?: string;
 }
 
 export function Input(props: InputRootProps): React.ReactNode {
   const { label, icon, ricon, hint, type } = props;
-  const { name, hidden, optional } = props;
+  const { name, hidden, optional, className } = props;
 
   const id = useId();
   const [focus, setFocus] = useState(false);
@@ -34,13 +37,16 @@ export function Input(props: InputRootProps): React.ReactNode {
       throw Error("É necessário informar a propriedade 'name' para inputs de formulário");
     }
 
-    const error: FieldErrors[typeof name] = formContext.form.formState?.errors[name];
+    const formState = formContext.form.formState;
+    if (formState) {
+      const error: FieldErrors[typeof name] = formState.errors[name];
 
-    if (error == null && state.state !== "default") {
-      setState({ state: "default" });
-    }
-    if (error != null && state.state !== "error") {
-      setState({ state: "error", message: getErrorByType(error.type) });
+      if (error == null && state.state !== "default") {
+        setState({ state: "default" });
+      }
+      if (error != null && state.state !== "error") {
+        setState({ state: "error", message: getErrorByType(error.type) });
+      }
     }
   }
 
@@ -54,7 +60,7 @@ export function Input(props: InputRootProps): React.ReactNode {
 
   return (
     <InputContext.Provider value={{ input }}>
-      <div className={`${hidden ? "hidden" : "flex"} flex-col`}>
+      <div className={inputStyle({ hidden, className })}>
         {label}
         <InputBase>
           {icon}
@@ -98,3 +104,16 @@ function getErrorByType(type: any | undefined): string | undefined {
     }
   }
 }
+
+const inputStyle = tv({
+  base: "flex-col",
+  variants: {
+    hidden: {
+      true: "hidden",
+      false: "flex",
+    },
+  },
+  defaultVariants: {
+    hidden: false,
+  },
+});

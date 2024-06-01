@@ -8,18 +8,16 @@ export default function FormSubmit(props: ButtonProps): React.ReactNode {
     onSubmit = formContext.form.onSubmit;
   }
 
-  if (props.hidden) {
-    return <></>;
-  }
-
   return (
-    <Button
-      {...props}
-      onClick={() => {
-        void onSubmit();
-      }}
-    >
-      {props.children}
-    </Button>
+    !props.hidden && (
+      <Button
+        {...props}
+        onClick={() => {
+          void onSubmit();
+        }}
+      >
+        {props.children}
+      </Button>
+    )
   );
 }

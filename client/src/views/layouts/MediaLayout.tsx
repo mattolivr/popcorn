@@ -15,7 +15,7 @@ import {
 } from "react-icons/fa6";
 import Anchor from "../../components/Anchor.tsx";
 import Button from "../../components/button/Button.tsx";
-import Card from "../../components/Card";
+import Card from "../../components/card/Card.tsx";
 import Divider from "../../components/Divider.tsx";
 import Slider, { type SliderData } from "../../components/Slider.tsx";
 import Tag from "../../components/Tag.tsx";

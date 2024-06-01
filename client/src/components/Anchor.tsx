@@ -8,18 +8,16 @@ export type AnchorProps = VariantProps<typeof anchorStyle> & {
   hidden?: boolean;
 };
 
-export default function Anchor(props: AnchorProps): JSX.Element {
+export default function Anchor(props: AnchorProps): React.ReactNode {
   const { color, to, className, children, hidden } = props;
   const style = anchorStyle({ color, className });
 
-  if (hidden) {
-    return <></>;
-  }
-
   return (
-    <Link to={to} className={style}>
-      {children}
-    </Link>
+    !hidden && (
+      <Link to={to} className={style}>
+        {children}
+      </Link>
+    )
   );
 }
 
