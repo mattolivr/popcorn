@@ -16,7 +16,7 @@ export default function UserInput(): JSX.Element {
     <Form register={register} onSubmit={onSubmit}>
       <div className="flex gap-2">
         {/* // TODO: Mudar para componente wrapper para criar link automático */}
-        <Link to="/users" className="hidden sm:block">
+        <Link to="/users">
           <Avatar rounded />
         </Link>
         {/* // TODO: Mudar para input textArea */}

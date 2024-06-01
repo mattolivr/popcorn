@@ -14,8 +14,9 @@ import {
   FaUserGroup,
 } from "react-icons/fa6";
 import { Link, Outlet } from "react-router-dom";
-// import Input from "../../components/Input";
 import Button, { type ButtonProps } from "../../components/button/Button";
+import { Input } from "../../components/input/Input";
+import { InputText } from "../../components/input/type/InputText";
 import Menu from "../../components/ui/Menu";
 
 export function MainLayout(): JSX.Element {
@@ -51,12 +52,12 @@ interface ControllsProps {
 
 function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
   const controllButtons: ButtonProps[] = [
-    { onClick: toggleMenu, icon: FaBars },
+    { onClick: toggleMenu, icon: <Button.Icon icon={FaBars} /> },
     {
       onClick: () => {
         alert("TODO: Modal");
       },
-      icon: FaPlus,
+      icon: <Button.Icon icon={FaPlus} />,
     },
   ];
 
@@ -80,8 +81,13 @@ function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
 }
 
 function SearchBar({ className }: { className?: string }): React.ReactNode {
-  // return <Input ricon={FaMagnifyingGlass} className={className} />;
-  return <></>;
+  return (
+    <Input
+      className={className}
+      type={<InputText />}
+      ricon={<Input.Icon icon={FaMagnifyingGlass} />}
+    />
+  );
 }
 
 interface NavProps {
@@ -95,15 +101,19 @@ function Nav({ toggleMenu }: NavProps): JSX.Element {
         <NavLinks />
       </ul>
       <NavDropdown />
-      <Button icon={FaGlobe} className="flex sm:hidden" to="/explore" />
+      <Button icon={<Button.Icon icon={FaGlobe} />} className="flex sm:hidden" to="/explore" />
       <Button
-        icon={FaMagnifyingGlass}
+        icon={<Button.Icon icon={FaMagnifyingGlass} />}
         className="flex sm:hidden"
         onClick={() => {
           alert("SearchBar");
         }}
       />
-      <Button icon={FaBars} className="flex sm:hidden" onClick={toggleMenu} />
+      <Button
+        icon={<Button.Icon icon={FaBars} />}
+        className="flex sm:hidden"
+        onClick={toggleMenu}
+      />
       <SearchBar className="hidden w-[250px] sm:flex xl:hidden" />
       <Avatar rounded className="hidden sm:block" />
     </nav>
@@ -146,9 +156,6 @@ const links = [
 function NavLinks({ linkStyle }: { linkStyle?: string }): JSX.Element {
   const components = links.map((link) => (
     <li key={link.path} className={linkStyle}>
-      {/* <Link to={link.path} className="w-full outline-none focus:text-sky-300">
-        {link.label}
-      </Link> */}
       <Button to={link.path} className="px-3 py-2">
         {link.label}
       </Button>
@@ -182,10 +189,10 @@ function BottomNav(): JSX.Element {
   return (
     <div className="fixed bottom-0 z-50 w-full">
       <div className="flex h-12 w-full flex-row items-center bg-sky-500 px-2 md:hidden">
-        <Button icon={FaHouse} to="/" className="w-full" />
-        <Button icon={FaEnvelope} to="/messages" className="w-full" />
-        <Button icon={FaPlus} className="w-full" />
-        <Button icon={FaBell} to="/notifications" className="w-full" />
+        <Button icon={<Button.Icon icon={FaHouse} />} to="/" className="w-full" />
+        <Button icon={<Button.Icon icon={FaEnvelope} />} to="/messages" className="w-full" />
+        <Button icon={<Button.Icon icon={FaPlus} />} className="w-full" />
+        <Button icon={<Button.Icon icon={FaBell} />} to="/notifications" className="w-full" />
         <Button to="/users" className="w-full">
           <Avatar size="xs" rounded />
         </Button>

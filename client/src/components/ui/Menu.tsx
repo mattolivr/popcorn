@@ -12,7 +12,7 @@ export interface MenuProps {
   };
 }
 
-export default function Menu({ visibility }: MenuProps): JSX.Element {
+export default function Menu({ visibility }: MenuProps): React.ReactNode {
   return (
     <div
       className={`left-0 top-0 z-40 h-lvh w-full
@@ -27,7 +27,7 @@ export default function Menu({ visibility }: MenuProps): JSX.Element {
   );
 }
 
-function User(): JSX.Element {
+function User(): React.ReactNode {
   return (
     <a
       className="flex flex-col items-center rounded-xl
@@ -52,7 +52,7 @@ interface MenuButtonProps {
   icon?: IconType;
 }
 
-function MenuButton({ button }: { button: MenuButtonProps }): JSX.Element {
+function MenuButton({ button }: { button: MenuButtonProps }): React.ReactNode {
   const currentPath = useLocation();
   const isCurrentPath = currentPath.pathname === button.path;
 
@@ -64,7 +64,7 @@ function MenuButton({ button }: { button: MenuButtonProps }): JSX.Element {
       color="transparent"
       className={`hover:bg-gray-300 ${backgroundColor} w-full 
         justify-start p-2 md:justify-center md:p-0 xl:justify-start xl:p-2`}
-      icon={button.icon}
+      icon={<Button.Icon icon={button.icon} />}
       align="start"
     >
       <span className="inline md:hidden xl:inline">{button.label}</span>
@@ -72,7 +72,7 @@ function MenuButton({ button }: { button: MenuButtonProps }): JSX.Element {
   );
 }
 
-function Navigation(): JSX.Element {
+function Navigation(): React.ReactNode {
   const navigationButtons: MenuButtonProps[] = [
     {
       label: "Página Inicial",

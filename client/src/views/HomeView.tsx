@@ -24,7 +24,7 @@ export default function HomeView(): JSX.Element {
   };
 
   return (
-    <div className="my-2 flex h-fit w-full flex-col gap-2 px-3 sm:px-2 md:w-3/4 lg:w-7/12 xl:w-5/12 2xl:w-4/12">
+    <div className="my-2 flex h-fit w-full flex-col gap-2 px-3 sm:px-2 md:w-3/4 lg:w-7/12 xl:w-5/12 2xl:w-2/5">
       <Highlights />
       <Card>
         <UserInput />
