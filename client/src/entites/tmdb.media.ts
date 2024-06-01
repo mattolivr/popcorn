@@ -1,7 +1,8 @@
+import { type Entity } from "../adapters/tmdb";
 import { Cast, Crew } from "./tmdb.person";
 import { getWatchProviderType, type WatchProvider } from "./tmdb.provider";
 
-export abstract class Media {
+export abstract class Media implements Entity {
   id: number;
   externalIds: {
     imdbId?: string;
@@ -31,8 +32,14 @@ export abstract class Media {
   providers: WatchProvider[] = [];
   providersLink?: string;
 
-  constructor(object: any) {
+  entityName: string;
+  appendTo: string[];
+
+  constructor(object: any, entityName: string, appendTo: string[]) {
     this.id = object.id;
+    this.entityName = entityName;
+    this.appendTo = appendTo;
+
     this.externalIds = {
       imdbId: object.external_ids?.imdb_id,
       facebookId: object.external_ids?.facebook_id,
@@ -121,7 +128,7 @@ export class Movie extends Media {
   release_date?: string;
 
   constructor(object: any) {
-    super(object);
+    super(object, "movie", ["credits", "external_ids", "watch/providers"]);
 
     this.title = object.title;
     this.runtime = object.runtime;
@@ -165,7 +172,7 @@ export class TVShow extends Media {
   number_of_seasons?: number;
 
   constructor(object: any) {
-    super(object);
+    super(object, "tv", ["credits", "external_ids", "watch/providers"]);
 
     this.name = object.name;
 

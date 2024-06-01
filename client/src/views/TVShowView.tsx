@@ -1,21 +1,21 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getEntity } from "../adapters/tmdb";
-import { Movie } from "../entites/tmdb.media";
+import { TVShow } from "../entites/tmdb.media";
 import MediaLayout from "./layouts/media/MediaLayout";
 
-export default function MovieView(): React.ReactNode {
-  const [movie, setMovie] = useState<Movie>();
+export default function TVShowView(): React.ReactNode {
+  const [show, setShow] = useState<TVShow>();
   const { id } = useParams();
 
   useEffect(() => {
-    if (movie == null && id != null) {
-      void getEntity(Movie, id, setMovie);
+    if (show == null && id != null) {
+      void getEntity(TVShow, id, setShow);
     }
-  }, [movie, id]);
+  }, [show, id]);
 
   return (
-    <MediaLayout media={movie}>
+    <MediaLayout media={show}>
       <></>
     </MediaLayout>
   );
