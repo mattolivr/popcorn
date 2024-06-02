@@ -1,9 +1,12 @@
+import { useEffect, useState } from "react";
+import { getHighlights, getImage } from "../adapters/tmdb";
 import Card from "../components/card/Card";
+import Carousel, { type CarouselItem } from "../components/Carousel";
 import Post from "../components/post/Post";
 import UserInput from "../components/ui/UserInput";
 import { type Post as PostType } from "../entites/pop.post";
 
-export default function HomeView(): JSX.Element {
+export default function HomeView(): React.ReactNode {
   const post: PostType = {
     id: "1",
     media: [
@@ -20,7 +23,7 @@ export default function HomeView(): JSX.Element {
 
   return (
     <div className="my-2 flex h-fit w-full flex-col gap-2 px-3 sm:px-2 md:w-3/4 lg:w-7/12 xl:w-5/12 2xl:w-2/5">
-      {/* <Highlights /> */}
+      <Highlights />
       <Card>
         <UserInput />
       </Card>
@@ -29,31 +32,27 @@ export default function HomeView(): JSX.Element {
   );
 }
 
-// function Highlights(): JSX.Element {
-//   const [data, setData] = useState<CarouselItem[]>();
+function Highlights(): React.ReactNode {
+  const [data, setData] = useState<CarouselItem[]>();
 
-//   useEffect(() => {
-//     function getMedia(response: AxiosResponse<any, any>): void {
-//       setData(
-//         response.data?.results
-//           ?.map((result: any) => {
-//             const media: Media = "title" in result ? new Movie(result) : new TVShow(result);
-//             return {
-//               key: media.id,
-//               title: media.getTitle(),
-//               background: `https://image.tmdb.org/t/p/original/${media.backdrop_path}`,
-//               link: `/${media.isMovie() ? "movies" : "shows"}/${media.id}`,
-//             };
-//           })
-//           .filter((_media: Media, index: number) => {
-//             return index < 6;
-//           }) as CarouselItem[],
-//       );
-//     }
-//     if (data == null) {
-//       get("trending/all/day", getMedia);
-//     }
-//   });
+  useEffect(() => {
+    async function get(): Promise<void> {
+      const items = await getHighlights(9);
+      setData(
+        items.map((highlight, index) => {
+          return {
+            title: highlight.getTitle(),
+            background: getImage(highlight.backdrop_path),
+            link: `/${highlight.entityName === "tv" ? "shows" : "movies"}/${highlight.id}`,
+            key: index.toString(),
+          };
+        }),
+      );
+    }
+    if (!data) {
+      void get();
+    }
+  });
 
-//   return <Carousel data={data} />;
-// }
+  return <Carousel data={data} />;
+}

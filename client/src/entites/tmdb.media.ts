@@ -207,3 +207,10 @@ export class TVShow extends Media {
     return {};
   }
 }
+
+export function newMedia(object: any): Movie | TVShow {
+  if ("title" in object) {
+    return new Movie(object);
+  }
+  return new TVShow(object);
+}

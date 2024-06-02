@@ -156,7 +156,7 @@ const links = [
 function NavLinks({ linkStyle }: { linkStyle?: string }): JSX.Element {
   const components = links.map((link) => (
     <li key={link.path} className={linkStyle}>
-      <Button to={link.path} className="px-3 py-2">
+      <Button to={link.path} className="px-2 py-1">
         {link.label}
       </Button>
     </li>
