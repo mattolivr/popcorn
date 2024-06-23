@@ -1,4 +1,4 @@
-import { type ButtonHTMLAttributes } from "react";
+import { useRef, type ButtonHTMLAttributes } from "react";
 import { Link } from "react-router-dom";
 import { tv } from "tailwind-variants";
 import { useButtonContext } from "./context";
@@ -10,9 +10,36 @@ export default function ButtonBase(
     button: { align, color, className, to },
   } = useButtonContext();
 
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const anchorRef = useRef<HTMLAnchorElement>(null);
+
+  const handleClick = (
+    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>,
+  ): void => {
+    if (buttonRef.current) {
+      console.log("blur");
+      buttonRef.current.blur();
+    }
+    if (anchorRef.current) {
+      console.log("blur");
+      anchorRef.current.blur();
+    }
+    if (props.onClick) {
+      console.log("onClick");
+      props.onClick(e);
+    }
+  };
+
+  const { onClick, ...rest } = props;
+
   if (to == null || to === "") {
     return (
-      <button {...props} className={buttonStyle({ align, color, hidden: props.hidden, className })}>
+      <button
+        ref={buttonRef}
+        className={buttonStyle({ align, color, hidden: props.hidden, className })}
+        onClick={handleClick}
+        {...rest}
+      >
         {props.children}
       </button>
     );
@@ -20,8 +47,9 @@ export default function ButtonBase(
   return (
     <Link
       to={to}
-      {...props}
+      ref={anchorRef}
       className={buttonStyle({ align, color, hidden: props.hidden, className })}
+      {...rest}
     >
       {props.children}
     </Link>
