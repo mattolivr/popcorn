@@ -2,15 +2,19 @@ import { Avatar } from "flowbite-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEnvelope } from "react-icons/fa";
-import { FaCakeCandles, FaImage, FaImagePortrait, FaKey, FaUser } from "react-icons/fa6";
+import {
+  FaCakeCandles,
+  FaImage,
+  FaImagePortrait,
+  FaKey,
+  FaUser,
+} from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import Anchor from "../components/Anchor.tsx";
 import Button from "../components/button/Button.tsx";
 import Divider from "../components/Divider.tsx";
 import Form from "../components/form/Form.tsx";
 import { Input } from "../components/input/Input.tsx";
-import { InputFile } from "../components/input/type/InputFile.tsx";
-import { InputText } from "../components/input/type/InputText.tsx";
 import DialogLayout from "./layouts/DialogLayout";
 
 enum Steps {
@@ -40,6 +44,7 @@ export default function SignInView(): React.ReactNode {
   };
 
   const nextStep = (): void => {
+    // TODO: Adicionar foco ao primeiro input
     setStep(step + 1);
   };
   const previousStep = (): void => {
@@ -64,76 +69,84 @@ export default function SignInView(): React.ReactNode {
       >
         <Input
           name="tag"
-          label={<Input.Label text="Nome de Usuário" />}
-          type={<InputText />}
-          icon={<Input.Icon icon={FaUser} />}
+          label="Nome de Usuário"
+          icon={FaUser}
           hidden={!showAtStep(Steps.LOGIN)}
         />
         <Input
           name="email"
-          label={<Input.Label text="Email" />}
-          type={<InputText />}
-          icon={<Input.Icon icon={FaEnvelope} />}
+          label="Email"
+          icon={FaEnvelope}
           hidden={!showAtStep(Steps.LOGIN)}
         />
+
         <Input
           name="name"
-          label={<Input.Label text="Nome" />}
-          type={<InputText />}
-          icon={<Input.Icon icon={FaUser} />}
+          label="Nome"
+          icon={FaUser}
           hidden={!showAtStep(Steps.GENERAL)}
         />
         <Input
           name="birthday"
-          label={<Input.Label text="Data de Nascimento" />}
-          type={<InputText />}
-          icon={<Input.Icon icon={FaCakeCandles} />}
+          label="Data de Nascimento"
+          type="date"
+          icon={FaCakeCandles}
           hidden={!showAtStep(Steps.GENERAL)}
         />
+
         <Input
           name="password"
-          label={<Input.Label text="Senha" />}
-          type={<InputText />}
-          icon={<Input.Icon icon={FaKey} />}
+          label="Senha"
+          icon={FaKey}
           hidden={!showAtStep(Steps.PASSWORD)}
         />
         <Input
           name="passwordConfirm"
-          label={<Input.Label text="Confirme a Senha" />}
-          type={<InputText />}
-          icon={<Input.Icon icon={FaKey} />}
+          label="Confirme a Senha"
+          icon={FaKey}
           hidden={!showAtStep(Steps.PASSWORD)}
         />
+
         <ProfilePreview
           previewHidden={!showAtStep(Steps.PROFILE, Steps.SUBMIT)}
           userDataHidden={!showAtStep(Steps.SUBMIT)}
         />
         <Input
           name="photo"
-          label={<Input.Label text="Foto de Perfil" />}
-          type={<InputFile />}
-          icon={<Input.Icon icon={FaImagePortrait} />}
+          label="Foto de Perfil"
+          type="file"
+          icon={FaImagePortrait}
           hidden={!showAtStep(Steps.PROFILE)}
           optional
         />
         <Input
           name="background"
-          label={<Input.Label text="Fundo de Perfil" />}
-          type={<InputFile />}
-          icon={<Input.Icon icon={FaImage} />}
+          label="Fundo de Perfil"
+          type="file"
+          icon={FaImage}
           hidden={!showAtStep(Steps.PROFILE)}
           optional
         />
+
         <Anchor to="/login" hidden={!showAtStep(Steps.LOGIN)}>
           Já tem uma conta? Faça Login
         </Anchor>
-        <Button onClick={previousStep} color="transparent" hidden={showAtStep(Steps.LOGIN)}>
+
+        <Button
+          onClick={previousStep}
+          color="transparent"
+          hidden={showAtStep(Steps.LOGIN)}
+        >
           Anterior
         </Button>
         <Button onClick={nextStep} hidden={showAtStep(totalSteps)}>
           Próximo
         </Button>
-        <Form.Submit hidden={!showAtStep(totalSteps)}>Confirmar cadastro</Form.Submit>
+
+        <Form.Submit hidden={!showAtStep(totalSteps)}>
+          Confirmar cadastro
+        </Form.Submit>
+
         <LoginRedirect hidden={!showAtStep(1)} />
         <Stepper totalSteps={totalSteps} step={step} setStep={setStep} />
       </Form>
@@ -154,10 +167,12 @@ function LoginRedirect({ hidden }: { hidden: boolean }): React.ReactNode {
   );
 }
 
-function ProfilePreview(props: {
+interface ProfilePreviewProps {
   previewHidden: boolean;
   userDataHidden: boolean;
-}): React.ReactNode {
+}
+
+function ProfilePreview(props: ProfilePreviewProps): React.ReactNode {
   const { previewHidden, userDataHidden } = props;
   return (
     <>
@@ -180,11 +195,13 @@ function ProfilePreview(props: {
   );
 }
 
-function Stepper(props: {
+interface StepperProps {
   totalSteps: number;
   step: number;
   setStep: React.Dispatch<React.SetStateAction<number>>;
-}): React.ReactNode {
+}
+
+function Stepper(props: StepperProps): React.ReactNode {
   const { totalSteps, step, setStep } = props;
 
   let steps: Array<{ index: number; active: boolean }> = [];

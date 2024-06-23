@@ -2,43 +2,41 @@ import { type InputHTMLAttributes } from "react";
 import { tv } from "tailwind-variants";
 import { useFormContext } from "../../form/context";
 import { useInputContext } from "../context";
+import { getRegisterProps } from "./input";
 
 export function InputText(props: InputHTMLAttributes<HTMLInputElement>): React.ReactNode {
+  const { input } = useInputContext();
+  const { form } = useFormContext() ?? { form: undefined };
+  const { onFocus, onBlur, ...rest } = props;
+
   const {
-    input: {
-      focus: { setFocus },
-      optional,
-      name,
-    },
-  } = useInputContext();
-  const formContext = useFormContext();
+    focus: { setFocus },
+  } = input;
 
-  const isRequired = optional == null || !optional;
-
-  const onBlur = (): void => {
-    setFocus(false);
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement, Element>): void => {
+    setFocus(true);
+    if (onFocus) {
+      onFocus(e);
+    }
   };
 
-  let registerProps;
-  if (formContext != null && name != null) {
-    registerProps = formContext.form.register(name, {
-      onBlur,
-      required: isRequired,
-    });
-  }
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement, Element>): void => {
+    setFocus(false);
+    if (onBlur) {
+      onBlur(e);
+    }
+  };
+
+  const registerProps = getRegisterProps(input, handleBlur, form);
 
   return (
     <input
       type="text"
       className={inputTextStyle({ className: props.className })}
-      onFocus={(e) => {
-        setFocus(true);
-        if (props.onFocus != null) {
-          props.onFocus(e);
-        }
-      }}
-      onBlur={onBlur}
+      onFocus={handleFocus}
+      onBlur={registerProps ? handleBlur : () => {}}
       {...registerProps}
+      {...rest}
     />
   );
 }

@@ -17,15 +17,12 @@ export default function ButtonBase(
     e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>,
   ): void => {
     if (buttonRef.current) {
-      console.log("blur");
       buttonRef.current.blur();
     }
     if (anchorRef.current) {
-      console.log("blur");
       anchorRef.current.blur();
     }
     if (props.onClick) {
-      console.log("onClick");
       props.onClick(e);
     }
   };

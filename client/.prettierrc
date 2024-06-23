@@ -1,5 +1,8 @@
 {
   "plugins": ["prettier-plugin-tailwindcss"],
-  "printWidth": 100,
-  "bracketSameLine": false
+  "printWidth": 80,
+  "bracketSameLine": false,
+  "htmlWhitespaceSensitivity": "strict",
+  "proseWrap": "always",
+  "jsxBracketSameLine": false
 }
