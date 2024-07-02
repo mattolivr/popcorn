@@ -2,6 +2,7 @@ package com.mattolivr.popcorn.controllers;
 
 import com.mattolivr.popcorn.domain.user.User;
 import com.mattolivr.popcorn.dto.LoginRequestDTO;
+import com.mattolivr.popcorn.dto.LoginResponseDTO;
 import com.mattolivr.popcorn.dto.RegisterRequestDTO;
 import com.mattolivr.popcorn.dto.RegisterResponseDTO;
 import com.mattolivr.popcorn.infra.security.TokenService;
@@ -32,7 +33,7 @@ public class AuthController {
 
         if (passwordEncoder.matches(body.password(), user.getPassword())) {
             String token = this.tokenService.generateToken(user);
-            return ResponseEntity.ok(new LoginRequestDTO(user.getName(), token));
+            return ResponseEntity.ok(new LoginResponseDTO(user.getName(), token));
         }
         return ResponseEntity.badRequest().build();
     }
