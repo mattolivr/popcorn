@@ -9,12 +9,17 @@ import Divider from "../components/Divider";
 import Form from "../components/form/Form";
 import { Input } from "../components/input/Input";
 import { InputText } from "../components/input/type/InputText";
+import { login, LoginRequest } from "../services/auth.service";
 import DialogLayout from "./layouts/DialogLayout";
 
 export default function LoginView(): JSX.Element {
   const { register, handleSubmit, formState } = useForm();
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    const request: LoginRequest = {
+      email: data.email,
+      password: data.password,
+    };
+    login(request);
   });
 
   const [error] = useState(false);
@@ -28,8 +33,8 @@ export default function LoginView(): JSX.Element {
         className="flex flex-col gap-2"
       >
         <Input
-          name="username"
-          label={<Input.Label text="Nome" />}
+          name="email"
+          label={<Input.Label text="Email" />}
           type={<InputText />}
           icon={<Input.Icon icon={FaUser} />}
         />
@@ -48,7 +53,9 @@ export default function LoginView(): JSX.Element {
 
       {error && (
         <Alert color="failure" icon={FaExclamationCircle}>
-          <span className="font-medium">Nome de usuário ou senha incorretos</span>
+          <span className="font-medium">
+            Nome de usuário ou senha incorretos
+          </span>
         </Alert>
       )}
       <Divider>ou</Divider>

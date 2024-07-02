@@ -4,7 +4,7 @@ import { type Media, newMedia } from "../entites/tmdb.media";
 export const tmdb = axios.create({
   baseURL: "https://api.themoviedb.org/3",
   headers: {
-    Authorization: process.env.TMDB_TOKEN,
+    Authorization: `Bearer ${process.env.external_tmdb_token}`,
   },
   params: {
     language: "pt-BR",

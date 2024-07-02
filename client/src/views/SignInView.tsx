@@ -15,6 +15,8 @@ import Button from "../components/button/Button.tsx";
 import Divider from "../components/Divider.tsx";
 import Form from "../components/form/Form.tsx";
 import { Input } from "../components/input/Input.tsx";
+import User from "../entites/user.ts";
+import { registerUser } from "../services/auth.service.ts";
 import DialogLayout from "./layouts/DialogLayout";
 
 enum Steps {
@@ -28,7 +30,15 @@ enum Steps {
 export default function SignInView(): React.ReactNode {
   const { register, handleSubmit, formState } = useForm();
   const onSubmit = handleSubmit((data) => {
-    console.log(data);
+    const user: User = {
+      name: data.name,
+      email: data.email,
+      displayName: data.displayName,
+      birth: data.birth,
+      password: data.password,
+    };
+
+    registerUser(user);
   });
 
   const [step, setStep] = useState(1);
@@ -68,7 +78,7 @@ export default function SignInView(): React.ReactNode {
         className="flex flex-col gap-2"
       >
         <Input
-          name="tag"
+          name="name"
           label="Nome de Usuário"
           icon={FaUser}
           hidden={!showAtStep(Steps.LOGIN)}
@@ -81,7 +91,7 @@ export default function SignInView(): React.ReactNode {
         />
 
         <Input
-          name="name"
+          name="displayName"
           label="Nome"
           icon={FaUser}
           hidden={!showAtStep(Steps.GENERAL)}
@@ -89,7 +99,6 @@ export default function SignInView(): React.ReactNode {
         <Input
           name="birthday"
           label="Data de Nascimento"
-          type="date"
           icon={FaCakeCandles}
           hidden={!showAtStep(Steps.GENERAL)}
         />
