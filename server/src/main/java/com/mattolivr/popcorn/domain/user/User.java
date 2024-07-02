@@ -1,9 +1,6 @@
 package com.mattolivr.popcorn.domain.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +9,7 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.UUID;
 
-@Table(name = "user")
+@Table(name = "users")
 @Entity
 @Getter
 @Setter
@@ -20,15 +17,16 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private String tag;
+    private String name;
     private String password;
 
-    private String name;
+    private String displayName;
+    private String email;
     private Date birth;
 
-    private String profilePicPath;
-    private String backgroundPicPath;
+    private String imgProfile;
+    private String imgBackground;
 }
