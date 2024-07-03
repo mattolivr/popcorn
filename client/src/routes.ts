@@ -1,48 +1,48 @@
 import { createBrowserRouter } from "react-router-dom";
-import ErrorView from "./views/ErrorView";
-import HomeView from "./views/HomeView";
-import { MainLayout } from "./views/layouts/MainLayout";
-import LoginView from "./views/LoginView";
-import MessageView from "./views/MessageView";
-import MovieView from "./views/MovieView";
-import NotificationView from "./views/NotificationView";
-import SignInView from "./views/SignInView";
-import TVShowView from "./views/TVShowView";
+import ChatPage from "./pages/ChatPage";
+import ErrorPage from "./pages/ErrorPage";
+import HomePage from "./pages/HomePage";
+import { MainLayout } from "./pages/layouts/MainLayout";
+import LoginPage from "./pages/LoginPage";
+import MoviePage from "./pages/MoviePage";
+import NotificationPage from "./pages/NotificationPage";
+import SignUpPage from "./pages/SignUpPage";
+import TVShowPage from "./pages/TVShowPage";
 
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: MainLayout,
-    ErrorBoundary: ErrorView,
+    ErrorBoundary: ErrorPage,
     children: [
       {
         path: "/",
-        Component: HomeView,
+        Component: HomePage,
       },
       {
         path: "notifications",
-        Component: NotificationView,
+        Component: NotificationPage,
       },
       {
         path: "messages",
-        Component: MessageView,
+        Component: ChatPage,
       },
       {
         path: "movies/:id",
-        Component: MovieView,
+        Component: MoviePage,
       },
       {
         path: "shows/:id",
-        Component: TVShowView,
+        Component: TVShowPage,
       },
     ],
   },
   {
     path: "login",
-    Component: LoginView,
+    Component: LoginPage,
   },
   {
     path: "sign-in",
-    Component: SignInView,
+    Component: SignUpPage,
   },
 ]);

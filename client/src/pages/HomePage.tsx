@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { getHighlights, getImage } from "../adapters/tmdb";
 import Card from "../components/card/Card";
 import Carousel, { type CarouselItem } from "../components/Carousel";
 import Post from "../components/post/Post";
 import UserInput from "../components/ui/UserInput";
-import { type Post as PostType } from "../entites/pop.post";
+import { type Post as PostType } from "../entites/post";
+import mediaService from "../services/media.service";
 
-export default function HomeView(): React.ReactNode {
+export default function HomePage(): React.ReactNode {
   const post: PostType = {
     id: "1",
     media: [
@@ -37,12 +37,12 @@ function Highlights(): React.ReactNode {
 
   useEffect(() => {
     async function get(): Promise<void> {
-      const items = await getHighlights(9);
+      const items = await mediaService.getHighlights(9);
       setData(
         items.map((highlight, index) => {
           return {
             title: highlight.getTitle(),
-            background: getImage(highlight.backdrop_path),
+            background: mediaService.getImage(highlight.backdrop_path),
             link: `/${highlight.entityName === "tv" ? "shows" : "movies"}/${highlight.id}`,
             key: index.toString(),
           };

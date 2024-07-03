@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { getImage } from "../../../adapters/tmdb.ts";
 import Anchor from "../../../components/Anchor.tsx";
 import Card from "../../../components/card/Card.tsx";
 import Slider, { type SliderData } from "../../../components/Slider.tsx";
-import { type Media } from "../../../entites/tmdb.media.ts";
+import { type Media } from "../../../entites/tmdb/tmdb.media.ts";
+import mediaService from "../../../services/media.service.ts";
 import MediaLayoutContext, { useMediaLayoutContext } from "./context.ts";
-import { MediaLayoutControlls, MediaLayoutMobileControlls } from "./MediaLayoutControlls.tsx";
+import {
+  MediaLayoutControlls,
+  MediaLayoutMobileControlls,
+} from "./MediaLayoutControlls.tsx";
 import {
   MediaLayoutMobileWatchProviders,
   MediaLayoutWatchProviders,
@@ -46,7 +49,11 @@ export default function MediaLayout(props: MediaLayoutProps): React.ReactNode {
   );
 }
 
-function MediaLayoutBody({ children }: { children: React.ReactNode }): React.ReactNode {
+function MediaLayoutBody({
+  children,
+}: {
+  children: React.ReactNode;
+}): React.ReactNode {
   return (
     <div className="lg-px-48 my-1 flex justify-between gap-4 px-1 sm:my-4 sm:px-2 2xl:px-64">
       {children}
@@ -66,7 +73,9 @@ function MediaLayoutMobileInfos(): React.ReactNode {
           return <span key={index}>{value}</span>;
         })}
       </div>
-      <strong className="mr-2 text-xl font-medium">{media?.getVotePercentage()}%</strong>
+      <strong className="mr-2 text-xl font-medium">
+        {media?.getVotePercentage()}%
+      </strong>
       <MediaLayoutGenres mobile />
     </Card>
   );
@@ -142,7 +151,7 @@ function MediaLayoutCast(): React.ReactNode {
       key: person.id.toString(),
       title: person.name,
       description: person.character,
-      img: getImage(person.profilePath),
+      img: mediaService.getImage(person.profilePath),
     };
   });
 

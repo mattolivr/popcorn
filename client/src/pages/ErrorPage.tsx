@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/button/Button";
 import DialogLayout from "./layouts/DialogLayout";
 
-export default function ErrorView(): React.ReactNode {
+export default function ErrorPage(): React.ReactNode {
   const navigate = useNavigate();
 
   return (

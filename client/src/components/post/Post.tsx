@@ -1,4 +1,4 @@
-import { type Post as PostType } from "../../entites/pop.post";
+import { type Post as PostType } from "../../entites/post";
 import Card from "../card/Card";
 import UserInput from "../ui/UserInput";
 import PostContext from "./context";

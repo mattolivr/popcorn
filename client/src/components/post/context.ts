@@ -1,5 +1,5 @@
 import { createContext, useContext } from "react";
-import { type Post } from "../../entites/pop.post";
+import { type Post } from "../../entites/post";
 
 const PostContext = createContext<{ post: Post } | null>(null);
 

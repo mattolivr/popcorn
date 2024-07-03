@@ -8,18 +8,17 @@ import Button from "../components/button/Button";
 import Divider from "../components/Divider";
 import Form from "../components/form/Form";
 import { Input } from "../components/input/Input";
-import { InputText } from "../components/input/type/InputText";
-import { login, LoginRequest } from "../services/auth.service";
+import authService, { LoginRequest } from "../services/auth.service";
 import DialogLayout from "./layouts/DialogLayout";
 
-export default function LoginView(): JSX.Element {
+export default function LoginPage(): JSX.Element {
   const { register, handleSubmit, formState } = useForm();
   const onSubmit = handleSubmit((data) => {
     const request: LoginRequest = {
       email: data.email,
       password: data.password,
     };
-    login(request);
+    authService.login(request);
   });
 
   const [error] = useState(false);
@@ -32,18 +31,8 @@ export default function LoginView(): JSX.Element {
         formState={formState}
         className="flex flex-col gap-2"
       >
-        <Input
-          name="email"
-          label={<Input.Label text="Email" />}
-          type={<InputText />}
-          icon={<Input.Icon icon={FaUser} />}
-        />
-        <Input
-          name="password"
-          label={<Input.Label text="Senha" />}
-          type={<InputText />}
-          icon={<Input.Icon icon={FaKey} />}
-        />
+        <Input name="email" label="Email" icon={FaUser} />
+        <Input name="password" label="Senha" icon={FaKey} />
         <Anchor to="#" className="text-right">
           Esqueceu a senha?
         </Anchor>

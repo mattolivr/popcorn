@@ -1,6 +1,6 @@
-import { type Entity } from "../adapters/tmdb";
+import { type Entity } from "../../adapters/tmdb";
 import { Cast, Crew } from "./tmdb.person";
-import { getWatchProviderType, type WatchProvider } from "./tmdb.provider";
+import { getWatchProviderType, WatchProvider } from "./tmdb.provider";
 
 export abstract class Media implements Entity {
   id: number;
@@ -102,7 +102,10 @@ export abstract class Media implements Entity {
   }
 
   getInfos(): string[] {
-    const infos: Array<string | undefined> = [this.getDate().start, this.getDate().end];
+    const infos: Array<string | undefined> = [
+      this.getDate().start,
+      this.getDate().end,
+    ];
 
     if (this.getRuntime().hours != null) {
       infos.push(`${this.getRuntime().hours}h ${this.getRuntime().minutes}min`);
@@ -145,12 +148,15 @@ export class Movie extends Media {
 
   getDate(): { start?: string; end?: string } {
     return {
-      start: this.release_date && new Date(this.release_date).toLocaleDateString(),
+      start:
+        this.release_date && new Date(this.release_date).toLocaleDateString(),
     };
   }
 
   getYear(): string | undefined {
-    return this.release_date && new Date(this.release_date).getFullYear().toString();
+    return (
+      this.release_date && new Date(this.release_date).getFullYear().toString()
+    );
   }
 
   getRuntime(): { hours?: number; minutes?: number } {
@@ -194,13 +200,19 @@ export class TVShow extends Media {
 
   getDate(): { start?: string; end?: string } {
     return {
-      start: this.first_air_date && new Date(this.first_air_date).toLocaleDateString(),
-      end: this.last_air_date && new Date(this.last_air_date).toLocaleDateString(),
+      start:
+        this.first_air_date &&
+        new Date(this.first_air_date).toLocaleDateString(),
+      end:
+        this.last_air_date && new Date(this.last_air_date).toLocaleDateString(),
     };
   }
 
   getYear(): string | undefined {
-    return this.first_air_date && new Date(this.first_air_date).getFullYear().toString();
+    return (
+      this.first_air_date &&
+      new Date(this.first_air_date).getFullYear().toString()
+    );
   }
 
   getRuntime(): { hours?: number; minutes?: number } {

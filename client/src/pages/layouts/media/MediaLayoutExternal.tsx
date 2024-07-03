@@ -1,11 +1,11 @@
 import { FaImdb } from "react-icons/fa";
 import { FaFacebook, FaImage, FaInstagram, FaXTwitter } from "react-icons/fa6";
 import { tv } from "tailwind-variants";
-import { getImage } from "../../../adapters/tmdb";
 import Button, { type ButtonProps } from "../../../components/button/Button";
 import Card from "../../../components/card/Card";
 import Divider from "../../../components/Divider";
-import { type WatchProvider as WatchProviderType } from "../../../entites/tmdb.provider";
+import { type WatchProvider as WatchProviderType } from "../../../entites/tmdb/tmdb.provider";
+import mediaService from "../../../services/media.service";
 import { useMediaLayoutContext } from "./context";
 
 export function MediaLayoutWatchProviders(): React.ReactNode {
@@ -103,7 +103,7 @@ function WatchProvider({
       <WatchProviderContainer mobile={mobile}>
         <div className="relative flex h-12 w-12 items-center justify-center rounded-md bg-gray-400">
           <img
-            src={getImage(provider.logo_path)}
+            src={mediaService.getImage(provider.logo_path)}
             className="absolute h-full w-full rounded-md"
             onError={(event) => {
               event.currentTarget.parentNode?.removeChild(event.currentTarget);
@@ -128,7 +128,11 @@ function WatchProviderContainer({
   mobile?: boolean;
 }): React.ReactNode {
   if (mobile) {
-    return <div className="flex flex-row gap-2 rounded-md active:bg-gray-200">{children}</div>;
+    return (
+      <div className="flex flex-row gap-2 rounded-md active:bg-gray-200">
+        {children}
+      </div>
+    );
   }
   return (
     <Card className="flex-row gap-2 rounded-xl border-2 border-gray-100 hover:bg-gray-100">

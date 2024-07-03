@@ -16,8 +16,8 @@ import Divider from "../components/Divider.tsx";
 import Form from "../components/form/Form.tsx";
 import { Input } from "../components/input/Input.tsx";
 import User from "../entites/user.ts";
-import { registerUser } from "../services/auth.service.ts";
-import DialogLayout from "./layouts/DialogLayout";
+import authService from "../services/auth.service.ts";
+import DialogLayout from "./layouts/DialogLayout.tsx";
 
 enum Steps {
   LOGIN = 1,
@@ -27,7 +27,7 @@ enum Steps {
   SUBMIT = 5,
 }
 
-export default function SignInView(): React.ReactNode {
+export default function SignUpPage(): React.ReactNode {
   const { register, handleSubmit, formState } = useForm();
   const onSubmit = handleSubmit((data) => {
     const user: User = {
@@ -38,7 +38,7 @@ export default function SignInView(): React.ReactNode {
       password: data.password,
     };
 
-    registerUser(user);
+    authService.register(user);
   });
 
   const [step, setStep] = useState(1);

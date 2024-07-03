@@ -1,5 +1,5 @@
 import { FaImage } from "react-icons/fa6";
-import { getImage } from "../../../adapters/tmdb";
+import mediaService from "../../../services/media.service";
 import { useMediaLayoutContext } from "./context";
 import { MediaLayoutExternalLinks } from "./MediaLayoutExternal";
 
@@ -23,7 +23,11 @@ export function MediaLayoutHeader(): React.ReactNode {
   );
 }
 
-function MediaLayoutBackground({ children }: { children: React.ReactNode }): React.ReactNode {
+function MediaLayoutBackground({
+  children,
+}: {
+  children: React.ReactNode;
+}): React.ReactNode {
   const { media } = useMediaLayoutContext();
   const style: React.CSSProperties = {
     backgroundImage: `url('https://image.tmdb.org/t/p/original${media?.backdrop_path}')`,
@@ -42,16 +46,24 @@ function MediaLayoutBackground({ children }: { children: React.ReactNode }): Rea
 
 function MediaLayoutPoster(): React.ReactNode {
   const { media } = useMediaLayoutContext();
-  const className = "h-[149px] w-[96px] rounded-xl shadow-md sm:h-[338px] sm:w-[225px] ms-2";
+  const className =
+    "h-[149px] w-[96px] rounded-xl shadow-md sm:h-[338px] sm:w-[225px] ms-2";
 
   if (media == null) {
     return (
-      <div className={`${className} flex items-center justify-center bg-sky-900`}>
+      <div
+        className={`${className} flex items-center justify-center bg-sky-900`}
+      >
         <FaImage className="text-4xl text-sky-600" />
       </div>
     );
   } else {
-    return <img className={className} src={getImage(media.poster_path)} />;
+    return (
+      <img
+        className={className}
+        src={mediaService.getImage(media.poster_path)}
+      />
+    );
   }
 }
 
@@ -60,7 +72,9 @@ function MediaLayoutTitle(): React.ReactNode {
 
   return (
     <div className="flex flex-row items-end">
-      <h1 className="text-3xl font-bold text-white xl:text-4xl">{media?.getTitle()}</h1>
+      <h1 className="text-3xl font-bold text-white xl:text-4xl">
+        {media?.getTitle()}
+      </h1>
       <span className="ml-3 text-2xl text-gray-200">{media?.getYear()}</span>
     </div>
   );
@@ -81,7 +95,9 @@ function MediaLayoutTagline(): React.ReactNode {
 
   return (
     media?.tagline && (
-      <p className="mt-2 text-lg font-medium italic text-gray-200">{media?.tagline}</p>
+      <p className="mt-2 text-lg font-medium italic text-gray-200">
+        {media?.tagline}
+      </p>
     )
   );
 }
