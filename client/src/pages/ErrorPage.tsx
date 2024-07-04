@@ -14,7 +14,7 @@ export default function ErrorPage(): React.ReactNode {
           O conteúdo que tentou acessar não existe ou não está mais disponível
         </span>
       </Alert>
-      <img src="/src/assets/storyset/error_404.svg" className="max-h-[28rem]" />
+      <img src="/public/storyset/error_404.svg" className="max-h-[28rem]" />
       <Button to="/" color="transparent">
         Ir para a Página Inicial
       </Button>

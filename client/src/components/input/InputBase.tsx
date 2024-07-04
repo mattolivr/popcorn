@@ -24,8 +24,9 @@ const baseStyle = tv({
   variants: {
     state: {
       default: "bg-gray-100 ring-gray-300",
-      error: "bg-red-200 text-red-800 placeholder-red-700 ring-red-300",
-      success: "bg-emerald-100 text-emerald-800 placeholder-emerald-700 ring-emerald-300",
+      error: "bg-gray-100 ring-2 text-red-800 placeholder-red-700 ring-red-400",
+      success:
+        "bg-emerald-100 text-emerald-800 placeholder-emerald-700 ring-emerald-300",
     },
     focus: {
       true: "ring-2",

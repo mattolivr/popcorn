@@ -1,7 +1,8 @@
 import { Avatar } from "flowbite-react";
 import { type IconType } from "react-icons";
-import { FaBell, FaEnvelope, FaHouse, FaStar } from "react-icons/fa6";
-import { useLocation } from "react-router-dom";
+import { FaBell, FaDoorOpen, FaEnvelope, FaHouse, FaStar } from "react-icons/fa6";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../../hooks/auth.hook";
 import Button from "../button/Button";
 import Card from "../card/Card";
 
@@ -48,8 +49,9 @@ function User(): React.ReactNode {
 
 interface MenuButtonProps {
   label: string;
-  path: string;
+  path?: string;
   icon?: IconType;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 function MenuButton({ button }: { button: MenuButtonProps }): React.ReactNode {
@@ -62,17 +64,25 @@ function MenuButton({ button }: { button: MenuButtonProps }): React.ReactNode {
       key={button.label}
       to={button.path}
       color="transparent"
-      className={`hover:bg-gray-300 ${backgroundColor} w-full 
-        justify-start p-2 md:justify-center md:p-0 xl:justify-start xl:p-2`}
+      className={menuButtonStyle(backgroundColor)}
       icon={<Button.Icon icon={button.icon} />}
       align="start"
+      onClick={button.onClick}
     >
       <span className="inline md:hidden xl:inline">{button.label}</span>
     </Button>
   );
 }
 
+const menuButtonStyle = (backgroundColor: string) => {
+  return `hover:bg-gray-300 ${backgroundColor} w-full 
+        justify-start p-2 md:justify-center md:p-0 xl:justify-start xl:p-2`;
+};
+
 function Navigation(): React.ReactNode {
+  const auth = useAuth();
+  const navigate = useNavigate();
+
   const navigationButtons: MenuButtonProps[] = [
     {
       label: "Página Inicial",
@@ -97,10 +107,23 @@ function Navigation(): React.ReactNode {
   ];
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex grow flex-col gap-1">
       {navigationButtons.map((btn, index) => (
         <MenuButton key={`menu-btn-nav-${index}`} button={btn} />
       ))}
+      <div className="grow" />
+      <Button
+        color="transparent"
+        className={menuButtonStyle("")}
+        icon={<Button.Icon icon={FaDoorOpen} />}
+        align="start"
+        onClick={() => {
+          auth.logout();
+          navigate("/login");
+        }}
+      >
+        <span className="inline md:hidden xl:inline">Sair</span>
+      </Button>
     </div>
   );
 }

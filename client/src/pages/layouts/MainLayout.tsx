@@ -1,5 +1,5 @@
 import { Avatar, type CustomFlowbiteTheme, Dropdown } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaInfoCircle, FaPlus } from "react-icons/fa";
 import {
   FaBars,
@@ -13,36 +13,50 @@ import {
   FaUser,
   FaUserGroup,
 } from "react-icons/fa6";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import Button, { type ButtonProps } from "../../components/button/Button";
 import { Input } from "../../components/input/Input";
 import { InputText } from "../../components/input/type/InputText";
 import Menu from "../../components/ui/Menu";
+import { useAuth } from "../../hooks/auth.hook";
 
 export function MainLayout(): React.ReactNode {
   const [menuVisible, setMenuVisible] = useState(false);
+  const auth = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    auth.validate().then((resp) => {
+      if (!resp.token) {
+        navigate("/login");
+      }
+    });
+  }, [location]);
 
   return (
-    <div className="flex min-h-dvh w-full flex-col bg-gray-200">
-      <header className="sticky top-0 z-50 flex w-full flex-row items-center bg-sky-500 px-4 py-2">
-        <Controlls
-          toggleMenu={() => {
-            setMenuVisible(!menuVisible);
-          }}
-        />
-        <SearchBar className="hidden w-8/12 xl:flex" />
-        <Nav
-          toggleMenu={() => {
-            setMenuVisible(!menuVisible);
-          }}
-        />
-      </header>
-      <Menu visibility={{ visible: menuVisible, setVisibility: setMenuVisible }} />
-      <div className="relative mb-12 flex grow justify-center sm:mb-0">
-        <Outlet />
+    auth.token && (
+      <div className="flex min-h-dvh w-full flex-col bg-gray-200">
+        <header className="sticky top-0 z-50 flex w-full flex-row items-center bg-sky-500 px-4 py-2">
+          <Controlls
+            toggleMenu={() => {
+              setMenuVisible(!menuVisible);
+            }}
+          />
+          <SearchBar className="hidden w-8/12 xl:flex" />
+          <Nav
+            toggleMenu={() => {
+              setMenuVisible(!menuVisible);
+            }}
+          />
+        </header>
+        <Menu visibility={{ visible: menuVisible, setVisibility: setMenuVisible }} />
+        <div className="relative mb-12 flex grow justify-center sm:mb-0">
+          <Outlet />
+        </div>
+        <BottomNav />
       </div>
-      <BottomNav />
-    </div>
+    )
   );
 }
 
@@ -64,10 +78,7 @@ function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
   return (
     <div className="flex w-full flex-row items-center gap-2">
       <Link to={"/"}>
-        <img
-          src="/src/assets/popcorn-logo.png"
-          className="block h-10 w-10 cursor-pointer resize-none"
-        />
+        <img src="/public/popcorn-logo.png" className="block h-10 w-10 cursor-pointer resize-none" />
       </Link>
       <ul className="hidden flex-row items-center text-2xl text-gray-100 sm:flex">
         {controllButtons.map((btn, index) => (
@@ -81,13 +92,7 @@ function Controlls({ toggleMenu }: ControllsProps): JSX.Element {
 }
 
 function SearchBar({ className }: { className?: string }): React.ReactNode {
-  return (
-    <Input
-      className={className}
-      type={<InputText />}
-      ricon={<Input.Icon icon={FaMagnifyingGlass} />}
-    />
-  );
+  return <Input className={className} type={<InputText />} ricon={<Input.Icon icon={FaMagnifyingGlass} />} />;
 }
 
 interface NavProps {
@@ -109,11 +114,7 @@ function Nav({ toggleMenu }: NavProps): JSX.Element {
           alert("SearchBar");
         }}
       />
-      <Button
-        icon={<Button.Icon icon={FaBars} />}
-        className="flex sm:hidden"
-        onClick={toggleMenu}
-      />
+      <Button icon={<Button.Icon icon={FaBars} />} className="flex sm:hidden" onClick={toggleMenu} />
       <SearchBar className="hidden w-[250px] sm:flex xl:hidden" />
       <Avatar rounded className="hidden sm:block" />
     </nav>

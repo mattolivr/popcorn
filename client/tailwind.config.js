@@ -4,7 +4,11 @@ const flowbite = require("flowbite-react/tailwind");
 export default {
   content: ["./src/**/*.{js,ts,jsx,tsx}", "./index.html", flowbite.content()],
   theme: {
-    extend: {},
+    fontFamily: {
+      sans: ["Inter", "sans-serif"],
+      serif: ["Roboto Serif", "serif"],
+      mono: ["Inconsolata", "monospace"],
+    },
   },
   plugins: [require("tailwindcss"), require("autoprefixer"), flowbite.plugin()],
 };

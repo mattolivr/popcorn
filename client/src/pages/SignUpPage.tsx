@@ -2,13 +2,7 @@ import { Avatar } from "flowbite-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { FaEnvelope } from "react-icons/fa";
-import {
-  FaCakeCandles,
-  FaImage,
-  FaImagePortrait,
-  FaKey,
-  FaUser,
-} from "react-icons/fa6";
+import { FaCakeCandles, FaImage, FaImagePortrait, FaKey, FaUser } from "react-icons/fa6";
 import { FcGoogle } from "react-icons/fc";
 import Anchor from "../components/Anchor.tsx";
 import Button from "../components/button/Button.tsx";
@@ -16,7 +10,7 @@ import Divider from "../components/Divider.tsx";
 import Form from "../components/form/Form.tsx";
 import { Input } from "../components/input/Input.tsx";
 import User from "../entites/user.ts";
-import authService from "../services/auth.service.ts";
+import { useAuth } from "../hooks/auth.hook.tsx";
 import DialogLayout from "./layouts/DialogLayout.tsx";
 
 enum Steps {
@@ -28,6 +22,7 @@ enum Steps {
 }
 
 export default function SignUpPage(): React.ReactNode {
+  const auth = useAuth();
   const { register, handleSubmit, formState } = useForm();
   const onSubmit = handleSubmit((data) => {
     const user: User = {
@@ -38,7 +33,7 @@ export default function SignUpPage(): React.ReactNode {
       password: data.password,
     };
 
-    authService.register(user);
+    auth.register(user);
   });
 
   const [step, setStep] = useState(1);
@@ -71,50 +66,15 @@ export default function SignUpPage(): React.ReactNode {
 
   return (
     <DialogLayout title={titles[step - 1]}>
-      <Form
-        register={register}
-        onSubmit={onSubmit}
-        formState={formState}
-        className="flex flex-col gap-2"
-      >
-        <Input
-          name="name"
-          label="Nome de Usuário"
-          icon={FaUser}
-          hidden={!showAtStep(Steps.LOGIN)}
-        />
-        <Input
-          name="email"
-          label="Email"
-          icon={FaEnvelope}
-          hidden={!showAtStep(Steps.LOGIN)}
-        />
+      <Form register={register} onSubmit={onSubmit} formState={formState} className="flex flex-col gap-2">
+        <Input name="name" label="Nome de Usuário" icon={FaUser} hidden={!showAtStep(Steps.LOGIN)} />
+        <Input name="email" label="Email" icon={FaEnvelope} hidden={!showAtStep(Steps.LOGIN)} />
 
-        <Input
-          name="displayName"
-          label="Nome"
-          icon={FaUser}
-          hidden={!showAtStep(Steps.GENERAL)}
-        />
-        <Input
-          name="birthday"
-          label="Data de Nascimento"
-          icon={FaCakeCandles}
-          hidden={!showAtStep(Steps.GENERAL)}
-        />
+        <Input name="displayName" label="Nome" icon={FaUser} hidden={!showAtStep(Steps.GENERAL)} />
+        <Input name="birthday" label="Data de Nascimento" icon={FaCakeCandles} hidden={!showAtStep(Steps.GENERAL)} />
 
-        <Input
-          name="password"
-          label="Senha"
-          icon={FaKey}
-          hidden={!showAtStep(Steps.PASSWORD)}
-        />
-        <Input
-          name="passwordConfirm"
-          label="Confirme a Senha"
-          icon={FaKey}
-          hidden={!showAtStep(Steps.PASSWORD)}
-        />
+        <Input name="password" label="Senha" icon={FaKey} hidden={!showAtStep(Steps.PASSWORD)} />
+        <Input name="passwordConfirm" label="Confirme a Senha" icon={FaKey} hidden={!showAtStep(Steps.PASSWORD)} />
 
         <ProfilePreview
           previewHidden={!showAtStep(Steps.PROFILE, Steps.SUBMIT)}
@@ -141,20 +101,14 @@ export default function SignUpPage(): React.ReactNode {
           Já tem uma conta? Faça Login
         </Anchor>
 
-        <Button
-          onClick={previousStep}
-          color="transparent"
-          hidden={showAtStep(Steps.LOGIN)}
-        >
+        <Button onClick={previousStep} color="transparent" hidden={showAtStep(Steps.LOGIN)}>
           Anterior
         </Button>
         <Button onClick={nextStep} hidden={showAtStep(totalSteps)}>
           Próximo
         </Button>
 
-        <Form.Submit hidden={!showAtStep(totalSteps)}>
-          Confirmar cadastro
-        </Form.Submit>
+        <Form.Submit hidden={!showAtStep(totalSteps)}>Confirmar cadastro</Form.Submit>
 
         <LoginRedirect hidden={!showAtStep(1)} />
         <Stepper totalSteps={totalSteps} step={step} setStep={setStep} />
@@ -185,10 +139,7 @@ function ProfilePreview(props: ProfilePreviewProps): React.ReactNode {
   const { previewHidden, userDataHidden } = props;
   return (
     <>
-      <div
-        className="relative mb-[2.5rem] h-28 w-full rounded-lg bg-orange-300"
-        hidden={previewHidden}
-      >
+      <div className="relative mb-[2.5rem] h-28 w-full rounded-lg bg-orange-300" hidden={previewHidden}>
         <div
           className="absolute left-[50%] top-full translate-x-[-50%] translate-y-[-50%] 
             rounded-full bg-white p-1"
