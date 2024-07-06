@@ -27,7 +27,7 @@ function MainLayoutHeaderButtons(): ReactNode {
       onClick: () => {
         menu.setCollapsed(!menu.collapsed);
       },
-      className: "hidden md:block",
+      className: "hidden xl:block",
     },
     {
       icon: FaBars,

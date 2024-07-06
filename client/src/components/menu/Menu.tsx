@@ -10,7 +10,7 @@ import { MenuUserInfo } from "./MenuUserInfo";
 export default function Menu(): ReactNode {
   const menu = useMenu();
 
-  console.log("menuVisible", menu.visible);
+  console.log("menu.tsx / menu-collapsed", menu.collapsed);
 
   const style = menuStyle({
     height: {
@@ -21,7 +21,7 @@ export default function Menu(): ReactNode {
     width: {
       initial: "full",
       md: "fit",
-      xl: "fixed",
+      xl: menu.collapsed ? "fit" : "fixed",
     },
     padding: {
       initial: "none",
@@ -52,7 +52,7 @@ export default function Menu(): ReactNode {
   );
 }
 
-const menuStyle = tv(
+export const menuStyle = tv(
   {
     base: "z-40 shrink-0 grow-0 left-0 top-[3.5em]",
     variants: {

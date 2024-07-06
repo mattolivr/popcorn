@@ -26,7 +26,7 @@ export function MainLayout(): React.ReactNode {
           <MainLayoutHeader />
           <div className="relative flex flex-row">
             <Menu />
-            <div className="relative mb-12 flex grow justify-start sm:mb-0">
+            <div className="relative mb-12 flex grow justify-start overflow-x-hidden sm:mb-0">
               <Outlet />
             </div>
           </div>

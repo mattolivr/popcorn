@@ -22,7 +22,7 @@ export default function HomePage(): React.ReactNode {
   };
 
   return (
-    <div className="my-2 flex h-fit w-full flex-col gap-2 px-3 sm:px-2 md:w-3/4 lg:w-7/12 xl:w-5/12 2xl:w-2/5">
+    <div className="my-2 flex h-fit w-full flex-col gap-2 px-1">
       <Highlights />
       <Card>
         <UserInput />
