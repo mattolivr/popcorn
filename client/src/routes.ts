@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import ChatPage from "./pages/ChatPage";
 import ErrorPage from "./pages/ErrorPage";
 import HomePage from "./pages/HomePage";
-import { MainLayout } from "./pages/layouts/MainLayout";
+import { MainLayout } from "./pages/layouts/main/MainLayout";
 import LoginPage from "./pages/LoginPage";
 import MoviePage from "./pages/MoviePage";
 import NotificationPage from "./pages/NotificationPage";

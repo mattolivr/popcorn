@@ -1,4 +1,5 @@
 import { type ButtonHTMLAttributes } from "react";
+import { IconType } from "react-icons";
 import { type VariantProps } from "tailwind-variants";
 import ButtonBase, { type buttonStyle } from "./ButtonBase";
 import { ButtonIcon } from "./ButtonIcon";
@@ -7,8 +8,8 @@ import ButtonContext from "./context";
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonStyle> & {
     children?: React.ReactNode;
-    icon?: React.ReactNode;
-    ricon?: React.ReactNode;
+    icon?: React.ReactNode | IconType;
+    ricon?: React.ReactNode | IconType;
     to?: string;
   };
 
@@ -25,9 +26,9 @@ export default function Button(props: ButtonProps): React.ReactNode {
   return (
     <ButtonContext.Provider value={{ button }}>
       <ButtonBase {...other}>
-        {icon}
+        {getIcon(icon)}
         {children}
-        {ricon}
+        {getIcon(ricon)}
       </ButtonBase>
     </ButtonContext.Provider>
   );
@@ -39,3 +40,10 @@ export type ButtonType = VariantProps<typeof buttonStyle> & {
   to?: string;
   className?: string;
 };
+
+function getIcon(icon?: React.ReactNode | IconType): React.ReactNode {
+  if (typeof icon === "function") {
+    return <Button.Icon icon={icon} />;
+  }
+  return icon;
+}

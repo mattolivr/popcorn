@@ -13,9 +13,7 @@ export default function ButtonBase(
   const buttonRef = useRef<HTMLButtonElement>(null);
   const anchorRef = useRef<HTMLAnchorElement>(null);
 
-  const handleClick = (
-    e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>,
-  ): void => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement, MouseEvent>): void => {
     if (buttonRef.current) {
       buttonRef.current.blur();
     }
@@ -42,12 +40,7 @@ export default function ButtonBase(
     );
   }
   return (
-    <Link
-      to={to}
-      ref={anchorRef}
-      className={buttonStyle({ align, color, hidden: props.hidden, className })}
-      {...rest}
-    >
+    <Link to={to} ref={anchorRef} className={buttonStyle({ align, color, hidden: props.hidden, className })} {...rest}>
       {props.children}
     </Link>
   );
@@ -59,10 +52,7 @@ export const buttonStyle = tv({
     color: {
       primary:
         "bg-sky-500 outline-transparent text-white hover:bg-sky-600 focus:bg-sky-600 active:bg-sky-700 disabled:bg-gray-400",
-      secondary:
-        "bg-transparent border-2 border-sky-300 text-sky-400 hover:bg-sky-400 hover:border-sky-400 hover:text-white active:bg-sky-500 active:border-sky-500 active:text-white",
-      blank: "",
-      transparent:
+      clear:
         "bg-transparent outline-transparent text-gray-700 hover:bg-gray-200 focus:bg-gray-200 active:bg-gray-300 disabled:bg-gray-300",
     },
     align: {
