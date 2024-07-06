@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { FaBell, FaCompass, FaEnvelopeOpen, FaHouseChimney, FaStar } from "react-icons/fa6";
-import { ButtonProps } from "../button/Button";
+import { ButtonProps } from "../../button/Button";
 import { MenuButton } from "./MenuButton";
 
 export function MenuNavigation(): ReactNode {

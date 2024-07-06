@@ -2,7 +2,7 @@ import { Avatar } from "flowbite-react";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
 import { tv } from "tailwind-variants";
-import { useAuth } from "../../hooks/auth.hook";
+import { useAuth } from "../../../hooks/auth.hook";
 import { useMenu } from "./context";
 
 export function MenuUserInfo(): ReactNode {

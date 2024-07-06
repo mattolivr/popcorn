@@ -1,3 +1,4 @@
+import { faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
 import Card from "../components/card/Card";
 import Carousel, { type CarouselItem } from "../components/Carousel";
@@ -9,11 +10,7 @@ import mediaService from "../services/media.service";
 export default function HomePage(): React.ReactNode {
   const post: PostType = {
     id: "1",
-    media: [
-      "https://source.unsplash.com/random/1",
-      "https://source.unsplash.com/random/2",
-      "https://source.unsplash.com/random/3",
-    ],
+    media: [faker.image.url()],
     stats: {
       likes: 24,
       comments: 2,
@@ -22,7 +19,7 @@ export default function HomePage(): React.ReactNode {
   };
 
   return (
-    <div className="my-2 flex h-fit w-full flex-col gap-2 px-1">
+    <div className="my-2 flex w-full flex-col gap-2 self-center sm:w-[600px]">
       <Highlights />
       <Card>
         <UserInput />

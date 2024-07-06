@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { useLocation } from "react-router-dom";
 import { tv } from "tailwind-variants";
-import Button, { ButtonProps } from "../button/Button";
+import Button, { ButtonProps } from "../../button/Button";
 import { useMenu } from "./context";
 
 export function MenuButton({ button }: { button: ButtonProps }): ReactNode {
@@ -46,7 +46,7 @@ const menuButtonStyle = tv(
     base: "hover:bg-gray-300 w-full p-2 md:p-0 xl:p-2",
     variants: {
       isCurrentPath: {
-        true: "text-sky-700 hover:bg-sky-200",
+        true: "text-orange-400 hover:bg-orange-100 focus:bg-orange-100 active:bg-orange-200",
       },
       align: {
         start: "justify-start",

@@ -10,9 +10,9 @@ export default function Divider(props: DividerType): JSX.Element {
 
   return (
     <div className={dividerStyle({ className })}>
-      <hr className="my-2 h-0.5 w-full bg-gray-300" />
+      <hr className="my-2 h-[3px] w-full rounded-2xl bg-gray-300" />
       {children && <p className={labelStyle()}>{children}</p>}
-      {children && <hr className="my-2 h-0.5 w-full bg-gray-300" />}
+      {children && <hr className="my-2 h-[3px] w-full rounded-2xl bg-gray-300" />}
     </div>
   );
 }

@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { MenuProvider } from "../../../components/menu/context";
-import Menu from "../../../components/menu/Menu";
+import Aside from "../../../components/ui/aside/Aside";
+import { MenuProvider } from "../../../components/ui/menu/context";
+import Menu from "../../../components/ui/menu/Menu";
 import { useAuth } from "../../../hooks/auth.hook";
 import { MainLayoutBottomNavigation } from "./MainLayoutBottomNavigation";
 import MainLayoutHeader from "./MainLayoutHeader";
@@ -26,9 +27,10 @@ export function MainLayout(): React.ReactNode {
           <MainLayoutHeader />
           <div className="relative flex flex-row">
             <Menu />
-            <div className="relative mb-12 flex grow justify-start overflow-x-hidden sm:mb-0">
+            <div className="relative flex grow flex-col justify-start overflow-x-hidden">
               <Outlet />
             </div>
+            <Aside />
           </div>
           <MainLayoutBottomNavigation />
         </div>

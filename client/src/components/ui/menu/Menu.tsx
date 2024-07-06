@@ -1,16 +1,13 @@
 import { ReactNode } from "react";
 import { tv } from "tailwind-variants";
-import Card from "../card/Card";
+import Card from "../../card/Card";
 import { useMenu } from "./context";
 import MenuBottomLinks from "./MenuBottomLinks";
-import MenuClubs from "./MenuClubs";
 import { MenuNavigation } from "./MenuNavigation";
 import { MenuUserInfo } from "./MenuUserInfo";
 
 export default function Menu(): ReactNode {
   const menu = useMenu();
-
-  console.log("menu.tsx / menu-collapsed", menu.collapsed);
 
   const style = menuStyle({
     height: {
@@ -45,7 +42,6 @@ export default function Menu(): ReactNode {
       <Card className="h-full gap-3 px-2">
         <MenuUserInfo />
         <MenuNavigation />
-        <MenuClubs />
         <MenuBottomLinks />
       </Card>
     </div>
@@ -75,7 +71,7 @@ export const menuStyle = tv(
       },
       visibility: {
         hidden: "hidden",
-        show: "block",
+        show: "flex flex-col",
       },
     },
   },

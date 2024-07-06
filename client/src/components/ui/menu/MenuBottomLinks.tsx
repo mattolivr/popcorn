@@ -1,8 +1,8 @@
 import { ReactNode } from "react";
 import { FaCircleInfo, FaDoorOpen, FaGear } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../hooks/auth.hook";
-import { ButtonProps } from "../button/Button";
+import { useAuth } from "../../../hooks/auth.hook";
+import { ButtonProps } from "../../button/Button";
 import { MenuButton } from "./MenuButton";
 
 export default function MenuBottomLinks(): ReactNode {
@@ -32,7 +32,7 @@ export default function MenuBottomLinks(): ReactNode {
   ];
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex grow flex-col justify-end gap-1">
       {bottomLinks.map((btn, index) => (
         <MenuButton key={index} button={btn} />
       ))}

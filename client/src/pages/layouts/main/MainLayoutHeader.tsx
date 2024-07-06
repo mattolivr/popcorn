@@ -6,7 +6,7 @@ import { FaBars, FaFilm, FaGlobe, FaMagnifyingGlass, FaPlus, FaTv, FaUser, FaUse
 import { Link } from "react-router-dom";
 import Button, { ButtonProps } from "../../../components/button/Button";
 import { Input } from "../../../components/input/Input";
-import { useMenu } from "../../../components/menu/context";
+import { useMenu } from "../../../components/ui/menu/context";
 
 export default function MainLayoutHeader(): ReactNode {
   return (

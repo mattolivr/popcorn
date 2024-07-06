@@ -6,7 +6,7 @@ export default interface User {
 
   displayName: string;
   email: string;
-  birth: EpochTimeStamp; // TODO: Verificar
+  birth: string; // TODO: Verificar
 
   imgProfile?: string;
   imgBackground?: string;
