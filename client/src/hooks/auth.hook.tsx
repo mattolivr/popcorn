@@ -33,6 +33,14 @@ export const AuthProvider = ({ children }: AuthProviderProps): ReactNode => {
 
   const validate = async (): Promise<AuthLoginResponse> => {
     const token = response?.token ?? sessionStorage.getItem(AUTH_TOKEN);
+
+    // NOTE: Desabilita a validação caso o .env desabilite o require_login
+    if (process.env.require_login === "false") {
+      const fakeAuthResponse: AuthLoginResponse = response ?? fakeLogin();
+      setResponse(fakeAuthResponse);
+      return fakeAuthResponse;
+    }
+
     if (token && token !== "") {
       try {
         const resp: { data: AuthLoginResponse } = await server.post("/auth/validate", { token });
@@ -41,6 +49,20 @@ export const AuthProvider = ({ children }: AuthProviderProps): ReactNode => {
       } catch (error) {}
     }
     return { message: "Usuário não autenticado" };
+  };
+
+  const fakeLogin = (): AuthLoginResponse => {
+    return {
+      user: {
+        name: "debug",
+        displayName: "Usuário não autenticado",
+        password: "",
+        email: "",
+        birth: "",
+      },
+      token: "debug-token",
+      message: "Debug",
+    };
   };
 
   const value: Auth = {

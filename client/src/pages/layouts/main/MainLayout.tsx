@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Aside from "../../../components/ui/aside/Aside";
 import { AsideProvider } from "../../../components/ui/aside/context";
@@ -13,26 +13,16 @@ export function MainLayout(): React.ReactNode {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [loggedIn, setLoggedIn] = useState(false);
-
   useEffect(() => {
-    console.log("require_login", process.env.require_login);
-    if (process.env.require_login === "false") {
-      setLoggedIn(true);
-      return;
-    }
-
     auth.validate().then((resp) => {
-      if (resp.token) {
-        setLoggedIn(true);
-      } else {
+      if (!resp.token) {
         navigate("/login");
       }
     });
   }, [location]);
 
   return (
-    loggedIn && (
+    auth.token && (
       <MenuProvider>
         <AsideProvider>
           <div className="flex min-h-dvh w-full flex-col bg-gray-200">
