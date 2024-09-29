@@ -1,5 +1,5 @@
 import { FaComment, FaHeart, FaShare } from "react-icons/fa6";
-import Button from "../button/Button";
+import Button, { ButtonProps } from "../button/Button";
 import { usePostContext } from "./context";
 
 export default function PostControlls(): React.ReactNode {
@@ -9,17 +9,18 @@ export default function PostControlls(): React.ReactNode {
     },
   } = usePostContext();
 
+  // TODO: Formatar números grandes
+  const buttons: ButtonProps[] = [
+    { color: "clear", className: "grow", icon: FaHeart, children: likes },
+    { color: "clear", className: "grow", icon: FaComment, children: comments },
+    { color: "clear", className: "grow", icon: FaShare, children: shares },
+  ];
+
   return (
     <ul className="flex flex-row gap-1">
-      <Button className="grow" color="transparent" icon={<Button.Icon icon={FaHeart} />}>
-        {likes}
-      </Button>
-      <Button className="grow" color="transparent" icon={<Button.Icon icon={FaComment} />}>
-        {comments}
-      </Button>
-      <Button className="grow" color="transparent" icon={<Button.Icon icon={FaShare} />}>
-        {shares}
-      </Button>
+      {buttons.map((btn, index) => (
+        <Button key={index} {...btn} />
+      ))}
     </ul>
   );
 }

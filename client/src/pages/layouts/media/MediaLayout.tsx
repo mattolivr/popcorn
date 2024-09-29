@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import Anchor from "../../../components/Anchor.tsx";
 import Card from "../../../components/card/Card.tsx";
 import Slider, { type SliderData } from "../../../components/Slider.tsx";
@@ -6,13 +6,11 @@ import { type Media } from "../../../entites/tmdb/tmdb.media.ts";
 import mediaService from "../../../services/media.service.ts";
 import MediaLayoutContext, { useMediaLayoutContext } from "./context.ts";
 import {
-  MediaLayoutControlls,
+  MediaLayoutAuxControlls,
+  MediaLayoutMainControlls,
   MediaLayoutMobileControlls,
 } from "./MediaLayoutControlls.tsx";
-import {
-  MediaLayoutMobileWatchProviders,
-  MediaLayoutWatchProviders,
-} from "./MediaLayoutExternal.tsx";
+import { MediaLayoutMobileWatchProviders, MediaLayoutWatchProviders } from "./MediaLayoutExternal.tsx";
 import { MediaLayoutHeader } from "./MediaLayoutHeader.tsx";
 
 export interface MediaLayoutProps {
@@ -22,43 +20,54 @@ export interface MediaLayoutProps {
 
 export default function MediaLayout(props: MediaLayoutProps): React.ReactNode {
   // TODO: Implementar React Helmet
-  // TODO: Ajustar tamanho da tela para conter sempre o Menu
   const { media } = props;
 
   return (
     <MediaLayoutContext.Provider value={{ media }}>
-      <main className="flex h-full w-full flex-col">
-        <MediaLayoutHeader />
-        <MediaLayoutBody>
-          <section className="sm:7/8 flex w-full flex-col gap-1 sm:gap-2 lg:w-8/12">
-            <MediaLayoutMobileInfos />
-            <MediaLayoutOverview />
-            <MediaLayoutMobileWatchProviders />
-            <MediaLayoutCast />
-          </section>
-          <aside className="sm:1/8 hidden lg:block lg:w-4/12">
-            <Card>
-              <MediaLayoutControlls />
-              <MediaLayoutWatchProviders />
-            </Card>
-          </aside>
-        </MediaLayoutBody>
-      </main>
-      <MediaLayoutMobileControlls />
+      <MediaLayoutContent />
     </MediaLayoutContext.Provider>
   );
 }
 
-function MediaLayoutBody({
-  children,
-}: {
-  children: React.ReactNode;
-}): React.ReactNode {
+function MediaLayoutContent(): ReactNode {
   return (
-    <div className="lg-px-48 my-1 flex justify-between gap-4 px-1 sm:my-4 sm:px-2 2xl:px-64">
-      {children}
-    </div>
+    <>
+      <main className="flex h-full w-full flex-col items-center">
+        <MediaLayoutBackground />
+        <div className="z-20 w-full pr-2 xl:pr-0 2xl:w-[800px]">
+          <MediaLayoutHeader />
+          <div className="flex">
+            <section className="mt-2 flex flex-col gap-1 sm:gap-2">
+              <MediaLayoutMobileInfos />
+              <MediaLayoutOverview />
+              <MediaLayoutMobileWatchProviders />
+              <MediaLayoutCast />
+            </section>
+            <aside>
+              <MediaLayoutMainControlls />
+              <Card className="z-40 h-full px-2">
+                <MediaLayoutAuxControlls />
+                <MediaLayoutWatchProviders />
+              </Card>
+            </aside>
+          </div>
+        </div>
+      </main>
+      <MediaLayoutMobileControlls />
+    </>
   );
+}
+
+function MediaLayoutBackground(): React.ReactNode {
+  const { media } = useMediaLayoutContext();
+  const style: React.CSSProperties = {
+    backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.8)), 
+      url('https://image.tmdb.org/t/p/original${media?.backdrop_path}')`,
+    backgroundPosition: "50% 30%",
+    backgroundSize: "cover",
+  };
+
+  return <div className="absolute left-0 top-0 h-[23rem] w-full bg-sky-100" style={style} />;
 }
 
 function MediaLayoutMobileInfos(): React.ReactNode {
@@ -73,9 +82,7 @@ function MediaLayoutMobileInfos(): React.ReactNode {
           return <span key={index}>{value}</span>;
         })}
       </div>
-      <strong className="mr-2 text-xl font-medium">
-        {media?.getVotePercentage()}%
-      </strong>
+      <strong className="mr-2 text-xl font-medium">{media?.getVotePercentage()}%</strong>
       <MediaLayoutGenres mobile />
     </Card>
   );
@@ -131,10 +138,7 @@ function MediaLayoutGenres({ mobile }: { mobile?: boolean }): React.ReactNode {
   return (
     <div className={`mt-2 gap-1 overflow-x-auto ${display}`}>
       {media?.genres?.map((genre) => (
-        <span
-          key={genre.id}
-          className="text-nowrap rounded-xl bg-sky-700 px-3 py-1 font-semibold text-white"
-        >
+        <span key={genre.id} className="text-nowrap rounded-xl bg-sky-700 px-3 py-1 font-semibold text-white">
           {genre.name}
         </span>
       ))}

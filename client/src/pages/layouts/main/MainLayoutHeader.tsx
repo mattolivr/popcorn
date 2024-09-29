@@ -44,7 +44,7 @@ function MainLayoutHeaderButtons(): ReactNode {
   return (
     <div className="flex w-full flex-row items-center">
       <Link to={"/"}>
-        <img src="/popcorn-logo.png" className="block h-10 w-10 cursor-pointer resize-none" />
+        <h1 className="font-semibold text-white">Popcorn Club</h1>
       </Link>
       <div className="ml-2 flex items-center">
         {headerButtons.map((btn, index) => (

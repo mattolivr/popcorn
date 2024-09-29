@@ -8,9 +8,8 @@ config({ path: process.cwd().replace("client", "").concat(".env") });
 export default defineConfig(({ mode }) => {
   return {
     define: {
-      "process.env.external_tmdb_token": JSON.stringify(
-        process.env["external.tmdb.token"],
-      ),
+      "process.env.external_tmdb_token": JSON.stringify(process.env["external.tmdb.token"]),
+      "process.env.require_login": JSON.stringify(process.env["popcorn.client.require_login"]),
     },
     plugins: [react()],
   };

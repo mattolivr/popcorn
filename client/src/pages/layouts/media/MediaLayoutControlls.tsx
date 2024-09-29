@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { FaBars, FaClock, FaComment, FaEye, FaHeart, FaPlus, FaStar } from "react-icons/fa6";
 import Button, { type ButtonProps } from "../../../components/button/Button";
 import Card from "../../../components/card/Card";
@@ -17,37 +17,33 @@ const controlls: ButtonProps[][] = [
   ],
 ];
 
-export function MediaLayoutControlls(): React.ReactNode {
+export function MediaLayoutMainControlls(): ReactNode {
   return (
     <>
-      <div className="flex">
+      <Card className="flex flex-row px-2">
         {controlls[0].map((btn, index) => (
-          <Button
-            key={index}
-            className="h-fit grow flex-col gap-0 py-2"
-            color="transparent"
-            {...btn}
-          />
+          <Button key={index} className="h-fit grow flex-col gap-0 px-1 py-2" color="clear" {...btn} />
         ))}
-      </div>
-      <div className="mt-1 flex flex-col">
-        {controlls[1].map((btn, index) => (
-          <Button key={index} color="transparent" align="start" {...btn} />
-        ))}
-      </div>
+      </Card>
     </>
   );
 }
 
-export function MediaLayoutMobileControlls(): React.ReactNode {
+export function MediaLayoutAuxControlls(): ReactNode {
+  return (
+    <div className="flex flex-col gap-1">
+      {controlls[1].map((btn, index) => (
+        <Button key={index} color="clear" align="start" {...btn} />
+      ))}
+    </div>
+  );
+}
+
+export function MediaLayoutMobileControlls(): ReactNode {
   // const { media } = useMediaLayoutContext();
   const [visible, setVisible] = useState(false);
 
-  const mobileControlls: Array<ButtonProps | "divider"> = [
-    ...controlls[0],
-    "divider",
-    ...controlls[1],
-  ];
+  const mobileControlls: Array<ButtonProps | "divider"> = [...controlls[0], "divider", ...controlls[1]];
 
   return (
     <>
@@ -66,7 +62,7 @@ export function MediaLayoutMobileControlls(): React.ReactNode {
           btn === "divider" ? (
             <Divider className="m-0" key={index} />
           ) : (
-            <Button key={index} {...btn} color="transparent" align="start" />
+            <Button key={index} {...btn} color="clear" align="start" />
           ),
         )}
       </Card>

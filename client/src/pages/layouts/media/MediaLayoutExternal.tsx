@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { FaImdb } from "react-icons/fa";
 import { FaFacebook, FaImage, FaInstagram, FaXTwitter } from "react-icons/fa6";
 import { tv } from "tailwind-variants";
@@ -8,24 +9,26 @@ import { type WatchProvider as WatchProviderType } from "../../../entites/tmdb/t
 import mediaService from "../../../services/media.service";
 import { useMediaLayoutContext } from "./context";
 
-export function MediaLayoutWatchProviders(): React.ReactNode {
+export function MediaLayoutWatchProviders(): ReactNode {
   const { media } = useMediaLayoutContext();
-  if (media?.providers.length) {
-    return (
-      <div className={mediaLayoutWatchProvidersStyle()}>
+  return (
+    media?.providers &&
+    media.providers.length > 0 && (
+      <>
         <Divider>Assista em:</Divider>
         {media.providers.map((provider, index) => (
           <WatchProvider key={index} provider={provider} />
         ))}
-      </div>
-    );
-  }
+      </>
+    )
+  );
 }
 
-export function MediaLayoutMobileWatchProviders(): React.ReactNode {
+export function MediaLayoutMobileWatchProviders(): ReactNode {
   const { media } = useMediaLayoutContext();
-  if (media?.providers.length) {
-    return (
+  return (
+    media?.providers &&
+    media.providers.length > 0 && (
       <Card
         title={<Card.Title text="Assista em" />}
         className={mediaLayoutWatchProvidersStyle({
@@ -33,14 +36,14 @@ export function MediaLayoutMobileWatchProviders(): React.ReactNode {
         })}
       >
         {media.providers.map((provider, index) => (
-          <WatchProvider key={index} provider={provider} mobile />
+          <WatchProvider key={index} provider={provider} />
         ))}
       </Card>
-    );
-  }
+    )
+  );
 }
 
-export function MediaLayoutExternalLinks(): React.ReactNode {
+export function MediaLayoutExternalLinks(): ReactNode {
   const { media } = useMediaLayoutContext();
 
   if (!media?.externalIds) {
@@ -83,61 +86,39 @@ export function MediaLayoutExternalLinks(): React.ReactNode {
     <div className="flex gap-2">
       {links.map((link, index) => (
         <a key={index} target="_blank" rel="noreferrer" href={link.to}>
-          <Button color="blank" className="p-0" icon={link.icon} />
+          <Button color="clear" className="p-0" icon={link.icon} />
         </a>
       ))}
     </div>
   );
 }
 
-function WatchProvider({
-  provider,
-  mobile,
-}: {
-  provider: WatchProviderType;
-  mobile?: boolean;
-}): React.ReactNode {
+function WatchProvider({ provider }: { provider: WatchProviderType }): ReactNode {
   const { media } = useMediaLayoutContext();
   return (
-    <a href={media?.providersLink} target="_blank" rel="noreferrer">
-      <WatchProviderContainer mobile={mobile}>
-        <div className="relative flex h-12 w-12 items-center justify-center rounded-md bg-gray-400">
+    <Button color="clear" className="h-16 justify-start px-2">
+      <a
+        href={media?.providersLink}
+        target="_blank"
+        rel="noreferrer"
+        className="flex items-center justify-start gap-2 overflow-hidden"
+      >
+        <div className="flex h-10 w-10 shrink-0 grow-0 items-center justify-center rounded-md bg-gray-400">
           <img
             src={mediaService.getImage(provider.logo_path)}
-            className="absolute h-full w-full rounded-md"
+            className="h-10 w-10 rounded-md"
             onError={(event) => {
               event.currentTarget.parentNode?.removeChild(event.currentTarget);
             }}
           />
           <FaImage className="text-xl text-gray-100" />
         </div>
-        <div className="flex flex-col justify-center leading-5">
-          <span className="font-semibold">{provider.provider_name}</span>
+        <div className="flex flex-col overflow-hidden text-start leading-5">
+          <span className="truncate font-semibold">{provider.provider_name}</span>
           <span>{provider.type}</span>
         </div>
-      </WatchProviderContainer>
-    </a>
-  );
-}
-
-function WatchProviderContainer({
-  children,
-  mobile,
-}: {
-  children: React.ReactNode;
-  mobile?: boolean;
-}): React.ReactNode {
-  if (mobile) {
-    return (
-      <div className="flex flex-row gap-2 rounded-md active:bg-gray-200">
-        {children}
-      </div>
-    );
-  }
-  return (
-    <Card className="flex-row gap-2 rounded-xl border-2 border-gray-100 hover:bg-gray-100">
-      {children}
-    </Card>
+      </a>
+    </Button>
   );
 }
 

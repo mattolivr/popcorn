@@ -30,7 +30,7 @@ function AsideFriend({ user }: { user: User }): ReactNode {
   return (
     <Link to={`/profile/${user?.name}`} className="flex flex-col items-center rounded-lg p-2 hover:bg-gray-300">
       <div className="flex w-full items-center justify-start gap-2">
-        <Avatar img={faker.image.avatar()} className="shrink-0 grow-0" rounded />
+        <Avatar img={user.imgProfile} className="shrink-0 grow-0" rounded />
         <div className="flex flex-col overflow-hidden leading-5">
           <span className="truncate text-nowrap font-medium">{user?.displayName}</span>
           <span className="truncate text-slate-700">{faker.hacker.phrase()}</span>

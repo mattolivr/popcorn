@@ -6,7 +6,7 @@ export function PostMedias(): React.ReactNode {
     post: { id, media },
   } = usePostContext();
 
-  if (!media) {
+  if (!media || !media.length) {
     return <></>;
   }
 

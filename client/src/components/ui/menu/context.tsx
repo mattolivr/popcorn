@@ -12,7 +12,7 @@ const MenuContext = createContext<Menu | null>(null);
 export const useMenu = () => {
   const context = useContext(MenuContext);
   if (context == null) {
-    throw new Error("MenuContainer deve ser instanciado dentro de MenuProvider");
+    throw new Error("Menu deve ser instanciado dentro de MenuProvider");
   }
   return context;
 };
