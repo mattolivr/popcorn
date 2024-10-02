@@ -46,7 +46,7 @@ const menuButtonStyle = tv(
     base: "hover:bg-gray-300 w-full p-2 md:p-0 xl:p-2",
     variants: {
       isCurrentPath: {
-        true: "text-orange-400 hover:bg-orange-100 focus:bg-orange-100 active:bg-orange-200",
+        true: "text-sky-500 hover:bg-sky-100 focus:bg-sky-100 active:bg-sky-200",
       },
       align: {
         start: "justify-start",

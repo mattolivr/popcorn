@@ -3,6 +3,7 @@ import { tv } from "tailwind-variants";
 import Card from "../../card/Card";
 import { useMenu } from "./context";
 import MenuBottomLinks from "./MenuBottomLinks";
+import MenuClubs from "./MenuClubs";
 import { MenuNavigation } from "./MenuNavigation";
 import { MenuUserInfo } from "./MenuUserInfo";
 
@@ -18,7 +19,7 @@ export default function Menu(): ReactNode {
     width: {
       initial: "full",
       md: "fit",
-      xl: menu.collapsed ? "fit" : "fixed",
+      xl: "fixed",
     },
     padding: {
       initial: "none",
@@ -37,11 +38,14 @@ export default function Menu(): ReactNode {
     },
   });
 
+  const cardStyle = `h-full gap-3 px-2 w-full md:w-fit ${menu.collapsed ? "xl:w-fit" : "xl:w-full"}`;
+
   return (
     <div className={style}>
-      <Card className="h-full gap-3 px-2">
+      <Card className={cardStyle}>
         <MenuUserInfo />
         <MenuNavigation />
+        <MenuClubs />
         <MenuBottomLinks />
       </Card>
     </div>

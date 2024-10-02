@@ -25,8 +25,9 @@ const anchorStyle = tv({
   base: "rounded-2xl px-1 py-1 text-center font-semibold",
   variants: {
     color: {
-      primary:
-        "text-sky-700 outline-transparent hover:bg-sky-100 focus:bg-sky-100 focus:text-sky-600",
+      primary: "text-sky-700 outline-transparent hover:bg-sky-100 focus:bg-sky-100 focus:text-sky-600",
+      clear:
+        "bg-transparent outline-transparent text-gray-700 hover:bg-gray-200 focus:bg-gray-200 active:bg-gray-300 disabled:bg-gray-300",
     },
   },
   defaultVariants: {

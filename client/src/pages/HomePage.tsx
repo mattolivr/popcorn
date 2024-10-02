@@ -5,7 +5,6 @@ import Button from "../components/button/Button";
 import Card from "../components/card/Card";
 import Carousel, { type CarouselItem } from "../components/Carousel";
 import Post from "../components/post/Post";
-import AsideClubs from "../components/ui/aside/AsideClubs";
 import AsideFriends from "../components/ui/aside/AsideFriends";
 import AsideHighlight from "../components/ui/aside/AsideHighlight";
 import { useAside } from "../components/ui/aside/context";
@@ -24,7 +23,6 @@ export default function HomePage(): React.ReactNode {
         </Button>
         <Card className="grow gap-3 overflow-hidden px-2">
           <AsideHighlight />
-          <AsideClubs />
           <AsideFriends />
         </Card>
       </>,

@@ -13,12 +13,12 @@ export function MenuUserInfo(): ReactNode {
     padding: {
       initial: "p2",
       md: "none",
-      xl: menu.collapsed ? "none" : "p2",
+      xl: "p2",
     },
     hoverBackground: {
       initial: "gray",
       md: "clear",
-      xl: menu.collapsed ? "clear" : "gray",
+      xl: "gray",
     },
   });
 
@@ -36,7 +36,6 @@ export function MenuUserInfo(): ReactNode {
         <Avatar rounded />
         <div className={textStyle}>
           <span className="font-medium">{user?.displayName}</span>
-          <span className="text-slate-700">@{user?.name}</span>
         </div>
       </div>
     </Link>
@@ -45,7 +44,7 @@ export function MenuUserInfo(): ReactNode {
 
 const menuUserStyle = tv(
   {
-    base: "flex flex-col items-center rounded-lg",
+    base: "flex flex-col items-center rounded-lg w-full",
     variants: {
       padding: {
         none: "p-0",

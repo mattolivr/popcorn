@@ -1,4 +1,4 @@
-import { fakerPT_BR as faker } from "@faker-js/faker";
+import { faker } from "@faker-js/faker";
 import { Avatar } from "flowbite-react";
 import { ReactNode } from "react";
 import { Link } from "react-router-dom";
@@ -13,7 +13,7 @@ export default function AsideFriends(): ReactNode {
     birth: faker.date.birthdate().toLocaleDateString(),
     password: "",
     displayName: faker.person.fullName(),
-    imgProfile: faker.image.avatar(),
+    imgProfile: faker.image.urlPicsumPhotos(),
   }));
 
   return (
