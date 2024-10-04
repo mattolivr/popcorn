@@ -4,13 +4,13 @@ import { IconType } from "react-icons";
 import { FaInfoCircle } from "react-icons/fa";
 import { FaBars, FaFilm, FaGlobe, FaMagnifyingGlass, FaPlus, FaTv, FaUser, FaUserGroup } from "react-icons/fa6";
 import { Link } from "react-router-dom";
-import Button, { ButtonProps } from "../../../components/button/Button";
-import { Input } from "../../../components/input/Input";
-import { useMenu } from "../../../components/ui/menu/context";
+import Button, { ButtonProps } from "../../../components/core/button/Button";
+import { Input } from "../../../components/core/input/Input";
+import { useMenu } from "../../../components/layout/menu/context";
 
 export default function MainLayoutHeader(): ReactNode {
   return (
-    <header className="sticky top-0 z-50 flex w-full flex-row items-center bg-sky-500 px-4 py-2">
+    <header className="sticky top-0 z-50 flex w-full flex-row items-center bg-primary px-4 py-2">
       <MainLayoutHeaderButtons />
       <MainLayoutHeaderSearchBar className="hidden w-7/12 xl:flex" />
       <MainLayoutHeaderNavigation />

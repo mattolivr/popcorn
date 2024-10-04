@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import Aside from "../../../components/ui/aside/Aside";
-import { AsideProvider } from "../../../components/ui/aside/context";
-import { MenuProvider } from "../../../components/ui/menu/context";
-import Menu from "../../../components/ui/menu/Menu";
-import { useAuth } from "../../../hooks/auth.hook";
+import Aside from "../../../components/layout/aside/Aside";
+import { AsideProvider } from "../../../components/layout/aside/context";
+import { MenuProvider } from "../../../components/layout/menu/context";
+import Menu from "../../../components/layout/menu/Menu";
+import { useAuth } from "../../../core/hooks/auth.hook";
 import { MainLayoutBottomNavigation } from "./MainLayoutBottomNavigation";
 import MainLayoutHeader from "./MainLayoutHeader";
 

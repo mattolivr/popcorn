@@ -1,5 +1,5 @@
 import { FaImage } from "react-icons/fa6";
-import mediaService from "../../../services/media.service";
+import mediaService from "../../../core/services/media.service";
 import { useMediaLayoutContext } from "./context";
 import { MediaLayoutExternalLinks } from "./MediaLayoutExternal";
 

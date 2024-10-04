@@ -1,7 +1,7 @@
 import { Alert } from "flowbite-react";
 import { FaExclamationCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import Button from "../components/button/Button";
+import Button from "../components/core/button/Button";
 import DialogLayout from "./layouts/DialogLayout";
 
 export default function ErrorPage(): React.ReactNode {
@@ -10,9 +10,7 @@ export default function ErrorPage(): React.ReactNode {
   return (
     <DialogLayout title="Conteúdo não encontrado">
       <Alert color="failure" icon={FaExclamationCircle}>
-        <span className="font-medium">
-          O conteúdo que tentou acessar não existe ou não está mais disponível
-        </span>
+        <span className="font-medium">O conteúdo que tentou acessar não existe ou não está mais disponível</span>
       </Alert>
       <img src="/public/storyset/error_404.svg" className="max-h-[28rem]" />
       <Button to="/" color="transparent">

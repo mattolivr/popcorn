@@ -1,9 +1,9 @@
 import React, { ReactNode, useState } from "react";
-import Anchor from "../../../components/Anchor.tsx";
-import Card from "../../../components/card/Card.tsx";
-import Slider, { type SliderData } from "../../../components/Slider.tsx";
-import { type Media } from "../../../entites/tmdb/tmdb.media.ts";
-import mediaService from "../../../services/media.service.ts";
+import Card from "../../../components/core/card/Card.tsx";
+import Anchor from "../../../components/core/link/Link.tsx";
+import Slider, { type SliderData } from "../../../components/layout/horizontal-list/Slider.tsx";
+import { type Media } from "../../../core/models/tmdb/tmdb.media.ts";
+import mediaService from "../../../core/services/media.service.ts";
 import MediaLayoutContext, { useMediaLayoutContext } from "./context.ts";
 import {
   MediaLayoutAuxControlls,

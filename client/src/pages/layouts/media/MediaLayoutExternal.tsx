@@ -2,11 +2,11 @@ import { ReactNode } from "react";
 import { FaImdb } from "react-icons/fa";
 import { FaFacebook, FaImage, FaInstagram, FaXTwitter } from "react-icons/fa6";
 import { tv } from "tailwind-variants";
-import Button, { type ButtonProps } from "../../../components/button/Button";
-import Card from "../../../components/card/Card";
-import Divider from "../../../components/Divider";
-import { type WatchProvider as WatchProviderType } from "../../../entites/tmdb/tmdb.provider";
-import mediaService from "../../../services/media.service";
+import Button, { type ButtonProps } from "../../../components/core/button/Button";
+import Card from "../../../components/core/card/Card";
+import Divider from "../../../components/core/divider/Divider";
+import { type WatchProvider as WatchProviderType } from "../../../core/models/tmdb/tmdb.provider";
+import mediaService from "../../../core/services/media.service";
 import { useMediaLayoutContext } from "./context";
 
 export function MediaLayoutWatchProviders(): ReactNode {

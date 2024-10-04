@@ -1,6 +1,6 @@
 import { Avatar } from "flowbite-react";
 import { FaBell, FaEnvelope, FaHouse, FaPlus } from "react-icons/fa6";
-import Button from "../../../components/button/Button";
+import Button from "../../../components/core/button/Button";
 
 export function MainLayoutBottomNavigation(): JSX.Element {
   return (

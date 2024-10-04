@@ -1,8 +1,8 @@
 import { ReactNode, useState } from "react";
 import { FaBars, FaClock, FaComment, FaEye, FaHeart, FaPlus, FaStar } from "react-icons/fa6";
-import Button, { type ButtonProps } from "../../../components/button/Button";
-import Card from "../../../components/card/Card";
-import Divider from "../../../components/Divider";
+import Button, { type ButtonProps } from "../../../components/core/button/Button";
+import Card from "../../../components/core/card/Card";
+import Divider from "../../../components/core/divider/Divider";
 
 const controlls: ButtonProps[][] = [
   [
